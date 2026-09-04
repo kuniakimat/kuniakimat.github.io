@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>広福観 — ワークショップ管理</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#111;--paper:#fafaf8;--muted:#888;--line:#e8e5df;--accent:#c8a96e;}
+body{background:var(--paper);color:var(--ink);font-family:'Noto Sans JP',sans-serif;font-size:14px;min-height:100vh}
+header{padding:28px 40px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Shippori Mincho',serif;font-size:18px;letter-spacing:.04em}
+.brand span{font-size:12px;color:var(--muted);font-family:'Noto Sans JP',sans-serif;margin-left:10px}
+main{max-width:720px;margin:0 auto;padding:40px 24px}
+h2{font-family:'Shippori Mincho',serif;font-size:20px;font-weight:600;margin-bottom:20px}
+.add-form{display:flex;gap:8px;margin-bottom:40px;align-items:center;flex-wrap:wrap;}
+.add-form input{flex:1;min-width:180px;padding:10px 14px;border:1px solid var(--line);font-size:14px;font-family:'Shippori Mincho',serif;background:var(--paper);outline:none;}
+.add-form input:focus{border-color:var(--ink)}
+.add-form button{padding:10px 20px;background:var(--ink);color:#fff;border:none;font-size:13px;cursor:pointer;}
+.add-form button:hover{background:#333}
+.ws-list{display:flex;flex-direction:column;gap:12px}
+.ws-card{border:1px solid var(--line);padding:20px 24px;display:flex;align-items:center;gap:20px;background:#fff;}
+.ws-card:hover{border-color:#aaa}
+.ws-id{font-family:'Shippori Mincho',serif;font-size:20px;font-weight:600;min-width:120px;}
+.ws-meta{flex:1;color:var(--muted);font-size:12px;line-height:1.8}
+.ws-count{font-family:'Shippori Mincho',serif;font-size:28px;font-weight:700;min-width:48px;text-align:right;}
+.ws-count-lbl{font-size:10px;color:var(--muted);text-align:right}
+.ws-actions{display:flex;flex-direction:column;gap:6px;min-width:80px}
+.btn-gallery{padding:7px 12px;background:var(--ink);color:#fff;border:none;font-size:11px;cursor:pointer;text-decoration:none;display:block;text-align:center;}
+.btn-gallery:hover{background:#333}
+.btn-delete{padding:5px 12px;background:none;color:var(--muted);border:1px solid var(--line);font-size:11px;cursor:pointer;}
+.btn-delete:hover{color:#c44;border-color:#c44}
+.loading{color:var(--muted);font-size:12px;padding:4px 0}
+.empty{padding:48px;text-align:center;color:var(--muted);border:1px dashed var(--line);}
+.refresh-btn{font-size:12px;color:var(--muted);border:none;background:none;cursor:pointer;padding:0;margin-left:16px;}
+.refresh-btn:hover{color:var(--ink)}
+.quick-link{margin-top:48px;padding-top:24px;border-top:1px solid var(--line);}
+.quick-link h3{font-size:13px;color:var(--muted);margin-bottom:10px}
+.quick-link-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.quick-link-row input{flex:1;min-width:160px;padding:8px 12px;border:1px solid var(--line);font-size:13px;font-family:'Shippori Mincho',serif;background:var(--paper);outline:none;}
+.quick-link-row input:focus{border-color:var(--ink)}
+.quick-link-row a#ql-link{padding:8px 16px;background:#f5f3ef;color:var(--ink);border:1px solid var(--line);font-size:12px;text-decoration:none;white-space:nowrap;}
+@media(max-width:600px){header{padding:20px}main{padding:24px 16px}.ws-card{flex-wrap:wrap;gap:12px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">広福観<span>Workshop Admin</span></div>
+  <div style="font-size:11px;color:var(--muted)">松村専用</div>
+</header>
+<main>
+  <h2>ワークショップ一覧 <button class="refresh-btn" onclick="loadAll()">↻ 更新</button></h2>
+  <div class="add-form">
+    <input type="text" id="new-id" placeholder="新しいID（例：JISSEN0415）" maxlength="12"
+      oninput="this.value=this.value.toUpperCase()"
+      onkeydown="if(event.key==='Enter')addWorkshop()">
+    <button onclick="addWorkshop()">＋ 追加</button>
+  </div>
+  <div class="ws-list" id="ws-list">
+    <div class="empty">IDを追加するとここに表示されます</div>
+  </div>
+  <div class="quick-link">
+    <h3>IDを直接入力してギャラリーへ</h3>
+    <div class="quick-link-row">
+      <input type="text" id="ql-input" placeholder="ID入力" maxlength="12"
+        oninput="updateQlLink(this.value.toUpperCase());this.value=this.value.toUpperCase()"
+        onkeydown="if(event.key==='Enter'){document.getElementById('ql-link').click()}">
+      <a id="ql-link" href="#" target="_blank">ギャラリーを開く →</a>
+    </div>
+  </div>
+</main>
+<script>
+const GAS='https://script.google.com/macros/s/AKfycbwrnVwdlc4TkMy_gBpXr-CxOYnR4uNgrvlqsQkB5ejh9-rGJVchhWziwjhg47MjvbEP/exec';
+const GALLERY_BASE='https://kuniakimat.github.io/-happiness-map/workshop.html?id=';
+const STORAGE_KEY='hirufuku_ws_ids';
+let wsIds=[],wsCounts={};
+function loadIds(){try{const s=localStorage.getItem(STORAGE_KEY);wsIds=s?JSON.parse(s):[]}catch(e){wsIds=[]}}
+function saveIds(){localStorage.setItem(STORAGE_KEY,JSON.stringify(wsIds))}
+function addWorkshop(){const inp=document.getElementById('new-id');const id=inp.value.trim().toUpperCase();if(!id)return;if(wsIds.includes(id)){alert(id+' はすでに追加されています');return;}wsIds.unshift(id);saveIds();inp.value='';renderList();fetchCount(id)}
+function removeWorkshop(id){if(!confirm(id+' を一覧から削除しますか？'))return;wsIds=wsIds.filter(w=>w!==id);delete wsCounts[id];saveIds();renderList()}
+function renderList(){const c=document.getElementById('ws-list');if(!wsIds.length){c.innerHTML='<div class="empty">IDを追加するとここに表示されます</div>';return;}c.innerHTML=wsIds.map(id=>{const cnt=wsCounts[id];const cHtml=cnt===undefined?'<div class="loading">読込中…</div>':`<div class="ws-count">${cnt}</div><div class="ws-count-lbl">人</div>`;return `<div class="ws-card" id="card-${id}"><div class="ws-id">${id}</div><div class="ws-meta">ID: ${id}</div><div style="text-align:right">${cHtml}</div><div class="ws-actions"><a class="btn-gallery" href="${GALLERY_BASE}${id}" target="_blank">ギャラリー →</a><button class="btn-delete" onclick="removeWorkshop('${id}')">削除</button></div></div>`;}).join('')}
+async function fetchCount(id){try{const r=await fetch(GAS+'?action=gallery&workshopId='+encodeURIComponent(id));const d=await r.json();wsCounts[id]=d.length;const card=document.getElementById('card-'+id);if(card){const a=card.querySelector('[style="text-align:right"]');if(a)a.innerHTML=`<div class="ws-count">${d.length}</div><div class="ws-count-lbl">人</div>`;}}catch(e){wsCounts[id]='—'}}
+async function loadAll(){renderList();for(const id of wsIds)fetchCount(id)}
+function updateQlLink(id){const l=document.getElementById('ql-link');l.href=id?GALLERY_BASE+id:'#';l.style.opacity=id?'1':'.4';l.style.pointerEvents=id?'auto':'none'}
+loadIds();loadAll();updateQlLink('');
+</script>
+</body>
+</html>

@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>感じる広さが、幸せの高さを決める — N=4,000調査分析レポート</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#0a0a0a;--bg3:#1a1a1a;--text:#e8e8e0;--muted:#888;--faint:#2a2a2a;--accent:#c8a96e;--good:#5b9bd5;--bad:#e0903a;--w:720px}
+*{box-sizing:border-box;margin:0;padding:0;color-scheme:dark}
+html,body{background:#0a0a0a !important}
+body{color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:15px;line-height:1.85;-webkit-font-smoothing:antialiased}
+.wrap{max-width:var(--w);margin:0 auto;padding:0 28px}
+h2{font-family:'Shippori Mincho',serif;font-weight:700}
+p{color:#bbb;font-weight:300;margin-bottom:1.3em}p:last-child{margin-bottom:0}
+strong{color:var(--text);font-weight:500}
+.serif{font-family:'Shippori Mincho',serif}
+.ey{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:12px}
+.div{width:28px;height:1px;background:var(--faint);margin:20px 0 24px}
+.ins{border-left:2px solid var(--accent);padding:16px 20px;background:rgba(200,169,110,.05);margin:24px 0;font-size:14px;line-height:1.9;color:#bbb}
+.ins strong{color:var(--accent)}
+section{padding:64px 0;border-bottom:1px solid var(--faint)}
+section:last-child{border-bottom:none}
+.fi{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.fi.on{opacity:1;transform:translateY(0)}
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:80px 0}
+.dtag{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid var(--faint);font-size:13px;color:var(--muted);letter-spacing:.1em;margin-bottom:28px}
+.dtag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.htitle{font-size:clamp(38px,6vw,64px);line-height:1.1;margin-bottom:18px;background:linear-gradient(135deg,#fff 0%,rgba(255,255,255,.5) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hprops{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:36px}
+.hprop{padding:18px;border:1px solid var(--faint);border-top:2px solid var(--accent)}
+.pn{font-size:13px;letter-spacing:.2em;color:var(--accent);text-transform:uppercase;margin-bottom:7px}
+.pt{font-family:'Shippori Mincho',serif;font-size:16px;font-weight:700;margin-bottom:7px;line-height:1.4}
+.pd{font-size:12px;color:var(--muted);line-height:1.7}
+.stat3{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin:24px 0}
+.sc{padding:18px 14px;background:var(--bg3);border:1px solid var(--faint);text-align:center}
+.sv{font-family:'Shippori Mincho',serif;font-size:clamp(30px,5vw,46px);font-weight:700;line-height:1;margin-bottom:6px}
+.sl{font-size:13px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:4px;display:block}
+.ss{font-size:13px;color:#999;line-height:1.5}
+.dtbl{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.dtbl th{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:8px 12px;border-bottom:1px solid var(--faint);text-align:left;font-weight:400}
+.dtbl td{padding:10px 12px;border-bottom:1px solid #1c1c1c;color:#999;vertical-align:middle}
+.dtbl tr:last-child td{border-bottom:none}
+.dtbl td.num{font-family:'Shippori Mincho',serif;font-size:20px;font-weight:700}
+.dtbl tr.hl td{background:rgba(200,169,110,.04);color:var(--text)}
+.dtbl tr.lo td{background:rgba(224,144,58,.04)}
+.m33h{display:grid;grid-template-columns:96px repeat(3,1fr);gap:3px;margin-bottom:3px}
+.m33hc{text-align:center;padding:8px 4px;background:var(--bg3);border:1px solid var(--faint)}
+.m33hc .l{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}.m33hc .s{font-size:12px;color:#999;margin-top:2px}
+.m33hc.hi{border-color:var(--accent)}.m33hc.hi .l{color:var(--accent)}.m33hc.hi .s{color:var(--accent)}
+.m33r{display:grid;grid-template-columns:96px repeat(3,1fr);gap:3px;margin-bottom:3px}
+.m33rl{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;padding-right:10px}
+.m33rl .rl{font-size:12px;color:var(--muted)}.m33rl .rs{font-size:12px;color:#888;margin-top:1px}
+.m33c{padding:14px 6px;text-align:center;position:relative}
+.m33c .v{font-family:'Shippori Mincho',serif;font-size:22px;font-weight:700;line-height:1}
+.m33c .n{font-size:13px;color:#777;margin-top:4px}
+.m33c .tag{position:absolute;top:4px;right:5px;font-size:13px}
+.m33yl{text-align:right;font-size:12px;color:#888;margin-top:4px}
+.urow{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.uage{font-size:13px;color:var(--muted);width:56px;flex-shrink:0;text-align:right}
+.utrack{flex:1;height:26px;background:#111;border-radius:2px}
+.ufill{height:100%;border-radius:2px;display:flex;align-items:center;padding-left:10px}
+.ufill span{font-size:13px;font-weight:500;white-space:nowrap}
+.uscr{font-size:13px;width:40px;flex-shrink:0;text-align:right}
+/* near/far split */
+.nf-wrap{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin:24px 0}
+.nf-box{padding:16px;background:var(--bg3);border:1px solid var(--faint)}
+.nf-label{font-size:13px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
+.nf-dim{font-size:13px;color:#888;line-height:2}
+.nf-dim strong{color:var(--text);font-weight:500}
+/* axis chart */
+.ax-row{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.ax-name{font-family:'Shippori Mincho',serif;font-size:13px;color:var(--muted);width:56px;flex-shrink:0;text-align:right}
+.ax-track{flex:1;height:26px;background:#111;border-radius:2px}
+.ax-fill{height:100%;border-radius:2px;display:flex;align-items:center;padding-left:8px}
+.ax-fill span{font-size:12px;font-weight:500}
+.ax-val{font-size:13px;width:36px;flex-shrink:0;text-align:right;color:var(--muted)}
+/* 8-type table */
+.type8{width:100%;border-collapse:collapse;margin:20px 0;font-size:13px}
+.type8 th{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:7px 10px;border-bottom:1px solid var(--faint);text-align:left;font-weight:400}
+.type8 td{padding:9px 10px;border-bottom:1px solid #1c1c1c;color:#999}
+.type8 tr:last-child td{border-bottom:none}
+.type8 td.n{font-family:'Shippori Mincho',serif;font-size:18px;font-weight:700}
+.type8 tr.top{background:rgba(200,169,110,.05)}
+.type8 tr.top td{color:var(--text)}
+.type8 tr.bot td{color:#666}
+.hbar{height:6px;border-radius:2px;margin-top:4px}
+/* 3-type */
+.types3{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:24px 0}
+.t3card{padding:18px;background:var(--bg3);border:1px solid var(--faint)}
+.t3num{font-family:'Shippori Mincho',serif;font-size:40px;font-weight:700;line-height:1;margin-bottom:6px}
+.t3name{font-family:'Shippori Mincho',serif;font-size:18px;font-weight:700;margin-bottom:4px}
+.t3sub{font-size:13px;color:var(--muted);line-height:1.7}
+/* counter hypothesis */
+.ch-row{display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--bg3);border:1px solid var(--faint);margin-bottom:4px}
+.ch-name{font-size:13px;color:#999;flex:1}
+.ch-val{font-family:'Shippori Mincho',serif;font-size:20px;font-weight:700}
+.ch-diff{font-size:12px;width:44px;text-align:right}
+/* syllogism */
+.syll{padding:18px 20px;background:var(--bg3);border:1px solid var(--faint);border-left:2px solid var(--accent);margin:20px 0}
+.syll .row{font-size:13px;color:#999;line-height:2.1;display:flex;gap:10px}
+.syll .row.concl{border-top:1px solid var(--faint);margin-top:8px;padding-top:8px}
+.syll .lbl{color:var(--accent);font-weight:500;flex-shrink:0;width:18px}
+/* happy hmap */
+.hmap{width:100%}
+.hmap-ch-row{display:grid;gap:2px;margin-bottom:2px}
+.hmap-r{display:grid;gap:2px;margin-bottom:2px}
+.hmap-rl{font-family:'Shippori Mincho',serif;font-weight:700;color:#668;display:flex;align-items:center;justify-content:flex-end;padding-right:5px;font-size:clamp(13px,2.5vw,20px)}
+.hmap-cell{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid #1e1e1e}
+.hmap-k{font-family:'Shippori Mincho',serif;font-weight:700;line-height:1}
+.hmap-v{display:block;margin-top:2px}
+.cta-box{margin-top:24px;padding:22px;background:var(--bg3);border:1px solid var(--faint);border-left:2px solid var(--accent)}
+.cta-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 30px;background:var(--accent);color:#0a0a0a;font-family:'Noto Sans JP',sans-serif;font-size:14px;font-weight:700;text-decoration:none;margin-top:14px}
+.cta-btn:hover{opacity:.85}
+#concl{text-align:center;padding:90px 0}
+.cl-t{font-family:'Shippori Mincho',serif;font-size:clamp(24px,5vw,44px);font-weight:700;line-height:1.35;max-width:460px;margin:0 auto 20px}
+.cl-l{font-size:14px;color:var(--muted);max-width:400px;margin:0 auto;line-height:1.9}
+.cl-c{font-family:'Shippori Mincho',serif;font-size:17px;color:var(--accent);margin-top:32px}
+.fn{padding:28px 0;border-top:1px solid var(--faint)}
+.fn p{font-size:13px;color:#777;line-height:1.8;margin-bottom:5px}
+
+.sec-gap{padding-top:88px}
+.apx{background:#080808;border-top:1px solid #1a1a1a}
+.num-hero{font-family:'Shippori Mincho',serif;font-size:clamp(38px,7vw,64px);font-weight:700;line-height:1;color:var(--accent)}
+.num-label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#999;margin-top:6px;display:block}
+.chart-wrap{margin:24px 0;background:var(--bg3);border:1px solid var(--faint);padding:24px 16px 16px}
+.reversal{display:grid;grid-template-columns:1fr 36px 1fr;gap:0;margin:24px 0;align-items:stretch}
+.rev-box{padding:22px 16px;background:var(--bg3);border:1px solid var(--faint)}
+.rev-val{font-family:'Shippori Mincho',serif;font-size:36px;font-weight:700;line-height:1;margin:6px 0}
+.rev-label{font-size:13px;color:var(--muted);line-height:1.7}
+.rev-arrow{display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:18px;background:var(--faint)}
+.lead{font-size:17px;color:#bbb;font-weight:300;line-height:1.9;margin-bottom:1.4em}
+.lead:last-child{margin-bottom:0}
+.kpi3{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin:24px 0}
+.kpi-box{padding:20px 14px;background:var(--bg3);border:1px solid var(--faint);text-align:center}
+.kpi-n{font-family:'Shippori Mincho',serif;font-size:clamp(28px,5vw,44px);font-weight:700;line-height:1;margin-bottom:6px}
+.kpi-l{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.kpi-s{font-size:13px;color:#888;margin-top:5px;line-height:1.5}
+@media(max-width:560px){.hprops,.stat3,.nf-wrap,.types3,.kpi3,.reversal{grid-template-columns:1fr}.rev-arrow{display:none}}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section id="hero">
+<div class="wrap"><div class="fi">
+  <div class="dtag">N=4,000 全国調査 / 2025年12月 / 広福観 — 松村モデル</div>
+  <h1 class="htitle serif">感じる広さが、<br>幸せの高さを<br>決める。</h1>
+  <p class="lead">幸福を決めるのは、年収でも地位でもない。<br><strong>どこに向けて、どれだけ広く感じられるか——</strong>それが、幸福の高さを決めている。</p>
+  <div class="hprops">
+    <div class="hprop">
+      <div class="pn">命題 01</div>
+      <div class="pt">感じる広さが幸福を決める</div>
+      <p class="pd">広感度×幸福 r=+0.456。年収（r=+0.114）の<strong style="color:var(--accent)">4倍以上</strong>の強さ。</p>
+    </div>
+    <div class="hprop">
+      <div class="pn">命題 02</div>
+      <div class="pt">近に軸足を置き、遠くへ広げる</div>
+      <p class="pd">幸福には順序がある。内から外へ。近い感度を中心に持ちながら、遠くへと広げていく。</p>
+    </div>
+  </div>
+</div></div>
+</section>
+
+<!-- FRAMEWORK -->
+<section>
+<div class="wrap fi">
+  <span class="ey">フレームワーク</span>
+  <h2 class="serif" style="font-size:clamp(24px,4vw,36px);margin-bottom:16px">25通りの幸福がある</h2>
+  <div class="div"></div>
+  <p class="lead">幸福は、ばらばらな感覚ではない。<strong>どこで感じるか × どの時間感覚で感じるか</strong>——この2軸で整理される。幸福は内から広げていく。この地図はその広がりを示している。</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0 28px">
+    <div style="padding:20px 20px;background:var(--bg3);border:1px solid var(--faint);border-left:2px solid var(--accent)">
+      <div style="font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:12px">縦軸 — 空間相 / Space</div>
+      <div style="font-family:'Shippori Mincho',serif;font-size:18px;font-weight:700;margin-bottom:12px">どこで感じるか</div>
+      <p style="font-size:13px;color:#bbb;line-height:1.85;margin-bottom:14px">幸福を感じる「場所」の軸。自分の内側から始まり、身近な人、社会、宇宙・原理へと広がっていく。どこまで届くかが、幸福の射程を決める。</p>
+      <div style="font-size:13px;color:#888;line-height:2.2;border-top:1px solid var(--faint);padding-top:12px">
+        <div style="display:flex;justify-content:space-between"><span style="color:#aaa">↑ 遠い</span><span style="color:#777">宇宙・原理・社会 <span style="color:#999">共・理</span></span></div>
+        <div style="display:flex;justify-content:space-between"><span></span><span style="color:#777">身近な人・縁 <span style="color:#999">他</span></span></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:#aaa">↓ 近い</span><span style="color:#777">没入・自分・感覚 <span style="color:#999">自・合</span></span></div>
+      </div>
+    </div>
+    <div style="padding:20px 20px;background:var(--bg3);border:1px solid var(--faint);border-left:2px solid var(--good)">
+      <div style="font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--good);margin-bottom:12px">横軸 — 時間相 / Time</div>
+      <div style="font-family:'Shippori Mincho',serif;font-size:18px;font-weight:700;margin-bottom:12px">どんな時間感覚で感じるか</div>
+      <p style="font-size:13px;color:#bbb;line-height:1.85;margin-bottom:14px">幸福を感じる「時間の広がり」の軸。今この瞬間から始まり、蓄積・達成・習慣を経て、永遠・普遍へと延びていく。どこまで時間を広げられるかが、幸福の深さを決める。</p>
+      <div style="font-size:13px;color:#888;line-height:2.2;border-top:1px solid var(--faint);padding-top:12px">
+        <div style="display:flex;justify-content:space-between"><span style="color:#aaa">← 短い</span><span style="color:#777">今この瞬間・感覚 <span style="color:#999">瞬</span></span></div>
+        <div style="display:flex;justify-content:space-between"><span></span><span style="color:#777">成長・達成・習慣 <span style="color:#999">進・頂・回</span></span></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:#aaa">→ 長い</span><span style="color:#777">永続・永遠・普遍 <span style="color:#999">久</span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="fw-matrix" style="margin:24px 0"></div>
+  <p style="font-size:12px;color:#888;margin-top:8px">左下が「今・ここ・自分」——幸福はここから内から外へ、瞬間から永遠へと広がる。</p>
+
+
+</div>
+</section>
+
+<!-- 3 TYPES -->
+
+<section class="sec-gap">
+<div class="wrap fi">
+  <span class="ey">幸福観の分類</span>
+  <h2 class="serif" style="font-size:clamp(24px,4vw,36px);margin-bottom:16px">近感度・遠感度、<br>そして3つの類型</h2>
+  <div class="div"></div>
+  <p class="lead">マトリクスの25の感度を整理する上で、ひとつの分け方が有効だった。<strong>自分と直接つながる体験（近感度）</strong>と、<strong>自分を超えた存在との結合（遠感度）</strong>だ。</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0">
+    <div style="padding:14px 16px;background:var(--bg3);border:1px solid var(--faint);border-left:2px solid var(--good)">
+      <div style="font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--good);margin-bottom:8px">近感度 / Near — 内側の感度</div>
+      <div style="font-size:12px;color:#888;line-height:2.1">
+        <strong>自</strong> Self　感覚・欲求・快楽<br>
+        <strong>合</strong> Flow　没入・ゾーン<br>
+        <strong>他</strong> Others　身近な人・縁<br>
+        <strong>瞬</strong> Moment　今この瞬間<br>
+        <strong>進</strong> Growth　成長・手応え<br>
+        <strong>頂</strong> Peak　達成・完結
+      </div>
+    </div>
+    <div style="padding:14px 16px;background:var(--bg3);border:1px solid var(--faint);border-left:2px solid var(--accent)">
+      <div style="font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:8px">遠感度 / Far — 外側の感度</div>
+      <div style="font-size:12px;color:#888;line-height:2.1">
+        <strong>共</strong> Comm.　社会・組織・役割<br>
+        <strong>理</strong> Cosmos　学問・原理・宇宙<br>
+        <strong>回</strong> Cycle　循環・習慣・誠実<br>
+        <strong>久</strong> Eternity　永続・真・善・美
+      </div>
+    </div>
+  </div>
+  <div id="fw-matrix-nearfar" style="margin:20px 0 12px"></div>
+
+  <p style="margin-top:24px">この近/遠の組み合わせで、3つの幸福観が定義できる。</p>
+  <div class="types3" style="margin:20px 0">
+    <div style="background:var(--bg3);border:1px solid var(--faint);border-top:2px solid var(--good);padding:14px 12px">
+      <div style="font-size:12px;letter-spacing:.14em;color:var(--good);text-transform:uppercase;margin-bottom:10px">近福</div>
+      <div id="mini-narrow" style="font-size:0;margin-bottom:10px"></div>
+      <div style="font-family:'Shippori Mincho',serif;font-size:15px;font-weight:700;color:var(--good);line-height:1.3;margin-bottom:6px">近感度のみ</div>
+      <div style="font-size:12px;color:#888;line-height:1.7">自分の身近な体験に感度が集中している状態</div>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--faint);border-top:2px solid #777;padding:14px 12px">
+      <div style="font-size:12px;letter-spacing:.14em;color:#888;text-transform:uppercase;margin-bottom:10px">外福</div>
+      <div id="mini-outer" style="font-size:0;margin-bottom:10px"></div>
+      <div style="font-family:'Shippori Mincho',serif;font-size:15px;font-weight:700;color:#888;line-height:1.3;margin-bottom:6px">遠感度のみ</div>
+      <div style="font-size:12px;color:#888;line-height:1.7">社会・原理への感度はあるが内側の感度が薄い状態</div>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--faint);border-top:2px solid var(--accent);padding:14px 12px">
+      <div style="font-size:12px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;margin-bottom:10px">広福</div>
+      <div id="mini-broad" style="font-size:0;margin-bottom:10px"></div>
+      <div style="font-family:'Shippori Mincho',serif;font-size:15px;font-weight:700;color:var(--accent);line-height:1.3;margin-bottom:6px">近＋遠の両方</div>
+      <div style="font-size:12px;color:#888;line-height:1.7">内側から外側まで感度が広がっている状態</div>
+    </div>
+  </div>
+  <p style="font-size:13px;color:#999;margin-top:8px">どの類型がどれだけ幸福か——その答えは、まず命題①の証拠を見てから。</p>
+</div>
+</section>
+
+<!-- PROP 1 -->
+<section class="sec-gap">
+<div class="wrap fi">
+  <span class="ey">命題①の証拠</span>
+  <h2 class="serif" style="font-size:clamp(24px,4vw,36px);margin-bottom:16px">感じる広さが、<br>幸福の高さを決める。</h2>
+  <div class="div"></div>
+
+  <div class="kpi3">
+    <div class="kpi-box">
+      <div class="kpi-l">広感度 × 幸福</div>
+      <div class="kpi-n" style="color:var(--accent)">r=+0.456</div>
+      <div class="kpi-s">年収との相関r=+0.114の<br><strong style="color:var(--text)">4倍以上</strong>の強さ</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-l">近福 → 広福の差</div>
+      <div class="kpi-n" style="color:var(--good)">+2.77</div>
+      <div class="kpi-s">4.55 → 7.32</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-l">10感度フル開放</div>
+      <div class="kpi-n" style="color:#78c0f0">8.22</div>
+      <div class="kpi-s">全感度開放時の<br>幸福スコア上限</div>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <div style="font-size:12px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">感度の広さ別 平均幸福スコア</div>
+    <div style="height:200px"><canvas id="breadthBarChart"></canvas></div>
+  </div>
+
+  <p style="margin-top:8px"><strong>年収ではなく、感度の広さが幸福を分ける。</strong></p>
+
+  <div class="reversal" style="margin-top:24px">
+    <div class="rev-box" style="border-top:2px solid var(--bad)">
+      <div class="rev-label">高収入（600万〜）×近感度のみ</div>
+      <div class="rev-val" style="color:var(--bad)">5.11</div>
+      <div class="rev-label" style="color:#888">n=166</div>
+    </div>
+    <div class="rev-arrow">＜</div>
+    <div class="rev-box" style="border-top:2px solid var(--good)">
+      <div class="rev-label">低収入（〜300万）×広感度</div>
+      <div class="rev-val" style="color:var(--good)">7.28</div>
+      <div class="rev-label" style="color:#888">n=382　差+2.17pt</div>
+    </div>
+  </div>
+
+  <div class="ins">年収が倍でも、感度が広い方が幸福だ。<strong>幸福を高めたいなら、稼ごうとするより感じる力を広げる方が効く。</strong>感度の広さが、幸福の高さを決めている。</div>
+
+  <div style="margin-top:36px;padding:20px;background:var(--bg3);border:1px solid var(--faint);border-left:2px solid #444">
+    <div style="font-size:12px;color:#999;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px">3類型の幸福スコア（平均 / 11点満点）</div>
+    <div class="stat3">
+      <div style="text-align:center;padding:16px 8px;background:#0a0a0a">
+        <div style="font-size:13px;color:var(--good);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px">近福</div>
+        <div style="font-family:'Shippori Mincho',serif;font-size:32px;font-weight:700;color:var(--good)">5.0</div>
+        <div style="font-size:12px;color:#888;margin-top:4px">近感度のみ</div>
+      </div>
+      <div style="text-align:center;padding:16px 8px;background:#0a0a0a">
+        <div style="font-size:13px;color:#666;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px">外福</div>
+        <div style="font-family:'Shippori Mincho',serif;font-size:32px;font-weight:700;color:#666">4.6</div>
+        <div style="font-size:12px;color:#888;margin-top:4px">遠感度のみ</div>
+      </div>
+      <div style="text-align:center;padding:16px 8px;background:#0a0a0a;border:1px solid #2a2a2a">
+        <div style="font-size:13px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px">広福</div>
+        <div style="font-family:'Shippori Mincho',serif;font-size:32px;font-weight:700;color:var(--accent)">6.3</div>
+        <div style="font-size:12px;color:#888;margin-top:4px">近＋遠の両方</div>
+      </div>
+    </div>
+    <p style="font-size:13px;color:#666;margin-top:14px;line-height:1.9">広福（6.3）が最も高い。そして重要なのは、外福（遠感度のみ）が近福（近感度のみ）より<em>低い</em>ことだ。<strong>外に開いていても、内が開いていなければ幸福にはならない。</strong></p>
+  </div>
+
+  <p style="margin-top:36px"><strong>年収の上に感度の地図を重ねると、逆転が見える。</strong></p>
+  <div class="m33h" style="margin-top:16px"><div></div><div class="m33hc"><div class="l">近感度</div><div class="s">0〜2</div></div><div class="m33hc"><div class="l">中感度</div><div class="s">3〜5</div></div><div class="m33hc hi"><div class="l">広感度</div><div class="s">6〜10</div></div></div>
+  <div style="display:grid;grid-template-columns:96px 1fr;margin-bottom:3px"><div></div><div style="font-size:12px;color:#888;text-align:center;padding:4px 0 6px">← 感度の広さ →</div></div>
+  <div class="m33r"><div class="m33rl"><span class="rl">低収入</span><span class="rs">〜300万</span></div><div class="m33c" style="background:#160f0a;border:1px solid #221610"><div class="v" style="color:#9a7050">4.49</div><div class="n">n=691</div></div><div class="m33c" style="background:#101620;border:1px solid #182030"><div class="v" style="color:#5080b0">6.00</div><div class="n">n=514</div></div><div class="m33c" style="background:#101828;border:2px solid var(--good);position:relative"><div class="tag" style="color:var(--good)">注目</div><div class="v" style="color:var(--good)">7.28</div><div class="n" style="color:#3a6090">n=382</div></div></div>
+  <div class="m33r"><div class="m33rl"><span class="rl">中収入</span><span class="rs">300〜600万</span></div><div class="m33c" style="background:#131010;border:1px solid #1e1818"><div class="v" style="color:#806858">4.82</div><div class="n">n=376</div></div><div class="m33c" style="background:#101418;border:1px solid #181e22"><div class="v" style="color:#407898">5.68</div><div class="n">n=314</div></div><div class="m33c" style="background:#101624;border:1px solid #182030"><div class="v" style="color:#5090c0">7.20</div><div class="n">n=237</div></div></div>
+  <div class="m33r"><div class="m33rl"><span class="rl" style="color:var(--bad)">高収入</span><span class="rs">600万〜</span></div><div class="m33c" style="background:#141212;border:2px solid var(--bad);position:relative"><div class="tag" style="color:var(--bad)">注目</div><div class="v" style="color:var(--bad)">5.11</div><div class="n">n=166</div></div><div class="m33c" style="background:#101418;border:1px solid #181e22"><div class="v" style="color:#4888b8">6.49</div><div class="n">n=166</div></div><div class="m33c" style="background:#101820;border:1px solid #182430"><div class="v" style="color:#60a8d8">7.53</div><div class="n">n=148</div></div></div>
+  <div class="m33yl">↑ 年収 ↑</div>
+  <div class="ins" style="margin-top:12px">高収入×近感度（5.11）が、低収入×広感度（7.28）に負ける。<strong>稼ぐ力より、感じる力だ。</strong></div>
+</div>
+</section>
+
+
+<!-- PROP 2 -->
+<section class="sec-gap">
+<div class="wrap fi">
+  <span class="ey">命題②の証拠</span>
+  <h2 class="serif" style="font-size:clamp(24px,4vw,36px);margin-bottom:16px">近に軸足を置き、<br>遠くへ広げる。</h2>
+  <div class="div"></div>
+  <p class="lead">感度の広さに加え、もう一つの変数がある。<strong>どこを幸福の重心（主軸）に置くか</strong>——どこを起点に感じるかだ。</p>
+
+  <div class="ins" style="border-left-color:var(--good);margin-bottom:28px">
+    <strong style="color:var(--good)">近くに起点を持つ。そこから遠くへ広げる。</strong><br><br>
+    データが示す最良のパターンは「近を主軸にしながら、遠くまで感度を広げた人」だ。まず自分を中心に持つ。そこから他者へ、社会へ、永遠へと広げていく。<br><br>
+    儒教の古典『大学』（礼記の一篇、孔子の教えを曾子が編んだとされる）はこれを「修身・斉家・治国・平天下」と呼んだ——自分を修め、家をととのえ、国を治め、天下を平らかにする。近くから始まり、遠くへ広がる。この順序は、人類がずっと辿ってきたものだ。<br><br>
+    ただし、ここで誤解を解いておきたい。「自己中心的」という言葉は長らく批判されてきた。しかしデータが示す問題は、自己中心性そのものではない。<strong>自分の内側に閉じてしまうこと——自己限定性</strong>だ。外の世界への感度が開かない状態を<strong>外部不感性</strong>とも呼べる。近い感度を軸足に持ちながら、遠くへも開いていれば——自己中心であっても、広い主観だ。広い主観は、良いものだ。
+  </div>
+
+  <div style="margin:20px 0">
+    <div style="font-size:12px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:12px">感度の広さ別：主軸が近 vs 主軸が遠（全体平均5.60）</div>
+    <div class="chart-wrap" style="margin-top:0">
+      <div style="height:190px"><canvas id="axisChart"></canvas></div>
+    </div>
+  </div>
+
+  <table class="dtbl">
+    <thead><tr><th>感度の広さ</th><th>主軸が近</th><th>主軸が遠</th><th>差</th><th>近の年収</th><th>遠の年収</th></tr></thead>
+    <tbody>
+      <tr><td>なし（0）</td><td class="num">4.46</td><td class="num">4.00</td><td style="color:var(--accent)">+0.46</td><td>260万</td><td>249万</td></tr>
+      <tr><td>少（2感度）</td><td class="num">5.37</td><td class="num">4.79</td><td style="color:var(--accent)">+0.57</td><td>290万</td><td>238万</td></tr>
+      <tr><td>中（4感度）</td><td class="num">6.35</td><td class="num">5.62</td><td style="color:var(--accent)">+0.72</td><td>345万</td><td>246万</td></tr>
+      <tr class="hl"><td>広（6感度）</td><td class="num" style="color:var(--good)">7.38</td><td class="num">6.70</td><td style="color:var(--accent)">+0.68</td><td>353万</td><td>291万</td></tr>
+    </tbody>
+  </table>
+
+  <div class="ins">感度が少なくても（主軸が近にある場合）、遠軸の人より+0.46pt高い——年収差+11万円のほぼ同条件で。どこに感度を置くかが、幸福の高さを変える。<br><br>
+  最も幸福なのは<strong>「近を主軸に置きながら、遠くまで広感度を持つ人」——6.70</strong>。低収入×近軸×広感度（6.65）が高収入×遠軸×広感度（6.17）を上回る。</div>
+
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:24px 0">
+    <div>
+      <div style="font-size:13px;letter-spacing:.12em;color:var(--good);text-transform:uppercase;margin-bottom:8px">近主軸×広感度（近起点型）</div>
+      <div id="mini-near-broad" style="font-size:0;margin-bottom:8px"></div>
+      <div style="font-family:'Shippori Mincho',serif;font-size:28px;color:var(--good)">6.70</div>
+      <div style="display:flex;gap:10px;margin-top:8px;font-size:12px">
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:rgba(91,155,213,.7);border:1px solid rgba(91,155,213,1);display:inline-block;border-radius:1px"></span><span style="color:#5b9bd5">主軸（起点）</span></span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:rgba(91,155,213,.3);border:1px solid rgba(91,155,213,.6);display:inline-block;border-radius:1px"></span><span style="color:#5b9bd5">近感度</span></span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:rgba(200,169,110,.25);border:1px solid rgba(200,169,110,.5);display:inline-block;border-radius:1px"></span><span style="color:#c8a96e">遠感度</span></span>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:13px;letter-spacing:.12em;color:#888;text-transform:uppercase;margin-bottom:8px">遠主軸×広感度（遠起点型）</div>
+      <div id="mini-far-broad" style="font-size:0;margin-bottom:8px"></div>
+      <div style="font-family:'Shippori Mincho',serif;font-size:28px;color:#888">5.76</div>
+    </div>
+  </div>
+</div>
+</section>
+
+
+<!-- SHIN -->
+<section class="sec-gap">
+<div class="wrap fi">
+  <span class="ey">核心的発見</span>
+  <h2 class="serif" style="font-size:clamp(24px,4vw,36px);margin-bottom:16px">進（Growth）は、<br>最大効果のレバーだ。</h2>
+  <div class="div"></div>
+  <p class="lead">10の感度の中で、幸福と感度の広さ、<strong>両方を同時に引き上げる</strong>感度が一つある。<strong>進（Growth）——成長・前進・手応え</strong>だ。</p>
+
+  <div class="kpi3">
+    <div class="kpi-box">
+      <div class="kpi-l">進を主軸にした人の幸福</div>
+      <div class="kpi-n" style="color:var(--good)">6.37</div>
+      <div class="kpi-s">全10感度中<strong style="color:var(--text)">最高</strong><br>久（4.05）の+2.32pt上</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-l">進を主軸にした人の広感度</div>
+      <div class="kpi-n" style="color:var(--accent)">4.86</div>
+      <div class="kpi-s">感度数で全感度中<strong style="color:var(--text)">最多</strong><br>久（1.89）の2.6倍</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-l">進感度ON時の幸福差</div>
+      <div class="kpi-n" style="color:#78c0f0">+1.72</div>
+      <div class="kpi-s">ON=6.73 / OFF=5.01<br>単一感度効果で第2位</div>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <div style="font-size:12px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">時間相主軸別 幸福スコアと感度の広さ</div>
+    <div style="height:200px"><canvas id="shinChart"></canvas></div>
+  </div>
+
+  <div style="margin-top:20px">
+    <div style="font-size:12px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px">10感度ポジションマップ — カバー効果 vs 主導効果</div>
+    <div class="chart-wrap" style="margin-top:0">
+      <div style="height:300px"><canvas id="tenAxisChart"></canvas></div>
+    </div>
+    <p style="font-size:12px;color:#999;margin-top:8px">横軸：感度をカバーしているときの幸福上昇効果。縦軸：その感度を主軸にしたときの幸福スコア。点線は全体平均（5.60）。</p>
+  </div>
+
+  <div class="ins"><strong>進を持つ人は広く感じ、広く感じる人は幸福だ。</strong><br><br>
+  進が動くと、他の感度も開く。進がONの人の感度の広さは平均5.96——他のどの感度よりも、進は複数の感度を同時に引き上げる。<br><br>
+  同じ「理（Cosmos）」を主軸にしても、「理×進（学び続ける）」だけが5.82と例外的に高い。学ぶことが進を動かし、進が他の感度を開く。<strong>日々、少しでも前に進んでいる感覚——それが広感度を保ち、幸福の水準を上げ続ける。</strong></div>
+</div>
+</section>
+
+
+<!-- CTA -->
+<section class="sec-gap">
+<div class="wrap fi">
+  <span class="ey">あなたの幸福の地図</span>
+  <h2 class="serif" style="font-size:clamp(22px,4vw,34px);margin-bottom:16px;line-height:1.35">あなたの感度は、<br>どこまで来て、<br>どこで止まっているか。</h2>
+  <div class="div"></div>
+  <p class="lead">広感度になれているか。近に軸足を持てているか。進（Growth）の感度は開いているか。地図を持つことは、今の自分の位置を知ることだ。</p>
+  <div class="cta-box">
+    <div style="font-size:13px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">診断 — 3分</div>
+    <p style="font-size:14px;color:#aaa;margin-bottom:4px">6つの問いに答えると、あなたの幸福の地図とタイプが現れる。</p>
+    <a href="https://kuniakimat.github.io/-happiness-map/" class="cta-btn">広福観 — あなたの幸福地図を開く →</a>
+    <div style="font-size:13px;color:var(--muted);margin-top:10px">広福診断 / 無料</div>
+  </div>
+</div>
+</section>
+
+<section id="concl">
+<div class="wrap fi" style="text-align:center">
+  <h2 class="cl-t">感じる力は、<br>設計できる。</h2>
+  <p class="cl-l">どこに感度を向け、どこまで広げるか——それは選択できる。内から始め、外へ広げる。近くから起点を持ち、遠くへ続ける。その地図を持った人が、最も幸福に近づいていく。</p>
+  <div class="cl-c">地図は持つためにある。そして動くほど、広がる。</div>
+</div>
+</section>
+
+<!-- APPENDIX -->
+<section class="apx">
+<div class="wrap fi" style="padding-top:64px;padding-bottom:32px">
+  <span class="ey" style="color:#888">付属資料</span>
+  <h2 class="serif" style="font-size:22px;margin-bottom:8px;color:#666">詳細データ・試行分析</h2>
+  <div class="div"></div>
+  <p style="font-size:13px;color:#888">本編から外した詳細データと試行分析。十分に検証できたものから本編に組み込む。</p>
+</div>
+
+<div class="wrap fi" style="padding-bottom:48px">
+  <h3 style="font-family:'Shippori Mincho',serif;font-size:18px;color:#666;margin-bottom:16px">A. 年代別 幸福スコア・感度の広さ（U字型）</h3>
+  <p style="font-size:13px;color:#888;margin-bottom:16px">幸福の底は30〜50代の台地。広感度の底は50代。60代以降に両方が回復する。</p>
+  <div style="height:220px"><canvas id="ucurveChart"></canvas></div>
+</div>
+
+<div class="wrap fi" style="padding-bottom:48px">
+  <h3 style="font-family:'Shippori Mincho',serif;font-size:18px;color:#666;margin-bottom:16px">C. 年代別 感度開放率（全10感度）</h3>
+  <p style="font-size:13px;color:#888;margin-bottom:16px">30〜50代で合（没入）・理（学問）が急落し、回（習慣）が増加する。60代以降に瞬・他が回復。<br>
+  <span style="color:#777">注：1時点の横断調査。年代差か世代差かは慎重な解釈が必要。</span></p>
+  <div style="position:relative;height:280px;padding-right:80px"><canvas id="ageSensorChart"></canvas></div>
+</div>
+
+<div class="wrap fi" style="padding-bottom:48px">
+  <h3 style="font-family:'Shippori Mincho',serif;font-size:18px;color:#666;margin-bottom:16px">D. 外福のバリエーション（詳細）</h3>
+  <p style="font-size:13px;color:#888;margin-bottom:16px">外福（遠感度のみ）の具体的パターンと幸福スコア。</p>
+  <div style="margin:16px 0">
+    <div class="ch-row" style="border-top:2px solid var(--accent)"><div class="ch-name">【対照】近起点型広福</div><div class="ch-val" style="color:var(--accent)">6.70</div><div class="ch-diff">基準</div></div>
+    <div class="ch-row"><div class="ch-name">自己犠牲型（他者・社会ON、自己の感覚OFF）</div><div class="ch-val" style="color:#888">5.15</div><div class="ch-diff" style="color:var(--bad)">-1.55</div></div>
+    <div class="ch-row"><div class="ch-name">求道型（理のみON、自己・他者OFF）</div><div class="ch-val" style="color:#888">5.29</div><div class="ch-diff" style="color:var(--bad)">-1.41</div></div>
+    <div class="ch-row"><div class="ch-name">求道主軸型（理を中心、自他なし）</div><div class="ch-val" style="color:var(--bad)">4.87</div><div class="ch-diff" style="color:var(--bad)">-1.83</div></div>
+    <div class="ch-row"><div class="ch-name">禁欲型（理・久ON、自己・他者OFF）</div><div class="ch-val" style="color:var(--bad)">4.86</div><div class="ch-diff" style="color:var(--bad)">-1.84</div></div>
+    <div class="ch-row" style="border-top:2px solid #555"><div class="ch-name">外福全体（遠感度のみ）</div><div class="ch-val" style="color:#888">4.56</div><div class="ch-diff" style="color:var(--bad)">-2.14</div></div>
+  </div>
+  <p style="font-size:12px;color:#888;line-height:1.8">自己犠牲型がやや高い（5.15）のは、「他者との関係」という近感度が残っているから。求道・禁欲の生き方が幸福を目指していない場合もある——データは感度の構造との相関を示すものだ。</p>
+</div>
+</section>
+
+<section style="padding:48px 0;border-top:1px solid #1a1a1a;text-align:center">
+<div class="wrap">
+  <p style="font-size:14px;color:#888;margin-bottom:16px">あなたの幸福の地図を確認する</p>
+  <a href="https://kuniakimat.github.io/-happiness-map/" class="cta-btn">広福観 — あなたの幸福地図を開く →</a>
+  <div style="font-size:13px;color:var(--muted);margin-top:12px">広福診断 / 無料 / 約3分</div>
+</div>
+</section>
+
+<div class="fn"><div class="wrap">
+<p><strong>注釈・定義</strong></p>
+<p>幸福スコア：Q10（0〜10の主観的幸福感）を1〜11スケールに変換（11-Q10）。感度の広さ：Q11/Q12各5項目で「あてはまる/ややあてはまる」（スコア≤2）の合計（0〜10）。主軸：Q13（空間相最重視）×Q14（時間相最重視）の単数回答。近感度：自・合・他（Q11）、瞬・進・頂（Q12）。遠感度：共・理（Q11）、回・久（Q12）。近軸：Q13∈{自,合,他}かつQ14∈{瞬,進,頂}。</p>
+<p>Source: 幸福に関する自主調査（2025年12月 / N=4,000 / インターネット調査 / 楽天インサイト）広福観——松村モデルによる幸福の時空マトリクス</p>
+</div></div>
+
+<script>
+const ROW_DISPLAY=['理','共','他','合','自'];
+const ROW_EN_DISPLAY=['Cosmos','Comm.','Others','Flow','Self'];
+const ROW_IDX=[4,3,2,1,0];
+const COL=['瞬','進','頂','回','久'];
+const COL_EN=['Moment','Growth','Peak','Cycle','Eternity'];
+
+// kanji + english
+const KANJI=[['快','得','誇','保','足'],['溶','創','恍','巡','愛'],['触','与','結','恩','慈'],['祭','開','栄','役','和'],['戯','学','顕','整','悟']];
+const KANJI_EN=[['Joy','Gain','Pride','Safety','Content'],['Merge','Create','Peak','Cycle','Love'],['Touch','Give','Bond','Grace','Care'],['Fest','Grow','Thrive','Role','Harmony'],['Play','Learn','Excel','Order','Insight']];
+const HAPPY=[[5.91,6.35,5.15,4.82,3.77],[5.88,6.79,6.00,5.35,4.50],[5.96,6.03,5.48,5.67,3.84],[5.06,5.57,4.79,5.29,3.50],[4.86,5.82,5.06,4.41,4.22]];
+
+function isNear(origRi,ci){return origRi<=2&&ci<=2;}
+
+function buildMatrix(wrapId,nearFarMode){
+  const wrap=document.getElementById(wrapId);if(!wrap)return;
+  const cols=`44px repeat(5,1fr)`;
+  const ch=document.createElement('div');
+  ch.style.cssText=`display:grid;grid-template-columns:${cols};gap:3px;margin-bottom:3px`;
+  const corner=document.createElement('div');
+  corner.style.cssText='display:flex;align-items:flex-end;justify-content:flex-end;padding:0 4px 4px 0';
+  if(!nearFarMode) corner.innerHTML='<span style="font-size:13px;color:#777;letter-spacing:.06em">空間相↓</span>';
+  ch.appendChild(corner);
+  COL.forEach((c,ci)=>{
+    const h=document.createElement('div');
+    h.style.cssText='text-align:center;padding-bottom:6px';
+    const col=nearFarMode?'#555':'#888';
+    h.innerHTML=`<div style="font-family:'Shippori Mincho',serif;font-weight:700;color:${col};font-size:clamp(16px,3.2vw,26px);line-height:1">${c}</div><div style="font-size:clamp(10px,1.3vw,10px);color:#777;margin-top:1px">${COL_EN[ci]}</div>`;
+    ch.appendChild(h);
+  });
+  wrap.appendChild(ch);
+
+  ROW_DISPLAY.forEach((r,displayRi)=>{
+    const origRi=ROW_IDX[displayRi];
+    const re=document.createElement('div');
+    re.style.cssText=`display:grid;grid-template-columns:${cols};gap:3px;margin-bottom:3px`;
+    const lb=document.createElement('div');
+    lb.style.cssText='display:flex;flex-direction:column;align-items:flex-end;justify-content:center;padding-right:6px';
+    const rowCol=nearFarMode?'#555':'#888';
+    lb.innerHTML=`<span style="font-family:'Shippori Mincho',serif;font-weight:700;color:${rowCol};font-size:clamp(16px,3.2vw,26px);line-height:1">${r}</span><span style="font-size:clamp(10px,1.3vw,10px);color:#666;margin-top:1px">${ROW_EN_DISPLAY[displayRi]}</span>`;
+    re.appendChild(lb);
+
+    HAPPY[origRi].forEach((h,ci)=>{
+      const near=isNear(origRi,ci);
+      const cell=document.createElement('div');
+      if(nearFarMode){
+        const bg=near?'rgba(91,155,213,.13)':'rgba(200,169,110,.08)';
+        const border=near?'2px solid rgba(91,155,213,.5)':'2px solid rgba(200,169,110,.35)';
+        const kCol=near?'rgba(91,155,213,.9)':'rgba(200,169,110,.8)';
+        cell.style.cssText=`aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:${bg};border:${border}`;
+        const k=document.createElement('span');
+        k.style.cssText=`font-family:'Shippori Mincho',serif;font-weight:700;font-size:clamp(16px,3.5vw,28px);color:${kCol}`;
+        k.textContent=KANJI[origRi][ci];
+        cell.appendChild(k);
+      } else {
+        // 色なし、漢字+英語
+        cell.style.cssText=`aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#111;border:1px solid #555`;
+        const k=document.createElement('span');
+        k.style.cssText=`font-family:'Shippori Mincho',serif;font-weight:700;line-height:1;color:#bbb;font-size:clamp(16px,3.5vw,28px)`;
+        k.textContent=KANJI[origRi][ci];
+        const en=document.createElement('span');
+        en.style.cssText=`font-size:clamp(9px,1.2vw,9px);color:#666;margin-top:2px;letter-spacing:.02em`;
+        en.textContent=KANJI_EN[origRi][ci];
+        cell.appendChild(k);cell.appendChild(en);
+      }
+      re.appendChild(cell);
+    });
+    wrap.appendChild(re);
+  });
+
+  if(nearFarMode){
+    const leg=document.createElement('div');
+    leg.style.cssText='display:flex;gap:20px;margin-top:10px;font-size:13px;flex-wrap:wrap';
+    leg.innerHTML=`
+      <span style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border:2px solid rgba(91,155,213,.5);background:rgba(91,155,213,.13);display:inline-block;border-radius:1px"></span><span style="color:#5b9bd5">近センサー Near（3×3 = 9セル）</span></span>
+      <span style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border:2px solid rgba(200,169,110,.35);background:rgba(200,169,110,.08);display:inline-block;border-radius:1px"></span><span style="color:#c8a96e">遠センサー Far（残り16セル）</span></span>
+    `;
+    wrap.appendChild(leg);
+  }
+}
+
+// Mini matrix
+const MINI_ROW_IDX=[4,3,2,1,0];
+const MINI_ROW_NAMES=['理','共','他','合','自'];
+
+function buildMiniMatrix(containerId,litSet,axisCell){
+  // axisCell: {origRi, ci} で主軸位置を強調表示
+  const wrap=document.getElementById(containerId);if(!wrap)return;
+  const cols=`16px repeat(5,1fr)`;
+  MINI_ROW_IDX.forEach((origRi,di)=>{
+    const re=document.createElement('div');
+    re.style.cssText=`display:grid;grid-template-columns:${cols};gap:1px;margin-bottom:1px`;
+    const lb=document.createElement('div');
+    lb.style.cssText='display:flex;align-items:center;justify-content:flex-end;padding-right:2px';
+    lb.innerHTML=`<span style="font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;color:#999">${MINI_ROW_NAMES[di]}</span>`;
+    re.appendChild(lb);
+    for(let ci=0;ci<5;ci++){
+      const key=origRi+'_'+ci;
+      const on=litSet.has(key);
+      const near=origRi<=2&&ci<=2;
+      const isAxis=axisCell&&axisCell.origRi===origRi&&axisCell.ci===ci;
+      const cell=document.createElement('div');
+      let bg,border;
+      if(on){
+        if(near){bg='rgba(91,155,213,.3)';border='1px solid rgba(91,155,213,.6)';}
+        else{bg='rgba(200,169,110,.25)';border='1px solid rgba(200,169,110,.5)';}
+      } else {
+        bg='rgba(255,255,255,.02)';border='1px solid #1a1a1a';
+      }
+      if(isAxis){
+        bg=near?'rgba(91,155,213,.7)':'rgba(200,169,110,.65)';
+        border=near?'2px solid rgba(91,155,213,1)':'2px solid rgba(200,169,110,1)';
+      }
+      cell.style.cssText=`aspect-ratio:1;background:${bg};border:${border};display:flex;align-items:center;justify-content:center`;
+      if(on){
+        const k=document.createElement('span');
+        const kColor=isAxis?'#fff':(near?'rgba(91,155,213,.9)':'rgba(200,169,110,.9)');
+        k.style.cssText=`font-family:'Shippori Mincho',serif;font-size:clamp(11px,2.5vw,13px);font-weight:700;color:${kColor}`;
+        k.textContent=KANJI[origRi][ci];
+        cell.appendChild(k);
+      }
+      re.appendChild(cell);
+    }
+    wrap.appendChild(re);
+  });
+}
+
+function makeSet(pairs){return new Set(pairs.map(p=>p[0]+'_'+p[1]));}
+function allCells(){const s=new Set();for(let r=0;r<5;r++)for(let c=0;c<5;c++)s.add(r+'_'+c);return s;}
+function nearCells(){const s=new Set();for(let r=0;r<=2;r++)for(let c=0;c<=2;c++)s.add(r+'_'+c);return s;}
+function farCells(){const s=new Set();for(let r=0;r<5;r++)for(let c=0;c<5;c++)if(!(r<=2&&c<=2))s.add(r+'_'+c);return s;}
+function sacrificeCells(){const s=new Set();for(let c=0;c<5;c++){s.add('2_'+c);s.add('3_'+c);}return s;}
+function monkCells(){const s=new Set();for(let c=0;c<5;c++)s.add('4_'+c);for(let r=0;r<5;r++)s.add(r+'_4');return s;}
+function nearBroadCells(){return allCells();}
+// 軸×カバータイプ
+function nearAxisNearCoverCells(){return nearCells();}  // 近軸・近カバー
+function farAxisBroadCells(){  // 遠軸・広カバー：遠エリア中心に広くlit
+  const s=farCells();
+  // 近エリアも少し
+  for(let r=0;r<=2;r++)for(let c=0;c<=2;c++){if(Math.random()>0.4)s.add(r+'_'+c);}
+  return s;
+}
+
+function buildBreadthBarChart(){
+  const el=document.getElementById('breadthBarChart');if(!el)return;
+  new Chart(el,{
+    type:'bar',
+    data:{
+      labels:['近福（近感度のみ）','中感度（3〜5軸）','広感度（6〜10軸）'],
+      datasets:[{
+        data:[4.55,5.98,7.32],
+        backgroundColor:['rgba(224,144,58,.7)','rgba(120,120,120,.45)','rgba(91,155,213,.75)'],
+        borderWidth:0,borderRadius:2,
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`幸福スコア: ${ctx.raw}`}}},
+      scales:{
+        x:{grid:{display:false},ticks:{color:'#666',font:{size:11}},border:{display:false}},
+        y:{min:3.5,max:8.5,grid:{color:'#1a1a1a'},ticks:{color:'#555',font:{size:11}},border:{display:false},
+          title:{display:true,text:'幸福スコア',color:'#444',font:{size:10}}}
+      },animation:{duration:800},
+    },
+    plugins:[{afterDatasetsDraw(chart){
+      const{ctx,data}=chart;
+      data.datasets[0].data.forEach((val,i)=>{
+        const meta=chart.getDatasetMeta(0);
+        const bar=meta.data[i];
+        ctx.fillStyle='#ccc';ctx.font="bold 18px 'Shippori Mincho',serif";
+        ctx.textAlign='center';ctx.fillText(val.toFixed(2),bar.x,bar.y-8);
+      });
+    }}]
+  });
+}
+
+function buildAxisChart(){
+  const el=document.getElementById('axisChart');if(!el)return;
+  new Chart(el,{type:'bar',data:{
+    labels:['0軸','2軸','4軸','6軸'],
+    datasets:[
+      {label:'主軸が近',data:[4.46,5.37,6.35,7.38],backgroundColor:'rgba(91,155,213,.75)',borderWidth:0},
+      {label:'主軸が遠',data:[4.00,4.79,5.62,6.70],backgroundColor:'rgba(150,150,150,.4)',borderWidth:0}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top',labels:{color:'#666',boxWidth:12,font:{size:11}}}},
+    scales:{
+      x:{grid:{color:'#1a1a1a'},ticks:{color:'#555'},title:{display:true,text:'広感度（センサー数）',color:'#555',font:{size:10}}},
+      y:{min:3.5,max:8,grid:{color:'#1a1a1a'},ticks:{color:'#888',font:{size:10}},title:{display:true,text:'幸福スコア',color:'#555',font:{size:10}}}
+    }
+  }});
+}
+
+function buildUcurveChart(){
+  const el=document.getElementById('ucurveChart');if(!el)return;
+  const labels=['〜29歳','30代','40代','50代','60代〜'];
+  new Chart(el,{type:'line',data:{labels,datasets:[
+    {label:'幸福スコア',data:[5.76,5.35,5.37,5.43,6.21],
+     borderColor:'rgba(91,155,213,.9)',pointBackgroundColor:'rgba(91,155,213,1)',
+     pointRadius:5,pointHoverRadius:7,borderWidth:2.5,tension:.3,fill:false,yAxisID:'y1'},
+    {label:'広感度（軸数）',data:[3.61,3.32,3.03,2.92,3.58],
+     borderColor:'rgba(200,169,110,.9)',pointBackgroundColor:'rgba(200,169,110,1)',
+     pointRadius:5,pointHoverRadius:7,borderWidth:2,tension:.3,fill:false,yAxisID:'y2',borderDash:[5,3]}
+  ]},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top',labels:{color:'#777',boxWidth:14,font:{size:12},padding:16}},tooltip:{mode:'index',intersect:false}},
+    scales:{
+      x:{grid:{color:'#1a1a1a'},ticks:{color:'#666',font:{size:12}},border:{display:false}},
+      y1:{position:'left',min:4.8,max:7.0,grid:{color:'#1a1a1a'},ticks:{color:'rgba(91,155,213,.7)',font:{size:11}},border:{display:false},
+        title:{display:true,text:'幸福スコア',color:'rgba(91,155,213,.5)',font:{size:10}}},
+      y2:{position:'right',min:2.5,max:4.2,grid:{display:false},ticks:{color:'rgba(200,169,110,.7)',font:{size:11}},border:{display:false},
+        title:{display:true,text:'広感度（軸）',color:'rgba(200,169,110,.5)',font:{size:10}}}
+    }
+  }});
+}
+
+function buildAgeSensorChart(){
+  const el=document.getElementById('ageSensorChart');if(!el)return;
+  const labels=['〜29歳','30代','40代','50代','60代〜'];
+  // 全10感度 開放率（%）: 自合他共理 瞬進頂回久
+  const sensors=[
+    {label:'自 Self',    data:[50,47,44,43,47], color:'rgba(160,160,180,.7)', dash:[]},
+    {label:'合 Flow',    data:[34,26,20,17,19], color:'rgba(120,160,220,.95)',dash:[]},
+    {label:'他 Others',  data:[32,35,36,40,54], color:'rgba(91,155,213,.9)', dash:[]},
+    {label:'共 Comm.',   data:[23,21,17,16,20], color:'rgba(80,120,160,.6)', dash:[3,3]},
+    {label:'理 Cosmos',  data:[24,18,11, 6, 7], color:'rgba(180,120,60,.8)', dash:[4,3]},
+    {label:'瞬 Moment',  data:[47,43,40,40,52], color:'rgba(140,200,140,.8)',dash:[]},
+    {label:'進 Growth',  data:[40,34,32,30,38], color:'rgba(200,169,110,1)', dash:[], width:2.5},
+    {label:'頂 Peak',    data:[35,32,31,32,42], color:'rgba(160,140,80,.7)', dash:[2,3]},
+    {label:'回 Cycle',   data:[49,53,55,55,65], color:'rgba(100,100,100,.7)',dash:[6,3]},
+    {label:'久 Eternity',data:[28,22,17,12,15], color:'rgba(120,80,60,.6)',  dash:[2,4]},
+  ];
+  const datasets = sensors.map(s=>({
+    label:s.label, data:s.data,
+    borderColor:s.color, pointBackgroundColor:s.color,
+    pointRadius:3, pointHoverRadius:5,
+    borderWidth:s.width||1.5, tension:.3, fill:false,
+    borderDash:s.dash||[],
+  }));
+
+  const chart = new Chart(el,{type:'line',data:{labels,datasets},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{mode:'index',intersect:false,
+          callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}
+      },
+      layout:{padding:{right:10}},
+      scales:{
+        x:{grid:{color:'#1a1a1a'},ticks:{color:'#666',font:{size:11}},border:{display:false}},
+        y:{min:0,max:75,grid:{color:'#1a1a1a'},
+          ticks:{color:'#555',font:{size:10},callback:v=>v+'%'},border:{display:false}}
+      }
+    }
+  });
+
+  // 右端にラベルを描画
+  chart.options.animation = {onComplete: function(){
+    const ctx2 = chart.ctx;
+    ctx2.save();
+    ctx2.font = "10px 'Noto Sans JP',sans-serif";
+    ctx2.textAlign = 'left';
+    datasets.forEach((ds,i)=>{
+      const meta = chart.getDatasetMeta(i);
+      if(!meta.data.length) return;
+      const lastPt = meta.data[meta.data.length-1];
+      const x = lastPt.x + 6;
+      const y = lastPt.y;
+      ctx2.fillStyle = ds.borderColor;
+      ctx2.fillText(sensors[i].label.split(' ')[0]+' '+sensors[i].data[4]+'%', x, y+4);
+    });
+    ctx2.restore();
+  }};
+  chart.update();
+}
+
+function buildTenAxisChart(){
+  const el=document.getElementById('tenAxisChart');if(!el)return;
+  // [カバー効果（差）, 主導効果（主軸幸福）, ラベル, 色]
+  const data=[
+    {x:1.27, y:5.60, label:'自\nSelf',    color:'rgba(160,160,200,.8)'},
+    {x:1.32, y:6.03, label:'合\nFlow',    color:'rgba(120,160,220,.9)'},
+    {x:1.52, y:5.71, label:'他\nOthers',  color:'rgba(91,155,213,.9)'},
+    {x:1.22, y:5.12, label:'共\nComm.',   color:'rgba(80,120,160,.8)'},
+    {x:1.56, y:4.65, label:'理\nCosmos',  color:'rgba(180,120,60,.85)'},
+    {x:1.87, y:5.86, label:'瞬\nMoment',  color:'rgba(140,200,140,.9)'},
+    {x:1.72, y:6.37, label:'進\nGrowth',  color:'rgba(200,169,110,1)'},
+    {x:1.64, y:5.43, label:'頂\nPeak',    color:'rgba(160,140,80,.8)'},
+    {x:1.39, y:5.26, label:'回\nCycle',   color:'rgba(100,100,100,.8)'},
+    {x:1.42, y:4.05, label:'久\nEternity',color:'rgba(120,80,60,.8)'},
+  ];
+  new Chart(el,{
+    type:'scatter',
+    data:{datasets:data.map(d=>({
+      label:d.label.split('\n')[0],
+      data:[{x:d.x,y:d.y}],
+      backgroundColor:d.color,
+      pointRadius:14,
+      pointHoverRadius:16,
+    }))},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{
+          label:ctx=>{
+            const d=data[ctx.datasetIndex];
+            return [`${d.label.replace('\n',' ')}`,`カバー効果: +${ctx.raw.x.toFixed(2)}pt`,`主導効果: ${ctx.raw.y.toFixed(2)}`];
+          }
+        }}
+      },
+      plugins:{
+        annotation:{
+          annotations:{
+            avgLine:{type:'line',yMin:5.60,yMax:5.60,borderColor:'rgba(200,169,110,.3)',borderWidth:1,borderDash:[4,4],
+              label:{content:'全体平均 5.60',display:true,color:'rgba(200,169,110,.5)',font:{size:9},position:'start'}}
+          }
+        }
+      },
+      scales:{
+        x:{min:1.1,max:2.0,grid:{color:'#1a1a1a'},
+          title:{display:true,text:'カバー効果（感度をカバーしているときの幸福上昇幅）',color:'#555',font:{size:10}},
+          ticks:{color:'#555',font:{size:10},callback:v=>'+'+v.toFixed(2)+'pt'},border:{display:false}},
+        y:{min:3.8,max:6.6,grid:{color:'#1a1a1a'},
+          title:{display:true,text:'主導効果（その感度を主軸にしたときの幸福スコア）',color:'#555',font:{size:10}},
+          ticks:{color:'#555',font:{size:10}},border:{display:false}}
+      }
+    },
+    plugins:[{afterDatasetsDraw(chart){
+      const ctx2=chart.ctx;
+      data.forEach((d,i)=>{
+        const meta=chart.getDatasetMeta(i);
+        if(!meta.data[0]) return;
+        const pt=meta.data[0];
+        ctx2.save();
+        ctx2.textAlign='center';
+        const parts=d.label.split('\n');
+        ctx2.fillStyle='#fff';
+        ctx2.font="bold 13px 'Shippori Mincho',serif";
+        ctx2.fillText(parts[0], pt.x, pt.y-1);
+        ctx2.fillStyle='rgba(255,255,255,.45)';
+        ctx2.font="9px 'Noto Sans JP',sans-serif";
+        ctx2.fillText(parts[1]||'', pt.x, pt.y+9);
+        ctx2.restore();
+      });
+    }}]
+  });
+}
+
+function buildShinChart(){
+  const el=document.getElementById('shinChart');if(!el)return;
+  const labels=['瞬 Moment','進 Growth','頂 Peak','回 Cycle','久 Eternity'];
+  new Chart(el,{type:'bar',data:{
+    labels,
+    datasets:[
+      {label:'幸福スコア',data:[5.86,6.37,5.43,5.26,4.05],
+       backgroundColor:['rgba(100,100,100,.4)','rgba(200,169,110,.8)','rgba(100,100,100,.4)','rgba(100,100,100,.4)','rgba(100,100,100,.4)'],
+       borderWidth:0,borderRadius:2,yAxisID:'y1'},
+      {label:'広感度（軸）',data:[3.25,4.86,2.88,2.77,1.89],
+       backgroundColor:['rgba(100,100,100,.2)','rgba(91,155,213,.6)','rgba(100,100,100,.2)','rgba(100,100,100,.2)','rgba(100,100,100,.2)'],
+       borderWidth:0,borderRadius:2,yAxisID:'y2'},
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top',labels:{color:'#666',boxWidth:12,font:{size:11},padding:12}},
+      tooltip:{mode:'index',intersect:false}},
+    scales:{
+      x:{grid:{display:false},ticks:{color:'#666',font:{size:11}},border:{display:false}},
+      y1:{position:'left',min:3,max:7.5,grid:{color:'#1a1a1a'},ticks:{color:'rgba(200,169,110,.7)',font:{size:11}},border:{display:false},
+        title:{display:true,text:'幸福スコア',color:'rgba(200,169,110,.5)',font:{size:10}}},
+      y2:{position:'right',min:0,max:6,grid:{display:false},ticks:{color:'rgba(91,155,213,.7)',font:{size:11}},border:{display:false},
+        title:{display:true,text:'広感度（軸）',color:'rgba(91,155,213,.5)',font:{size:10}}}
+    }
+  }});
+}
+
+function farBroadCells(){
+  // 全セルlit、ただし遠を強調（近は薄め）
+  return allCells();
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  buildMatrix('fw-matrix',false);
+  buildMatrix('fw-matrix-nearfar',true);
+  buildBreadthBarChart();
+  buildAxisChart();
+  buildUcurveChart();
+  buildAgeSensorChart();
+  buildShinChart();
+  buildTenAxisChart();
+  // 3類型mini
+  buildMiniMatrix('mini-narrow', nearCells());
+  buildMiniMatrix('mini-outer', farCells());
+  buildMiniMatrix('mini-broad', allCells());
+  // 相反仮説mini
+  buildMiniMatrix('mini-near-broad', allCells(), {origRi:0,ci:0});  // 自×瞬を主軸に
+  buildMiniMatrix('mini-far-broad', allCells(), {origRi:3,ci:3});  // 共×回を主軸に
+  buildMiniMatrix('mini-sacrifice', sacrificeCells());
+  buildMiniMatrix('mini-monk', monkCells());
+  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:0.08});
+  document.querySelectorAll('.fi').forEach(el=>obs.observe(el));
+});
+</script>
+<div style="text-align:center;padding:24px 0;background:#050505">
+  <a href="https://kuniakimat.github.io/-happiness-map/" style="font-size:12px;color:#888;text-decoration:none;letter-spacing:.08em">広福観 — あなたの幸福地図を開く →</a>
+</div>
+</body>
+</html>
