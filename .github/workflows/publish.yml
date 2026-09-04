@@ -1,0 +1,48 @@
+name: publish
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 0 * * 1'   # 毎週月曜に外部リンクの死活を確認する
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci || npm install
+      - name: リンクの検査（ここで落ちたら公開しない）
+        run: npm run linkcheck
+      - name: 外部リンクの死活（週次のみ）
+        if: github.event_name == 'schedule'
+        run: npm run linkcheck:remote
+      - run: npm run build:full
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./site
+
+  deploy:
+    if: github.event_name != 'schedule'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

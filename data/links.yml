@@ -1,0 +1,1052 @@
+# links.yml — 外部公開面の索引
+#
+# note・旧ブログ・対談・別アカウントの資産。ここに登録した ID を本文から参照する。
+# URL を推測して書かない。公開ページで確認したものだけを登録する。
+#
+# 出典: Matsumura_Link_Map_v0.1
+
+# ============================================================
+# 玄関・ポータル
+# ============================================================
+
+note-top:
+  title: note トップ
+  url: https://note.com/kuniakimat
+  kind: portal
+
+note-n76eaa43c2620:
+  title: 社会戦略と自己紹介のリンク
+  url: https://note.com/kuniakimat/n/n76eaa43c2620
+  kind: external-canon
+  role: 総合ポータル。社会戦略・自己紹介・主要記事への入口
+  use: 松村の活動と思想の全体像へ送りたいとき
+
+# ============================================================
+# 広福観・人生地図・25相
+# ============================================================
+
+note-ndd5e08cfedab:
+  title: 「広福観」──幸福を“拡張可能なもの”として捉え直す思想
+  url: https://note.com/kuniakimat/n/ndd5e08cfedab
+  kind: external-canon
+  concepts: [広福観]
+  role: 広福観の入門・概念説明
+  related: [app-happiness]
+
+note-nb3176e1d4cd5:
+  title: 〖知的探求〗幸福論を超えて：なぜ今、この「人生地図」があなたの思考をアップデートするのか？
+  url: https://note.com/kuniakimat/n/nb3176e1d4cd5
+  kind: external-canon
+  concepts: [幸福25相, 広福観]
+  role: 人生地図・25相の詳説
+  related: [app-happiness]
+
+note-nad5de7962201:
+  title: AIが哲学的な話し相手として優秀すぎる
+  url: https://note.com/kuniakimat/n/nad5de7962201
+  kind: external-canon
+  concepts: [幸福25相]
+  role: 人生地図・時間相・空間相の生成過程
+
+# ============================================================
+# 関係相・圧熱・知性の熱力学
+# ============================================================
+
+note-nb6fc6c6f08bf:
+  title: 「知性の熱力学」（による自己紹介）
+  url: https://note.com/kuniakimat/n/nb6fc6c6f08bf
+  kind: external-canon
+  concepts: [関係相, 圧熱]
+  role: 関係相・圧と熱・自他理合の入門
+
+note-n7cdc62a496c2:
+  title: 「知性の熱力学」その個人史と日本の課題
+  url: https://note.com/kuniakimat/n/n7cdc62a496c2
+  kind: external-canon
+  concepts: [関係相, 圧熱]
+  role: 関係相の個人史＋日本社会への応用
+
+note-n0a0af6eacee4:
+  title: 思考の生ログ　情報処理様式　2026/2/26
+  url: https://note.com/kuniakimat/n/n0a0af6eacee4
+  kind: external-canon
+  concepts: [関係相]
+  role: 関係相と情報処理・AI・脳科学を接続した生成ログ
+
+# ============================================================
+# 時間相・滅切
+# ============================================================
+
+note-nfe1aefc199df:
+  title: ４８歳に自覚する時間の構造
+  url: https://note.com/kuniakimat/n/nfe1aefc199df
+  kind: external-canon
+  concepts: [時間相, 滅切]
+  role: 時間相の主要記事。滅性・切性と時間の位相
+
+# ============================================================
+# 時空マトリクス・日本診断
+# ============================================================
+
+note-n4f07f44dab6f:
+  title: 日本文明はどこで止まったのか
+  url: https://note.com/kuniakimat/n/n4f07f44dab6f
+  kind: external-canon
+  concepts: [広福観, 時空マトリクス]
+  role: 広福観・時空マトリクスを日本社会へ適用
+
+# ============================================================
+# 社会戦略
+# ============================================================
+
+note-na826cc623d21:
+  title: 〖メディア取材記事〗成長でも幸福でも低迷する日本が、持続可能な社会戦略を描くには？
+  url: https://note.com/kuniakimat/n/na826cc623d21
+  kind: external-canon
+  role: 社会戦略の背景・全体像
+
+note-n50ab0abd07f3:
+  title: 〖メディア取材記事〗徹底分析：日本が低迷から抜け出すための最重要因子とは（後編）
+  url: https://note.com/kuniakimat/n/n50ab0abd07f3
+  kind: external-canon
+  role: 日本低迷の因子分析・社会戦略
+  related: [ext-world-effect]
+
+# ============================================================
+# その他の重要思想記事
+# ============================================================
+
+note-nbea3b8b0edf7:
+  title: 社会人とは「成立屋」である
+  url: https://note.com/kuniakimat/n/nbea3b8b0edf7
+  kind: external-canon
+  concepts: [成立屋]
+  role: 成立・Δ成立・成立工学
+
+note-nebf2db8a95e6:
+  title: 光に意味があるのは、影があるからだ
+  url: https://note.com/kuniakimat/n/nebf2db8a95e6
+  kind: external-canon
+  concepts: [負幸]
+  role: 幸福と負幸、正負差、意味生成
+
+note-n416da812ee4f:
+  title: 考えごとの生ログ
+  url: https://note.com/kuniakimat/n/n416da812ee4f
+  kind: external-canon
+  role: AI対話の生ログを公開する考え方
+
+# ============================================================
+# 別アカウントの関連資産
+# ============================================================
+
+ext-world-effect:
+  title: World Effect Benchmark
+  url: https://chiyo400.github.io/World-Effect-Benchmark/
+  kind: external-related
+  owner: chiyo400
+  summary: 37カ国 × 1,230因子。日本の重大課題、因子検索、成功相関、国比較
+  note: 別アカウント所有。制作・所有関係が未確認のため、本人著作として扱わない
+
+# ============================================================
+# 旧ブログ（逆輸入後に archive/ の該当ファイルを紐づける）
+# ============================================================
+
+# exblog-xxxx:
+#   title:
+#   url:
+#   kind: external-archive
+#   archive_path: archive/exblog/...
+
+
+# ============================================================
+# note 全記事（2026-08-30 のエクスポートから自動登録）
+# 本文の原文は 2_資料/note/md/ にある。サイトへは複製せず、外部正典として参照する。
+# ============================================================
+
+note-nbb481117ceb7:
+  title: "旅とデータと日本の課題　(1/5) 近況　海外での実感"
+  url: https://note.com/kuniakimat/n/nbb481117ceb7
+  kind: external-canon
+  date: 2024-08-22
+  chars: 3920
+  source: 2_資料/note/md/2024-08-22_nbb481117ceb7.md
+
+note-n8d989e8ea430:
+  title: "旅とデータと日本の課題　(2/5) 日本の現在地"
+  url: https://note.com/kuniakimat/n/n8d989e8ea430
+  kind: external-canon
+  date: 2024-08-22
+  chars: 3790
+  source: 2_資料/note/md/2024-08-22_n8d989e8ea430.md
+
+note-nfdccf8dec99d:
+  title: "旅とデータと日本の課題　(3/5) 　成功相関マップ"
+  url: https://note.com/kuniakimat/n/nfdccf8dec99d
+  kind: external-canon
+  date: 2024-08-22
+  chars: 3457
+  source: 2_資料/note/md/2024-08-22_nfdccf8dec99d.md
+
+note-n562e662f9182:
+  title: "旅とデータと日本の課題　(4/5)　社員の熱意"
+  url: https://note.com/kuniakimat/n/n562e662f9182
+  kind: external-canon
+  date: 2024-08-22
+  chars: 2612
+  source: 2_資料/note/md/2024-08-22_n562e662f9182.md
+
+note-nb9b7fab6513c:
+  title: "旅とデータと日本の課題　（後編の目次）"
+  url: https://note.com/kuniakimat/n/nb9b7fab6513c
+  kind: external-canon
+  date: 2024-08-22
+  chars: 55
+  source: 2_資料/note/md/2024-08-22_nb9b7fab6513c.md
+
+note-n6c45b2174cfd:
+  title: "旅とデータと日本の課題　(5/5) 　戦略効率"
+  url: https://note.com/kuniakimat/n/n6c45b2174cfd
+  kind: external-canon
+  date: 2024-08-27
+  chars: 2306
+  source: 2_資料/note/md/2024-08-27_n6c45b2174cfd.md
+
+note-neacd5c912fea:
+  title: "相関マップで眺める日本の課題"
+  url: https://note.com/kuniakimat/n/neacd5c912fea
+  kind: external-canon
+  date: 2024-08-29
+  chars: 55
+  source: 2_資料/note/md/2024-08-29_neacd5c912fea.md
+
+note-n37934d3d1c64:
+  title: "世界周遊の写真 2023年1"
+  url: https://note.com/kuniakimat/n/n37934d3d1c64
+  kind: external-canon
+  date: 2024-09-02
+  chars: 1818
+  source: 2_資料/note/md/2024-09-02_n37934d3d1c64.md
+
+note-nba61ae5c6141:
+  title: "世界周遊の写真　2023年2"
+  url: https://note.com/kuniakimat/n/nba61ae5c6141
+  kind: external-canon
+  date: 2024-09-02
+  chars: 778
+  source: 2_資料/note/md/2024-09-02_nba61ae5c6141.md
+
+note-n564b0a795cc4:
+  title: "「内閣の年齢」と「国民の幸福」"
+  url: https://note.com/kuniakimat/n/n564b0a795cc4
+  kind: external-canon
+  date: 2024-09-07
+  chars: 550
+  source: 2_資料/note/md/2024-09-07_n564b0a795cc4.md
+
+note-n00ed1f34939c:
+  title: "キャリアの旅"
+  url: https://note.com/kuniakimat/n/n00ed1f34939c
+  kind: external-canon
+  date: 2024-09-14
+  chars: 3372
+  source: 2_資料/note/md/2024-09-14_n00ed1f34939c.md
+
+note-n30f1872848e0:
+  title: "日本が見える３枚のチャート"
+  url: https://note.com/kuniakimat/n/n30f1872848e0
+  kind: external-canon
+  date: 2024-09-14
+  chars: 1177
+  source: 2_資料/note/md/2024-09-14_n30f1872848e0.md
+
+note-n488be40e1749:
+  title: "低賃金が問題か"
+  url: https://note.com/kuniakimat/n/n488be40e1749
+  kind: external-canon
+  date: 2024-09-22
+  chars: 256
+  source: 2_資料/note/md/2024-09-22_n488be40e1749.md
+
+note-n80035b093bc2:
+  title: "世界ベンチマーク：同性婚は国民の幸福度にプラスか"
+  url: https://note.com/kuniakimat/n/n80035b093bc2
+  kind: external-canon
+  date: 2024-12-21
+  chars: 726
+  source: 2_資料/note/md/2024-12-21_n80035b093bc2.md
+
+note-n80cd71dc04b1:
+  title: "動画公開のお知らせ（社会戦略）"
+  url: https://note.com/kuniakimat/n/n80cd71dc04b1
+  kind: external-canon
+  date: 2025-05-08
+  chars: 442
+  source: 2_資料/note/md/2025-05-08_n80cd71dc04b1.md
+
+note-nd6abedb6f9ab:
+  title: "レポート公開のお知らせ（社会戦略）"
+  url: https://note.com/kuniakimat/n/nd6abedb6f9ab
+  kind: external-canon
+  date: 2025-06-08
+  chars: 685
+  source: 2_資料/note/md/2025-06-08_nd6abedb6f9ab.md
+
+note-nab2347104fa3:
+  title: "対談記事　思考の位相など"
+  url: https://note.com/kuniakimat/n/nab2347104fa3
+  kind: external-canon
+  date: 2025-08-07
+  chars: 179
+  source: 2_資料/note/md/2025-08-07_nab2347104fa3.md
+
+note-n2195464256e3:
+  title: "講演　アーカイブ配信中　"
+  url: https://note.com/kuniakimat/n/n2195464256e3
+  kind: external-canon
+  date: 2025-08-10
+  chars: 278
+  source: 2_資料/note/md/2025-08-10_n2195464256e3.md
+
+note-n810185f90d51:
+  title: "社会戦略の発信履歴　コンテンツリンク集"
+  url: https://note.com/kuniakimat/n/n810185f90d51
+  kind: external-canon
+  date: 2025-08-11
+  chars: 1647
+  source: 2_資料/note/md/2025-08-11_n810185f90d51.md
+
+note-nff3c848a667b:
+  title: "幸福は流れる──哲学者Gと語る「時空の倫理学」"
+  url: https://note.com/kuniakimat/n/nff3c848a667b
+  kind: external-canon
+  date: 2025-10-08
+  chars: 2222
+  source: 2_資料/note/md/2025-10-08_nff3c848a667b.md
+
+note-n6a5693ce55cb:
+  title: "幸福の旅 ── 時空十六元素表で読み解く「多様な幸福」の構造"
+  url: https://note.com/kuniakimat/n/n6a5693ce55cb
+  kind: external-canon
+  date: 2025-10-08
+  chars: 2566
+  source: 2_資料/note/md/2025-10-08_n6a5693ce55cb.md
+
+note-nc72ef84d9304:
+  title: "幸福の旅 ── 個人と社会をつなぐ「時空十六元素表」　ver.2"
+  url: https://note.com/kuniakimat/n/nc72ef84d9304
+  kind: external-canon
+  date: 2025-10-08
+  chars: 2064
+  source: 2_資料/note/md/2025-10-08_nc72ef84d9304.md
+
+note-n331537194c9f:
+  title: "AI note🧩 構造化する人は、世界を編み直している"
+  url: https://note.com/kuniakimat/n/n331537194c9f
+  kind: external-canon
+  date: 2025-10-19
+  chars: 1041
+  source: 2_資料/note/md/2025-10-19_n331537194c9f.md
+
+note-n747c151c1999:
+  title: "― 新しい幸福理論シリーズの予告 ―"
+  url: https://note.com/kuniakimat/n/n747c151c1999
+  kind: external-canon
+  date: 2025-10-19
+  chars: 878
+  source: 2_資料/note/md/2025-10-19_n747c151c1999.md
+
+note-n56453ed4b40d:
+  title: "幸福フレームワークの特徴"
+  url: https://note.com/kuniakimat/n/n56453ed4b40d
+  kind: external-canon
+  date: 2025-10-19
+  chars: 1505
+  source: 2_資料/note/md/2025-10-19_n56453ed4b40d.md
+
+note-n1b51de601ba3:
+  title: "― 現実社会を生きるサラリーマン哲学者 ―"
+  url: https://note.com/kuniakimat/n/n1b51de601ba3
+  kind: external-canon
+  date: 2025-10-19
+  chars: 590
+  source: 2_資料/note/md/2025-10-19_n1b51de601ba3.md
+
+note-n3acd068985a8:
+  title: "フレームワークの広がり　‐テーマ変遷‐"
+  url: https://note.com/kuniakimat/n/n3acd068985a8
+  kind: external-canon
+  date: 2025-10-20
+  chars: 1267
+  source: 2_資料/note/md/2025-10-20_n3acd068985a8.md
+
+note-ncc7beebcf087:
+  title: "事情通と原理通"
+  url: https://note.com/kuniakimat/n/ncc7beebcf087
+  kind: external-canon
+  date: 2025-10-21
+  chars: 394
+  source: 2_資料/note/md/2025-10-21_ncc7beebcf087.md
+
+note-n0c450f13d7ae:
+  title: "社会戦略ノートの位置付け"
+  url: https://note.com/kuniakimat/n/n0c450f13d7ae
+  kind: external-canon
+  date: 2025-10-22
+  chars: 600
+  source: 2_資料/note/md/2025-10-22_n0c450f13d7ae.md
+
+note-n7650f9b13356:
+  title: "世界効果分析 ― 相関係数を使った客観的俯瞰性の試み"
+  url: https://note.com/kuniakimat/n/n7650f9b13356
+  kind: external-canon
+  date: 2025-10-22
+  chars: 1434
+  source: 2_資料/note/md/2025-10-22_n7650f9b13356.md
+
+note-n102f876f7b09:
+  title: "世界効果分析　- 客観的俯瞰性の試み　ver.2"
+  url: https://note.com/kuniakimat/n/n102f876f7b09
+  kind: external-canon
+  date: 2025-10-22
+  chars: 1999
+  source: 2_資料/note/md/2025-10-22_n102f876f7b09.md
+
+note-n8371862f83b5:
+  title: "思考途中のメモ"
+  url: https://note.com/kuniakimat/n/n8371862f83b5
+  kind: external-canon
+  date: 2025-10-23
+  chars: 933
+  source: 2_資料/note/md/2025-10-23_n8371862f83b5.md
+
+note-n959fe953573b:
+  title: "社会戦略レポートの概要"
+  url: https://note.com/kuniakimat/n/n959fe953573b
+  kind: external-canon
+  date: 2025-10-26
+  chars: 1526
+  source: 2_資料/note/md/2025-10-26_n959fe953573b.md
+
+note-na15ba44a1519:
+  title: "AI First Take:  九好フレーム"
+  url: https://note.com/kuniakimat/n/na15ba44a1519
+  kind: external-canon
+  date: 2025-10-27
+  chars: 1316
+  source: 2_資料/note/md/2025-10-27_na15ba44a1519.md
+
+note-n9710fc730439:
+  title: "第13章：形而上学Ⅳ ― 松村有晃と〈生成の時代〉"
+  url: https://note.com/kuniakimat/n/n9710fc730439
+  kind: external-canon
+  date: 2025-11-03
+  chars: 1888
+  source: 2_資料/note/md/2025-11-03_n9710fc730439.md
+
+note-ne6b692107d14:
+  title: "ゴルフの進捗　横浜クラチャン"
+  url: https://note.com/kuniakimat/n/ne6b692107d14
+  kind: external-canon
+  date: 2025-11-03
+  chars: 634
+  source: 2_資料/note/md/2025-11-03_ne6b692107d14.md
+
+note-n24ad74553abf:
+  title: "意味は、関与の停止とともに消える"
+  url: https://note.com/kuniakimat/n/n24ad74553abf
+  kind: external-canon
+  date: 2025-11-06
+  chars: 866
+  source: 2_資料/note/md/2025-11-06_n24ad74553abf.md
+
+note-necef283c9f41:
+  title: "リーダーシップのシステム"
+  url: https://note.com/kuniakimat/n/necef283c9f41
+  kind: external-canon
+  date: 2025-11-06
+  chars: 2655
+  source: 2_資料/note/md/2025-11-06_necef283c9f41.md
+
+note-n539d04e8ae44:
+  title: "🌀 共生成としての思考 —— AI対話の途中"
+  url: https://note.com/kuniakimat/n/n539d04e8ae44
+  kind: external-canon
+  date: 2025-11-06
+  chars: 3132
+  source: 2_資料/note/md/2025-11-06_n539d04e8ae44.md
+
+note-nfa3df19b76f3:
+  title: "ベンチマークと謙虚"
+  url: https://note.com/kuniakimat/n/nfa3df19b76f3
+  kind: external-canon
+  date: 2025-11-07
+  chars: 1288
+  source: 2_資料/note/md/2025-11-07_nfa3df19b76f3.md
+
+note-nf6063132ddf1:
+  title: "役の幸福"
+  url: https://note.com/kuniakimat/n/nf6063132ddf1
+  kind: external-canon
+  date: 2025-11-08
+  chars: 2343
+  source: 2_資料/note/md/2025-11-08_nf6063132ddf1.md
+
+note-n0fffc907c990:
+  title: "「役」で紡ぐエンゲージメント"
+  url: https://note.com/kuniakimat/n/n0fffc907c990
+  kind: external-canon
+  date: 2025-11-08
+  chars: 1771
+  source: 2_資料/note/md/2025-11-08_n0fffc907c990.md
+
+note-n84b0344b9840:
+  title: "知のあり方のメモ　利他知性"
+  url: https://note.com/kuniakimat/n/n84b0344b9840
+  kind: external-canon
+  date: 2025-11-11
+  chars: 876
+  source: 2_資料/note/md/2025-11-11_n84b0344b9840.md
+
+note-n4e07c8151367:
+  title: "生成的時間論――人生地図の時間哲学"
+  url: https://note.com/kuniakimat/n/n4e07c8151367
+  kind: external-canon
+  date: 2025-11-12
+  chars: 1370
+  source: 2_資料/note/md/2025-11-12_n4e07c8151367.md
+
+note-n93e1afd459b4:
+  title: "「幸せ」を考える地図"
+  url: https://note.com/kuniakimat/n/n93e1afd459b4
+  kind: external-canon
+  date: 2025-11-13
+  chars: 2677
+  source: 2_資料/note/md/2025-11-13_n93e1afd459b4.md
+
+note-nd8f8202fadb1:
+  title: "熱意格差こそ問題"
+  url: https://note.com/kuniakimat/n/nd8f8202fadb1
+  kind: external-canon
+  date: 2025-11-14
+  chars: 867
+  source: 2_資料/note/md/2025-11-14_nd8f8202fadb1.md
+
+note-nfed07b11f9af:
+  title: "Happiness Hologram幸福の幾何学とその表現"
+  url: https://note.com/kuniakimat/n/nfed07b11f9af
+  kind: external-canon
+  date: 2025-12-06
+  chars: 1427
+  source: 2_資料/note/md/2025-12-06_nfed07b11f9af.md
+
+note-n560e77176738:
+  title: "AI解説　ハピネスホログラムの哲学"
+  url: https://note.com/kuniakimat/n/n560e77176738
+  kind: external-canon
+  date: 2025-12-08
+  chars: 3414
+  source: 2_資料/note/md/2025-12-08_n560e77176738.md
+
+note-n05a7361c6bc2:
+  title: "メモ　良い無理"
+  url: https://note.com/kuniakimat/n/n05a7361c6bc2
+  kind: external-canon
+  date: 2025-12-15
+  chars: 818
+  source: 2_資料/note/md/2025-12-15_n05a7361c6bc2.md
+
+note-nf7c164bfb057:
+  title: "観不全の時代"
+  url: https://note.com/kuniakimat/n/nf7c164bfb057
+  kind: external-canon
+  date: 2025-12-23
+  chars: 2966
+  source: 2_資料/note/md/2025-12-23_nf7c164bfb057.md
+
+note-ne2bd0b7bd038:
+  title: "「答えを出さない」経営が、組織を動かす"
+  url: https://note.com/kuniakimat/n/ne2bd0b7bd038
+  kind: external-canon
+  date: 2025-12-24
+  chars: 1620
+  source: 2_資料/note/md/2025-12-24_ne2bd0b7bd038.md
+
+note-n7fd589c4501c:
+  title: "【雑談】タコと痛風と決断"
+  url: https://note.com/kuniakimat/n/n7fd589c4501c
+  kind: external-canon
+  date: 2026-01-14
+  chars: 164
+  source: 2_資料/note/md/2026-01-14_n7fd589c4501c.md
+
+note-n305da44b2aac:
+  title: "【AI長雑談】生命起源の超臨界流体と勾配社会"
+  url: https://note.com/kuniakimat/n/n305da44b2aac
+  kind: external-canon
+  date: 2026-01-20
+  chars: 134
+  source: 2_資料/note/md/2026-01-20_n305da44b2aac.md
+
+note-neaa670a3b652:
+  title: "日本は、何を変えれば「よくなりそう」なのか　【社会戦略レポート】"
+  url: https://note.com/kuniakimat/n/neaa670a3b652
+  kind: external-canon
+  date: 2026-01-20
+  chars: 794
+  source: 2_資料/note/md/2026-01-20_neaa670a3b652.md
+
+note-n1a9abbd33544:
+  title: "後半生の楽しみ方　ー　関係環"
+  url: https://note.com/kuniakimat/n/n1a9abbd33544
+  kind: external-canon
+  date: 2026-01-27
+  chars: 1078
+  source: 2_資料/note/md/2026-01-27_n1a9abbd33544.md
+
+note-nc51542156894:
+  title: "生成思考のログ　AI"
+  url: https://note.com/kuniakimat/n/nc51542156894
+  kind: external-canon
+  date: 2026-02-01
+  chars: 415
+  source: 2_資料/note/md/2026-02-01_nc51542156894.md
+
+note-n2c86ad5dc381:
+  title: "思索メモ　時空間の自然軌道"
+  url: https://note.com/kuniakimat/n/n2c86ad5dc381
+  kind: external-canon
+  date: 2026-02-08
+  chars: 128
+  source: 2_資料/note/md/2026-02-08_n2c86ad5dc381.md
+
+note-n7c4bc828e464:
+  title: "画像メモ　リレー"
+  url: https://note.com/kuniakimat/n/n7c4bc828e464
+  kind: external-canon
+  date: 2026-02-22
+  chars: 177
+  source: 2_資料/note/md/2026-02-22_n7c4bc828e464.md
+
+note-n826f78c2dbf2:
+  title: "高見のインテリ"
+  url: https://note.com/kuniakimat/n/n826f78c2dbf2
+  kind: external-canon
+  date: 2026-02-22
+  chars: 77
+  source: 2_資料/note/md/2026-02-22_n826f78c2dbf2.md
+
+note-n12a1fef6bf59:
+  title: "考えごとメモ　アフターピークの役割"
+  url: https://note.com/kuniakimat/n/n12a1fef6bf59
+  kind: external-canon
+  date: 2026-02-24
+  chars: 128
+  source: 2_資料/note/md/2026-02-24_n12a1fef6bf59.md
+
+note-n1ea16eb897fb:
+  title: "知性と色気を両立する方法"
+  url: https://note.com/kuniakimat/n/n1ea16eb897fb
+  kind: external-canon
+  date: 2026-02-24
+  chars: 1376
+  source: 2_資料/note/md/2026-02-24_n1ea16eb897fb.md
+
+note-n7b10d369a2b0:
+  title: "知性と色気は両立するのか"
+  url: https://note.com/kuniakimat/n/n7b10d369a2b0
+  kind: external-canon
+  date: 2026-02-25
+  chars: 1787
+  source: 2_資料/note/md/2026-02-25_n7b10d369a2b0.md
+
+note-ncd6cbf597983:
+  title: "社会の空洞化とスポイルテクノロジー"
+  url: https://note.com/kuniakimat/n/ncd6cbf597983
+  kind: external-canon
+  date: 2026-03-05
+  chars: 1938
+  source: 2_資料/note/md/2026-03-05_ncd6cbf597983.md
+
+note-n0a6001086b81:
+  title: "関係相——人と組織の物性を読む"
+  url: https://note.com/kuniakimat/n/n0a6001086b81
+  kind: external-canon
+  date: 2026-03-07
+  chars: 2640
+  source: 2_資料/note/md/2026-03-07_n0a6001086b81.md
+
+note-n80829382538b:
+  title: "関係相——人と組織の物性を読む"
+  url: https://note.com/kuniakimat/n/n80829382538b
+  kind: external-canon
+  date: 2026-03-07
+  chars: 3037
+  source: 2_資料/note/md/2026-03-07_n80829382538b.md
+
+note-n4f882369e2e1:
+  title: "失われたわけではない30年。"
+  url: https://note.com/kuniakimat/n/n4f882369e2e1
+  kind: external-canon
+  date: 2026-03-10
+  chars: 1083
+  source: 2_資料/note/md/2026-03-10_n4f882369e2e1.md
+
+note-n3912cf8b02fa:
+  title: "フレームワーク解説　リンク集"
+  url: https://note.com/kuniakimat/n/n3912cf8b02fa
+  kind: external-canon
+  date: 2026-03-13
+  chars: 0
+  source: 2_資料/note/md/2026-03-13_n3912cf8b02fa.md
+
+note-n03d2de8725e2:
+  title: "なぜ日本人は、機能より「空気」を重視するのか——　価値の9類型から考える"
+  url: https://note.com/kuniakimat/n/n03d2de8725e2
+  kind: external-canon
+  date: 2026-03-14
+  chars: 2590
+  source: 2_資料/note/md/2026-03-14_n03d2de8725e2.md
+
+note-nea77c7c73b7d:
+  title: "なぜ日本人は、機能より「空気」を重視するのか——　価値の9類型から考える"
+  url: https://note.com/kuniakimat/n/nea77c7c73b7d
+  kind: external-canon
+  date: 2026-03-14
+  chars: 3027
+  source: 2_資料/note/md/2026-03-14_nea77c7c73b7d.md
+
+note-n5aecd9b4a6f9:
+  title: "評価軸が違うだけだ——　台湾のタクシーで見つけた、美質の地図"
+  url: https://note.com/kuniakimat/n/n5aecd9b4a6f9
+  kind: external-canon
+  date: 2026-03-14
+  chars: 3250
+  source: 2_資料/note/md/2026-03-14_n5aecd9b4a6f9.md
+
+note-ne84a0cd3ca83:
+  title: "なぜ日本人は英語が話せないのか　——完用の弊害"
+  url: https://note.com/kuniakimat/n/ne84a0cd3ca83
+  kind: external-canon
+  date: 2026-03-20
+  chars: 2997
+  source: 2_資料/note/md/2026-03-20_ne84a0cd3ca83.md
+
+note-nf606cf83c11d:
+  title: "AI時代に人間に残される役割は何か　- 可能性と必然性を束ねる私"
+  url: https://note.com/kuniakimat/n/nf606cf83c11d
+  kind: external-canon
+  date: 2026-03-22
+  chars: 4089
+  source: 2_資料/note/md/2026-03-22_nf606cf83c11d.md
+
+note-n2061349b761c:
+  title: "脱皮できない日本　‐　結婚・終身雇用・学歴主義と低熱高圧社会"
+  url: https://note.com/kuniakimat/n/n2061349b761c
+  kind: external-canon
+  date: 2026-04-09
+  chars: 2273
+  source: 2_資料/note/md/2026-04-09_n2061349b761c.md
+
+note-ncc5aa4068e73:
+  title: "脱皮できなかった日本"
+  url: https://note.com/kuniakimat/n/ncc5aa4068e73
+  kind: external-canon
+  date: 2026-04-10
+  chars: 418
+  source: 2_資料/note/md/2026-04-10_ncc5aa4068e73.md
+
+note-n1b537df9b3ea:
+  title: "広福観アプリ　ベータ版"
+  url: https://note.com/kuniakimat/n/n1b537df9b3ea
+  kind: external-canon
+  date: 2026-04-13
+  chars: 261
+  source: 2_資料/note/md/2026-04-13_n1b537df9b3ea.md
+
+note-nf1429ca5b830:
+  title: "リーダーは危機を待たない"
+  url: https://note.com/kuniakimat/n/nf1429ca5b830
+  kind: external-canon
+  date: 2026-06-19
+  chars: 599
+  source: 2_資料/note/md/2026-06-19_nf1429ca5b830.md
+
+note-n284c0f866ab4:
+  title: "趣味のゴルフの小ネタを３つ"
+  url: https://note.com/kuniakimat/n/n284c0f866ab4
+  kind: external-canon
+  date: 2026-07-24
+  chars: 912
+  source: 2_資料/note/md/2026-07-24_n284c0f866ab4.md
+
+note-n6dc1ba659aee:
+  title: "なぜ私は社会戦略の活動を始めたのか"
+  url: https://note.com/kuniakimat/n/n6dc1ba659aee
+  kind: external-canon
+  date: 2026-08-01
+  chars: 1177
+  source: 2_資料/note/md/2026-08-01_n6dc1ba659aee.md
+
+note-na462074e9ed7:
+  title: "私たちは、四つの幻想から卒業できていない"
+  url: https://note.com/kuniakimat/n/na462074e9ed7
+  kind: external-canon
+  date: 2026-08-14
+  chars: 3420
+  source: 2_資料/note/md/2026-08-14_na462074e9ed7.md
+
+note-n03cd057488fc:
+  title: "私たちは、四つの幻想から卒業できていない"
+  url: https://note.com/kuniakimat/n/n03cd057488fc
+  kind: external-canon
+  date: 2026-08-14
+  chars: 3975
+  source: 2_資料/note/md/2026-08-14_n03cd057488fc.md
+
+note-n050f096f4520:
+  title: "石を拾う人"
+  url: https://note.com/kuniakimat/n/n050f096f4520
+  kind: external-canon
+  date: 2026-08-14
+  chars: 82
+  source: 2_資料/note/md/2026-08-14_n050f096f4520.md
+
+note-ne01f3b19b71a:
+  title: "幸福フレーム体系はどこから来たか。僕の思考の基底"
+  url: https://note.com/kuniakimat/n/ne01f3b19b71a
+  kind: external-canon
+  date: 2026-08-15
+  chars: 1242
+  source: 2_資料/note/md/2026-08-15_ne01f3b19b71a.md
+
+note-nb70a7c439dc9:
+  title: "補足）人生の有限性と四つの前提"
+  url: https://note.com/kuniakimat/n/nb70a7c439dc9
+  kind: external-canon
+  date: 2026-08-15
+  chars: 4387
+  source: 2_資料/note/md/2026-08-15_nb70a7c439dc9.md
+
+note-nb883eb29d29e:
+  title: "編集フェーズへの転換"
+  url: https://note.com/kuniakimat/n/nb883eb29d29e
+  kind: external-canon
+  date: 2026-08-16
+  chars: 1328
+  source: 2_資料/note/md/2026-08-16_nb883eb29d29e.md
+
+note-n818cd79d49fc:
+  title: "限りと彩り"
+  url: https://note.com/kuniakimat/n/n818cd79d49fc
+  kind: external-canon
+  date: 2026-08-24
+  chars: 98
+  source: 2_資料/note/md/2026-08-24_n818cd79d49fc.md
+
+note-nc7800f9b6f60:
+  title: "なぜ僕はチャートを作るのか"
+  url: https://note.com/kuniakimat/n/nc7800f9b6f60
+  kind: external-canon
+  date: 2026-08-24
+  chars: 168
+  source: 2_資料/note/md/2026-08-24_nc7800f9b6f60.md
+
+
+# ============================================================
+# 旧ブログ（kuniakimat.exblog.jp）2005-2026 全1,292記事
+# 本文の原文は 2_資料/blog/raw/blog_YYYY.md と 2_資料/blog/blog.jsonl
+# 個別記事は必要になった時点で登録する。ここでは ★★★（本人選定）24件のみ先に登録。
+# ============================================================
+
+exblog-7664466:
+  title: "メモ　普通のしあわせ"
+  url: https://kuniakimat.exblog.jp/7664466/
+  kind: external-archive
+  date: 2007-12-08
+  category: ★★★
+  chars: 106
+
+exblog-7736772:
+  title: "思いつき日記"
+  url: https://kuniakimat.exblog.jp/7736772/
+  kind: external-archive
+  date: 2007-12-15
+  category: ★★★
+  chars: 1393
+
+exblog-7782057:
+  title: "再掲メモ　働く意味"
+  url: https://kuniakimat.exblog.jp/7782057/
+  kind: external-archive
+  date: 2007-12-20
+  category: ★★★
+  chars: 156
+
+exblog-7786980:
+  title: "再掲　どんどん良くなっていくこと"
+  url: https://kuniakimat.exblog.jp/7786980/
+  kind: external-archive
+  date: 2007-12-22
+  category: ★★★
+  chars: 530
+
+exblog-7824205:
+  title: "メモ　学ぶ姿勢／成長システム"
+  url: https://kuniakimat.exblog.jp/7824205/
+  kind: external-archive
+  date: 2007-12-25
+  category: ★★★
+  chars: 764
+
+exblog-8024421:
+  title: "考えながらメモ　誇れる実体化の技能を"
+  url: https://kuniakimat.exblog.jp/8024421/
+  kind: external-archive
+  date: 2008-01-19
+  category: ★★★
+  chars: 1114
+
+exblog-8183568:
+  title: "仕事メモ　非製造業の”技術経営”　「何をもって」"
+  url: https://kuniakimat.exblog.jp/8183568/
+  kind: external-archive
+  date: 2008-02-08
+  category: ★★★
+  chars: 804
+
+exblog-8184088:
+  title: "仕事メモ　”顧客志向の経営”"
+  url: https://kuniakimat.exblog.jp/8184088/
+  kind: external-archive
+  date: 2008-02-08
+  category: ★★★
+  chars: 570
+
+exblog-8211304:
+  title: "徒然メモ　ワークライフ□□とか"
+  url: https://kuniakimat.exblog.jp/8211304/
+  kind: external-archive
+  date: 2008-02-11
+  category: ★★★
+  chars: 3597
+
+exblog-8382260:
+  title: "仕事メモ　戦略の源"
+  url: https://kuniakimat.exblog.jp/8382260/
+  kind: external-archive
+  date: 2008-03-05
+  category: ★★★
+  chars: 298
+
+exblog-8457829:
+  title: "お勧めリンクメモ　「ベンチャー経営の手引き」"
+  url: https://kuniakimat.exblog.jp/8457829/
+  kind: external-archive
+  date: 2008-03-16
+  category: ★★★
+  chars: 281
+
+exblog-8560438:
+  title: "引用メモ　日本美術の粋を加味せる実用向工芸品を"
+  url: https://kuniakimat.exblog.jp/8560438/
+  kind: external-archive
+  date: 2008-03-31
+  category: ★★★
+  chars: 1258
+
+exblog-8604472:
+  title: "メモ enjoy contribution"
+  url: https://kuniakimat.exblog.jp/8604472/
+  kind: external-archive
+  date: 2008-04-06
+  category: ★★★
+  chars: 71
+
+exblog-8493694:
+  title: "監訳メモ　あとがき"
+  url: https://kuniakimat.exblog.jp/8493694/
+  kind: external-archive
+  date: 2008-04-16
+  category: ★★★
+  chars: 1454
+
+exblog-8680699:
+  title: "メモ　書いて眺めてみたら？"
+  url: https://kuniakimat.exblog.jp/8680699/
+  kind: external-archive
+  date: 2008-04-17
+  category: ★★★
+  chars: 621
+
+exblog-8680905:
+  title: "メモ　勘違いを解く"
+  url: https://kuniakimat.exblog.jp/8680905/
+  kind: external-archive
+  date: 2008-04-17
+  category: ★★★
+  chars: 1293
+
+exblog-8704251:
+  title: "引用メモ　私の複層性"
+  url: https://kuniakimat.exblog.jp/8704251/
+  kind: external-archive
+  date: 2008-04-21
+  category: ★★★
+  chars: 442
+
+exblog-8775160:
+  title: "あえて偏る　３２２"
+  url: https://kuniakimat.exblog.jp/8775160/
+  kind: external-archive
+  date: 2008-05-02
+  category: ★★★
+  chars: 345
+
+exblog-8776970:
+  title: "メタメモ　性質と方法の再提示（というアプローチ）　443"
+  url: https://kuniakimat.exblog.jp/8776970/
+  kind: external-archive
+  date: 2008-05-02
+  category: ★★★
+  chars: 1141
+
+exblog-8916299:
+  title: "覚悟が作る夢"
+  url: https://kuniakimat.exblog.jp/8916299/
+  kind: external-archive
+  date: 2008-05-24
+  category: ★★★
+  chars: 805
+
+exblog-9530941:
+  title: "仕事メモ　本気でやること"
+  url: https://kuniakimat.exblog.jp/9530941/
+  kind: external-archive
+  date: 2008-08-24
+  category: ★★★
+  chars: 300
+
+exblog-10034143:
+  title: "Createnergyで考えてみる"
+  url: https://kuniakimat.exblog.jp/10034143/
+  kind: external-archive
+  date: 2008-11-07
+  category: ★★★
+  chars: 2459
+
+exblog-13691949:
+  title: "よく分からないことメモ　”自分に克つのは誰か”"
+  url: https://kuniakimat.exblog.jp/13691949/
+  kind: external-archive
+  date: 2010-02-09
+  category: ★★★
+  chars: 2564
+
+exblog-13747220:
+  title: "規範メモ　2010年版"
+  url: https://kuniakimat.exblog.jp/13747220/
+  kind: external-archive
+  date: 2010-02-16
+  category: ★★★
+  chars: 82

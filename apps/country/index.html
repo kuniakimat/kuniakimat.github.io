@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ja" style="background:#0e1117;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>あの国だったら富裕層？（順位×年収カーブ版）</title>
+<style>
+  :root{
+    --bg:#0e1117; --panel:#161b22; --border:#2a313c;
+    --text:#e6e6e6; --sub:#9aa4b2; --accent:#ff5a5f;
+    color-scheme: dark;
+  }
+  html, body, *{background-color:inherit;}
+  html{background:#0e1117;}
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:"Hiragino Sans","Helvetica Neue",Arial,sans-serif;
+    background:#0e1117 !important; color:var(--text); padding:24px 16px 60px;
+    min-height:100vh;
+  }
+  h1{font-size:22px; margin:0 0 4px;}
+  .card{
+    background:var(--panel); border:1px solid var(--border); border-radius:14px;
+    padding:20px; max-width:920px; margin:0 auto 22px;
+  }
+  label{font-size:13px; color:var(--sub); display:block; margin-bottom:6px;}
+  .inputRow{display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;}
+  input[type=number]{
+    background:#0c0f14 !important; border:1px solid var(--border); color:var(--text);
+    padding:10px 12px; border-radius:8px; font-size:16px; width:160px;
+  }
+  button{
+    background:var(--accent); color:#fff; border:none; padding:10px 22px;
+    border-radius:8px; font-size:15px; cursor:pointer; font-weight:600;
+  }
+  button:hover{opacity:.9;}
+  h2{font-size:16px; margin:0 0 4px;}
+  .note{font-size:12px; color:var(--sub); margin:6px 0 14px; line-height:1.6;}
+  .countryPicker{display:flex; flex-wrap:wrap; gap:10px; margin:10px 0 16px;}
+  .countryChip{
+    display:flex; align-items:center; gap:5px; background:#0c0f14;
+    border:1px solid var(--border); border-radius:14px; padding:4px 10px;
+    cursor:pointer; font-size:11px; user-select:none;
+  }
+  .countryChip input{accent-color:var(--accent); width:12px; height:12px; cursor:pointer;}
+  .countryChip .sw{width:8px; height:8px; border-radius:50%; flex-shrink:0;}
+  .resultList{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;}
+  .resultBox{
+    background:#0c0f14; border:1px solid var(--border); border-radius:10px;
+    padding:12px 14px; min-width:170px; flex:1;
+  }
+  .resultBox .name{font-size:12px; color:var(--sub); display:flex; align-items:center; gap:6px; margin-bottom:4px;}
+  .resultBox .sw{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .resultBox .pct{font-size:22px; font-weight:700;}
+  .resultBox .pctTop{font-size:12px; color:var(--sub); margin-top:2px;}
+  .insight{
+    background:linear-gradient(135deg,#1c2330,#161b22); border:1px solid var(--border);
+    border-radius:10px; padding:16px; margin-top:14px; font-size:14px; line-height:1.8;
+  }
+  .insight b{color:#3ddc97;}
+  footer{max-width:920px; margin:30px auto; font-size:12px; color:var(--sub); line-height:1.7;}
+  #chartWrap, #posChartWrap{width:100%; overflow-x:auto;}
+  svg text{fill:var(--sub); font-size:3.5vw;}
+  @media(min-width:600px){ svg text{font-size:14px;} }
+  svg text[font-weight="700"], svg text[font-weight="500"]{ font-size:3.8vw; }
+  @media(min-width:600px){ svg text[font-weight="700"], svg text[font-weight="500"]{ font-size:15px; } }
+  details.secondary{margin-top:6px;}
+  details.secondary summary{cursor:pointer; font-size:13px; color:var(--sub); margin-bottom:10px;}
+</style>
+</head>
+<body>
+
+<h1>あの国だったら富裕層？</h1>
+<p style="max-width:920px; margin:0 auto 20px; font-size:12px; color:var(--sub);">※ 友人用の概算版プロトタイプです。数値は公的統計をもとにした簡易モデルによる概算です。</p>
+
+<div class="card">
+  <div class="inputRow">
+    <div>
+      <label>年収の仮定値（万円・日本円ベース）</label>
+      <input type="number" id="income" value="600" min="1" step="10">
+      <span style="font-size:11px; color:var(--sub); margin-left:10px;">入力値はどこにも送信されません</span>
+    </div>
+    <button onclick="render()">診断する</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>まず、日本国内での今の自分</h2>
+  <div id="baselineBox"></div>
+</div>
+
+<div class="card">
+  <h2>それが、別の国での努力だったとしたら？</h2>
+  <p class="note">横軸＝所得順位、縦軸＝年収。同じ順位のまま生まれた国だけ入れ替えたら、年収はいくらになっていたかを示します。いわば「国ガチャ」を引き直したときの結果です。各国の線とあなたの順位（縦の点線）が交わる点に金額を表示しています。</p>
+  <p class="note" style="margin-top:-8px;">比べてみたい国にチェックを入れてください（複数選択できます）。
+    <a href="javascript:void(0)" onclick="checkAllCountries(true)" style="color:var(--accent);">全部にチェック</a> /
+    <a href="javascript:void(0)" onclick="checkAllCountries(false)" style="color:var(--accent);">全部解除</a>
+  </p>
+  <div class="countryPicker" id="countryPicker"></div>
+  <div id="posChartWrap"></div>
+  <div class="resultList" id="equivList"></div>
+</div>
+
+<div class="card">
+  <div class="insight" id="insightText"></div>
+  <div id="conceptDiagram" style="margin-top:16px;"></div>
+</div>
+
+<div class="card">
+  <details class="secondary">
+    <summary>（参考）所得分布カーブそのものでの位置を見る</summary>
+    <p id="refBaselineText" style="font-size:13px;color:var(--sub);margin:8px 0 12px;line-height:1.7;"></p>
+    <div id="chartWrap"></div>
+    <div class="resultList" id="resultList"></div>
+  </details>
+</div>
+
+<footer>
+  ※「幻の日本」は、経済停滞も円安もなく米国以外の主要先進国並み（約2.0倍）に成長していた場合の仮想シナリオです（中央値410万円→820万円）。各国の数値はWorld Bank等の公表値をもとにした概算で、超高所得層はパレート分布で裾を補正していますが、実際の分布を完全には再現していません。簡易シミュレーターとしてご利用ください。
+</footer>
+
+<script>
+// ---- 国データ：中央値(万円)とジニ係数（実際の統計値ベースの概算）----
+// 上位1%・上位0.1%のしきい値は、ジニ係数から決まる対数正規分布自体の「上位1%点」を
+// 基準に自動算出する（個別に推測値を当てると、ジニ係数の示す散らばり方と矛盾してカーブに
+// 不自然な段差が出ることがあるため）。さらに上位0.1%側だけ、実際の所得は対数正規分布より
+// 裾が厚いという経験的事実を反映して、一定の倍率(TAIL_FATTEN)だけ余分に厚みを持たせる。
+const TAIL_FATTEN = 5; // 上位1%点のさらに何倍を上位0.1%点とみなすか
+const Z99 = 2.32634787; // 標準正規分布の上位1%点(z値)
+
+const COUNTRIES = [
+  {key:"jp",    name:"日本",    median:410,  gini:0.329, color:"#3ddc97", default:true, thick:true},
+  {key:"world", name:"世界全体", median:125,  gini:0.65,  color:"#5b7fff", default:true},
+  {key:"us",    name:"アメリカ", median:1209, gini:0.39,  color:"#f5a623", default:true},
+  {key:"cn",    name:"中国",    median:180,  gini:0.38,  color:"#b15bff", default:false},
+  {key:"in",    name:"インド",  median:150,  gini:0.357, color:"#e8c923", default:false},
+  {key:"br",    name:"ブラジル", median:216,  gini:0.53,  color:"#19c6c6", default:false},
+  {key:"ke",    name:"ケニア",  median:90,   gini:0.408, color:"#ff6fae", default:false},
+  {key:"ch",    name:"スイス",  median:1287, gini:0.315, color:"#caff70", default:false},
+  {key:"bi",    name:"ブルンジ", median:18,   gini:0.386, color:"#a685e2", default:true},
+  {key:"jp2",   name:"幻の日本", median:820,  gini:0.329, color:"#ffd97a", default:true, hypothetical:true,
+   personLabel:"停滞も円安もなかった日本だったら"},
+];
+
+function erf(x){
+  const sign = x>=0 ? 1 : -1; x=Math.abs(x);
+  const a1=0.254829592,a2=-0.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=0.3275911;
+  const t=1/(1+p*x);
+  const y=1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x);
+  return sign*y;
+}
+function erfinv(x){
+  let w = -Math.log((1-x)*(1+x));
+  let p;
+  if(w<5){
+    w-=2.5;
+    p=2.81022636e-08; p=3.43273939e-07+p*w; p=-3.5233877e-06+p*w; p=-4.39150654e-06+p*w;
+    p=0.00021858087+p*w; p=-0.00125372503+p*w; p=-0.00417768164+p*w; p=0.246640727+p*w; p=1.50140941+p*w;
+  } else {
+    w=Math.sqrt(w)-3;
+    p=-0.000200214257; p=0.000100950558+p*w; p=0.00134934322+p*w; p=-0.00367342844+p*w;
+    p=0.00573950773+p*w; p=-0.0076224613+p*w; p=0.00943887047+p*w; p=1.00167406+p*w; p=2.83297682+p*w;
+  }
+  return p*x;
+}
+function normalCDF(z){ return 0.5*(1+erf(z/Math.sqrt(2))); }
+function sigmaFromGini(g){ return 2*erfinv(g); }
+
+COUNTRIES.forEach(c=>{
+  c.mu = Math.log(c.median);
+  c.sigma = sigmaFromGini(c.gini);
+  c.x99 = c.median * Math.exp(Z99 * c.sigma); // 対数正規分布自体の上位1%点（自動的に滑らかにつながる）
+  c.x999 = c.x99 * TAIL_FATTEN;
+  c.alpha = Math.log(10) / Math.log(TAIL_FATTEN);
+});
+
+function pdf(x, c){
+  if(x<=0) return 0;
+  if(x < c.x99){
+    const z = (Math.log(x)-c.mu)/c.sigma;
+    return Math.exp(-z*z/2)/(x*c.sigma*Math.sqrt(2*Math.PI));
+  } else {
+    return 0.01 * c.alpha * Math.pow(c.x99, c.alpha) / Math.pow(x, c.alpha+1);
+  }
+}
+function percentile(income, c){
+  if(income < c.x99){
+    const z = (Math.log(income)-c.mu)/c.sigma;
+    return normalCDF(z)*100;
+  } else {
+    const survival = 0.01 * Math.pow(c.x99/income, c.alpha);
+    return (1-survival)*100;
+  }
+}
+function incomeAtPercentile(p, c){
+  p = Math.max(0.0000001, Math.min(99.9999999, p));
+  if(p >= 99){
+    const survival = (100-p)/100;
+    return c.x99 * Math.pow(0.01/survival, 1/c.alpha);
+  } else {
+    const z = Math.sqrt(2) * erfinv(2*(p/100)-1);
+    return Math.exp(c.mu + c.sigma*z);
+  }
+}
+function formatPct(p){
+  if(p<=0) return '0';
+  if(p>=100) return '100';
+  let d=1;
+  while(d<6 && parseFloat(p.toFixed(d))===0){ d++; }
+  return p.toFixed(d);
+}
+
+// ---- 国選択チップ ----
+const picker = document.getElementById('countryPicker');
+COUNTRIES.forEach(c=>{
+  const chip = document.createElement('label');
+  chip.className='countryChip';
+  chip.innerHTML = `<input type="checkbox" id="chk_${c.key}" ${c.default?'checked':''} onchange="render()">
+    <span class="sw" style="background:${c.color}"></span>${c.name}${c.hypothetical?' <span style="font-size:10px;color:var(--sub);border:1px solid var(--border);border-radius:8px;padding:1px 6px;">仮想</span>':''}`;
+  picker.appendChild(chip);
+});
+function checkAllCountries(state){
+  COUNTRIES.forEach(c=>{
+    const el = document.getElementById('chk_'+c.key);
+    if(el) el.checked = state;
+  });
+  render();
+}
+function selectedCountries(){
+  return COUNTRIES.filter(c=>document.getElementById('chk_'+c.key) && document.getElementById('chk_'+c.key).checked);
+}
+
+// ---- 共通チャート描画ヘルパー ----
+const W = 800, H = 300, PAD_L = 40, PAD_B = 30, PAD_T = 30, PAD_R = 14;
+const plotW = W - PAD_L - PAD_R, plotH = H - PAD_T - PAD_B;
+
+function makeXScale(xmax){
+  return x => PAD_L + (x/xmax)*plotW;
+}
+function yToPx(y, maxY){ return PAD_T + plotH - (y/maxY)*plotH*0.88; }
+
+function buildPath(c, xToPx, xmax, maxY, n=300){
+  let pts=[];
+  for(let i=0;i<=n;i++){
+    const t = i/n;
+    // 低所得側に点を集中させ、横軸が広く引っ張られても各国の山をなめらかに描けるようにする
+    const x = xmax * Math.pow(t, 2.4);
+    const y = pdf(Math.max(x,0.5), c);
+    pts.push([xToPx(x), yToPx(y, maxY)]);
+  }
+  return pts;
+}
+function pointsToPath(pts){
+  return 'M'+pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' L');
+}
+function niceTicks(xmax){
+  const candidates = [0,50,100,200,300,500,1000,1500,2000,3000,4000,5000,7500,10000,15000,20000,30000,50000,75000,100000];
+  return candidates.filter(v=>v<=xmax*1.001);
+}
+
+// ==== メインチャート：順位(横軸)×年収(縦軸・線形) ====
+const PW=360, PH=480, PPAD_L=94, PPAD_B=56, PPAD_T=54, PPAD_R=10;
+const PplotW=PW-PPAD_L-PPAD_R, PplotH=PH-PPAD_T-PPAD_B;
+const PXMIN=1, PXMAX=99.9;
+function pXToPx(x){ return PPAD_L + (x-PXMIN)/(PXMAX-PXMIN)*PplotW; }
+function pYToPx(y, minY, maxY){ return PPAD_T + PplotH - (y-minY)/(maxY-minY)*PplotH; }
+function buildPercentileCurve(c, minY, maxY, n=240){
+  let pts=[];
+  for(let i=0;i<=n;i++){
+    const t=i/n;
+    const x = PXMIN + (PXMAX-PXMIN)*Math.pow(t,0.7);
+    const income = incomeAtPercentile(x, c);
+    pts.push([pXToPx(x), pYToPx(income, minY, maxY)]);
+  }
+  return pts;
+}
+
+function niceLinearTicks(maxY, n=6){
+  const rough = maxY/n;
+  const mag = Math.pow(10, Math.floor(Math.log10(rough)));
+  const steps = [1,2,2.5,5,10];
+  let step = mag*10;
+  for(const s of steps){ if(mag*s>=rough){ step=mag*s; break; } }
+  let ticks=[];
+  for(let t=0;t<=maxY+1e-6;t+=step) ticks.push(Math.round(t));
+  return ticks;
+}
+
+function renderPosChart(income, selected){
+  const jp = COUNTRIES.find(c=>c.key==='jp');
+  const jpP = percentile(income, jp);
+
+  // ---- ハイブリッドスケール ----
+  // LINEAR_TOPを本人の年収に応じて可変：低所得なら500〜1000万、高所得なら2000万まで
+  const LINEAR_TOP = Math.max(500, Math.min(Math.round(income * 2.5 / 100) * 100, 2000));
+  const LINEAR_RATIO = 0.70;
+
+  let logMax = LINEAR_TOP;
+  selected.forEach(c=>{
+    const v99 = incomeAtPercentile(99, c);
+    logMax = Math.max(logMax, v99);
+  });
+  logMax = Math.min(logMax * 1.1, 100000);
+
+  function valToPx(v){
+    if(v <= LINEAR_TOP){
+      const ratio = v / LINEAR_TOP;
+      const py = PPAD_T + PplotH - ratio * PplotH * LINEAR_RATIO;
+      return py;
+    } else {
+      const logRatio = (Math.log10(v) - Math.log10(LINEAR_TOP)) /
+                       (Math.log10(logMax) - Math.log10(LINEAR_TOP));
+      const py = PPAD_T + PplotH * (1 - LINEAR_RATIO) - logRatio * PplotH * (1 - LINEAR_RATIO);
+      return py;
+    }
+  }
+
+  // y軸目盛り：LINEAR_TOPに合わせた線形部分の目盛りを生成
+  const linearStep = LINEAR_TOP <= 600 ? 100 : LINEAR_TOP <= 1200 ? 200 : 500;
+  const linearTicks = [];
+  for(let v=0; v<=LINEAR_TOP; v+=linearStep) linearTicks.push(v);
+  const logCandidates = [3000, 5000, 10000, 20000, 50000, 100000];
+  const logTicks = logCandidates.filter(v => v > LINEAR_TOP && v <= logMax);
+  const yTicks = [...linearTicks, ...logTicks];
+
+  let gridSvg = '';
+  // 線形・対数の境界：ラベルは表示しない（y軸の2000万円目盛りで自明なため）
+  const boundaryY = valToPx(LINEAR_TOP);
+  gridSvg += `<line x1="${PPAD_L}" y1="${boundaryY}" x2="${PW-PPAD_R}" y2="${boundaryY}" stroke="#2a3545" stroke-width="1" stroke-dasharray="2,3" opacity="0.5"/>`;
+
+  yTicks.forEach(v=>{
+    const py = valToPx(v);
+    gridSvg += `<line x1="${PPAD_L}" y1="${py}" x2="${PW-PPAD_R}" y2="${py}" stroke="#1c232e" stroke-width="1"/>`;
+    const label = v>=10000 ? (v/10000)+'億円' : v.toLocaleString()+'万円';
+    gridSvg += `<text x="${PPAD_L-10}" y="${py+4}" text-anchor="end" font-size="18">${label}</text>`;
+  });
+  [1,10,25,50,75,90,99].forEach(v=>{
+    const px = pXToPx(v);
+    gridSvg += `<line x1="${px}" y1="${PPAD_T}" x2="${px}" y2="${PH-PPAD_B}" stroke="#1c232e" stroke-width="1"/>`;
+    gridSvg += `<text x="${px}" y="${PH-PPAD_B+20}" text-anchor="middle" font-size="18">${v}%</text>`;
+  });
+
+  // カーブ：ハイブリッドスケールでサンプリング
+  function buildHybridCurve(c, n=280){
+    let pts=[];
+    for(let i=0;i<=n;i++){
+      const t = i/n;
+      const x = PXMIN + (PXMAX-PXMIN)*Math.pow(t,0.65);
+      const v = incomeAtPercentile(x, c);
+      const clipped = Math.min(v, logMax);
+      pts.push([pXToPx(x), valToPx(clipped)]);
+    }
+    return pts;
+  }
+
+  let curvesSvg='', markersSvg='';
+  selected.forEach(c=>{
+    const pts = buildHybridCurve(c);
+    const width = c.thick ? 4.6 : 2.3;
+    curvesSvg += `<path d="${pointsToPath(pts)}" fill="none" stroke="${c.color}" stroke-width="${width}" opacity="0.92"${c.hypothetical?' stroke-dasharray="7,5"':''}></path>`;
+    // 国名ラベル：線が広がる35%付近に配置
+    const labelPct = 35;
+    const labelIncome = incomeAtPercentile(labelPct, c);
+    const labelX = pXToPx(labelPct);
+    const labelY = valToPx(Math.min(labelIncome, logMax)) - 9;
+    const labelName = c.key === 'jp2' ? '幻の日本' : c.name;
+    curvesSvg += `<text x="${labelX.toFixed(1)}" y="${labelY.toFixed(1)}" fill="${c.color}" font-size="16" font-weight="${c.thick?'700':'500'}" text-anchor="middle" opacity="0.95">${labelName}</text>`;
+    const eq = incomeAtPercentile(jpP, c);
+    const ex = pXToPx(jpP);
+    const ey = valToPx(Math.min(eq, logMax));
+    markersSvg += `<circle cx="${ex}" cy="${ey}" r="5" fill="${c.color}" stroke="#0e1117" stroke-width="1.5"></circle>`;
+    const offset = eq > LINEAR_TOP ? -8 : 4;
+    markersSvg += `<text x="${ex+9}" y="${ey+offset}" fill="${c.color}" font-weight="700" font-size="18">${Math.round(eq).toLocaleString()}万円</text>`;
+  });
+
+  const userPx = pXToPx(jpP);
+  // 日本の線上の正確な交点 = incomeAtPercentile(jpP, jp) ≒ income
+  const jpCurveIncome = incomeAtPercentile(jpP, jp);
+  const jpEy = valToPx(Math.min(jpCurveIncome, logMax));
+  const starSvg = `
+    <line x1="${PPAD_L}" y1="${jpEy}" x2="${PW-PPAD_R}" y2="${jpEy}" stroke="${jp.color}" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.6"></line>
+    <text x="${userPx}" y="${jpEy+9}" text-anchor="middle" font-size="18">⭐</text>`;
+
+  // SVGのclipPathで描画エリアを制限
+  const clipId = 'plotClip';
+  const svg = `
+  <svg viewBox="0 0 ${PW} ${PH}" width="100%" style="max-width:${PW}px;display:block;margin:0 auto;">
+    <defs><clipPath id="${clipId}"><rect x="${PPAD_L}" y="${PPAD_T}" width="${PplotW}" height="${PplotH}"/></clipPath></defs>
+    ${gridSvg}
+    <line x1="${userPx}" y1="${PPAD_T}" x2="${userPx}" y2="${PH-PPAD_B}" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5,4"></line>
+    <text x="${userPx}" y="${PPAD_T-12}" text-anchor="middle" fill="var(--accent)" font-weight="700" font-size="18">あなた（上位${formatPct(100-jpP)}%）</text>
+    <g clip-path="url(#${clipId})">${curvesSvg}</g>
+    ${markersSvg}
+    ${starSvg}
+    <line x1="${PPAD_L}" y1="${PH-PPAD_B}" x2="${PW-PPAD_R}" y2="${PH-PPAD_B}" stroke="#3a4250" stroke-width="1"></line>
+    <text x="${PW/2}" y="${PH-6}" text-anchor="middle" font-size="18">その国の中での所得順位（パーセンタイル %）</text>
+    <text x="16" y="${PPAD_T+10}" font-size="18">年収（日本円）</text>
+  </svg>`;
+  document.getElementById('posChartWrap').innerHTML = svg;
+}
+
+function renderBaseline(income){
+  const jp = COUNTRIES.find(c=>c.key==='jp');
+  const jpP = percentile(income, jp);
+  const wrap = document.getElementById('baselineBox');
+  wrap.innerHTML = `
+    <p style="font-size:15px; line-height:1.9; margin:0;">
+      年収<b style="color:${jp.color};font-size:1.2em;">${income}万円</b>のあなたは、日本国内では
+      上位<b style="color:${jp.color};font-size:1.3em;">${formatPct(100-jpP)}%</b>
+      （下から数えると${formatPct(jpP)}%）の位置にいます。
+    </p>`;
+}
+
+function renderEquiv(income, selected){
+  const jp = COUNTRIES.find(c=>c.key==='jp');
+  const jpP = percentile(income, jp);
+  const wrap = document.getElementById('equivList');
+  wrap.innerHTML='';
+  const others = selected.filter(c=>c.key!=='jp' && c.key!=='jp2');
+  if(others.length===0){
+    wrap.innerHTML = '<div style="color:var(--sub);font-size:13px;">比較したい国を上で選んでください。</div>';
+    return;
+  }
+  others.forEach(c=>{
+    const eq = incomeAtPercentile(jpP, c);
+    const personLabel = c.personLabel ? c.personLabel : (c.key==='world' ? '世界の平均的な国に生まれていたら' : (c.name+'人だったら'));
+    const box = document.createElement('div');
+    box.className='resultBox';
+    box.innerHTML = `<div class="name"><span class="sw" style="background:${c.color}"></span>もし${personLabel}</div>
+      <div class="pctTop">上位${formatPct(100-jpP)}%は</div>
+      <div class="pct">年収 ${Math.round(eq).toLocaleString()}万円</div>`;
+    wrap.appendChild(box);
+  });
+}
+
+// ==== 参考チャート：所得分布カーブそのものでの位置（旧メイン） ====
+function renderChart(income, selected){
+  const jp = COUNTRIES.find(c=>c.key==='jp');
+  const jpP = percentile(income, jp);
+  const el = document.getElementById('refBaselineText');
+  if(el) el.innerHTML = `年収<b>${income}万円</b>のあなたは、日本国内では上位<b>${formatPct(100-jpP)}%</b>。各国の所得分布カーブを同じ高さに正規化して重ねています。横軸の位置が「その国の典型的な年収帯」、幅が「格差の大きさ」を表します。`;
+
+  const RW=360, RH=250, RPL=14, RPR=14, RPT=56, RPB=30;
+  const Rpw=RW-RPL-RPR, Rph=RH-RPT-RPB;
+  const xmax=2000; // 万円（線形）
+
+  function rxToPx(v){ return RPL + (v/xmax)*Rpw; }
+  function ryToPx(y){ return RPT + Rph - y*Rph*0.88; } // y は 0〜1 の正規化済み値
+
+  const xTicks=[0,200,500,1000,1500,2000];
+  let tickSvg='';
+  xTicks.forEach(v=>{
+    const px=rxToPx(v);
+    tickSvg += `<line x1="${px.toFixed(1)}" y1="${RPT}" x2="${px.toFixed(1)}" y2="${RPT+Rph}" stroke="#1c232e" stroke-width="1"/>`;
+    tickSvg += `<text x="${px.toFixed(1)}" y="${RH-6}" text-anchor="middle" font-size="26">${v}万</text>`;
+  });
+
+  // 国名ラベル：まず全国のピーク位置を計算してソート、高さを交互にずらす
+  const labelData = selected.map(c=>{
+    const mode = Math.exp(c.mu - c.sigma*c.sigma);
+    const modePx = rxToPx(Math.min(mode, xmax*0.92));
+    const name = c.key==='jp2'?'幻の日本':c.name;
+    return {c, modePx, name};
+  }).sort((a,b)=>a.modePx-b.modePx);
+
+  let curvesSvg='';
+  selected.forEach(c=>{
+    const mode = Math.exp(c.mu - c.sigma*c.sigma);
+    const peakVal = pdf(mode, c);
+    const N=180;
+    let pts=[];
+    for(let i=0;i<=N;i++){
+      const x = xmax*i/N;
+      const y = x>0 ? pdf(x,c)/peakVal : 0;
+      pts.push([rxToPx(x).toFixed(1), ryToPx(Math.min(y,1)).toFixed(1)]);
+    }
+    const d=pts.map((p,i)=>(i===0?'M':'L')+p[0]+','+p[1]).join(' ');
+    curvesSvg += `<path d="${d}" fill="none" stroke="${c.color}" stroke-width="${c.thick?3.5:2}"${c.hypothetical?' stroke-dasharray="7,5"':''}></path>`;
+  });
+
+  // ラベルを2行に交互配置（ピーク位置順にソート済み）
+  const rowY = [RPT-8, RPT-34];
+  labelData.forEach((item, i)=>{
+    const yPos = rowY[i % 2];
+    curvesSvg += `<text x="${item.modePx.toFixed(1)}" y="${yPos}" fill="${item.c.color}" font-size="15" font-weight="${item.c.thick?'700':'400'}" text-anchor="middle">${item.name}</text>`;
+    // 国名からカーブへ縦線（小さいティック）
+    curvesSvg += `<line x1="${item.modePx.toFixed(1)}" y1="${(yPos+3).toFixed(1)}" x2="${item.modePx.toFixed(1)}" y2="${(RPT+2).toFixed(1)}" stroke="${item.c.color}" stroke-width="1" opacity="0.4"/>`;
+  });
+
+  const userPx = rxToPx(Math.min(income, xmax));
+  const svg = `
+  <svg viewBox="0 0 ${RW} ${RH}" width="100%" style="max-width:${RW}px;display:block;margin:0 auto;">
+    ${tickSvg}
+    ${curvesSvg}
+    <line x1="${userPx.toFixed(1)}" y1="${RPT}" x2="${userPx.toFixed(1)}" y2="${RPT+Rph}" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5,4"></line>
+    <text x="${userPx.toFixed(1)}" y="${RPT-18}" text-anchor="middle" fill="var(--accent)" font-weight="700" font-size="26">あなた</text>
+    <line x1="${RPL}" y1="${RPT+Rph}" x2="${RW-RPR}" y2="${RPT+Rph}" stroke="#3a4250" stroke-width="1"></line>
+  </svg>`;
+  document.getElementById('chartWrap').innerHTML = svg;
+}
+function renderResults(income, selected){
+  const wrap = document.getElementById('resultList');
+  wrap.innerHTML='';
+  selected.forEach(c=>{
+    const p = percentile(income, c);
+    const personLabel = c.personLabel ? c.personLabel : (c.key==='world' ? '世界の平均的な国に生まれていたら' : (c.name+'人だったら'));
+    const box = document.createElement('div');
+    box.className='resultBox';
+    box.innerHTML = `<div class="name"><span class="sw" style="background:${c.color}"></span>もし${personLabel}</div>
+      <div class="pct">上位 ${formatPct(100-p)}%</div>
+      <div class="pctTop">下から数えると ${formatPct(p)}%</div>`;
+    wrap.appendChild(box);
+  });
+}
+
+function renderInsight(income, selected){
+  const jp = COUNTRIES.find(c=>c.key==='jp');
+  const world = COUNTRIES.find(c=>c.key==='world');
+  const burundi = COUNTRIES.find(c=>c.key==='bi');
+  const us = COUNTRIES.find(c=>c.key==='us');
+  const phantom = COUNTRIES.find(c=>c.key==='jp2');
+  const jpP = percentile(income, jp);
+  const eqWorld = incomeAtPercentile(jpP, world);
+  const eqBurundi = incomeAtPercentile(jpP, burundi);
+  const eqUS = incomeAtPercentile(jpP, us);
+  const eqPhantom = incomeAtPercentile(jpP, phantom);
+  const worldPctTop = formatPct(100 - percentile(income, world));
+
+  document.getElementById('insightText').innerHTML =
+  `<b>「どこで生まれたか」がもたらす差</b><br><br>
+  年収<b>${income}万円</b>のあなたは、日本国内では上位約<b>${formatPct(100-jpP)}%</b>の位置です。<br><br>
+  もし、その順位のまま生まれた国だけが違っていたら──<br><br>
+  世界平均的な国なら、年収は約<b>${Math.round(eqWorld).toLocaleString()}万円</b>。<br>
+  アメリカなら、約<b>${Math.round(eqUS).toLocaleString()}万円</b>。<br>
+  ブルンジなら、約<b>${Math.round(eqBurundi).toLocaleString()}万円</b>。<br>
+  そして、停滞も円安もなかった日本なら、約<b>${Math.round(eqPhantom).toLocaleString()}万円</b>です。<br><br>
+  この差の多くは、あなたの能力ではありません。<br><br>
+  生まれた社会が違うだけです。<br><br>
+  私たちは、自分の努力で人生を切り拓いていると考えがちです。しかし実際には、その努力がどれだけ報われるかは、社会という土台にも大きく左右されます。<br><br>
+  これが、「どこで生まれたか」がもたらす差です。<br><br>
+  今の日本でも、年収${income}万円は世界全体では上位<b>${worldPctTop}%</b>に入り、多くの国では十分に豊かな水準です。<br><br>
+  一方で、「アメリカだったらもっと稼げていたのに」と感じた方もいるかもしれません。<br><br>
+  確かに、今のアメリカの所得分布は日本より高い位置にあります。<br><br>
+  しかし、30年前は違いました。<br><br>
+  当時の日本は、一人当たりGDPで世界トップクラスの豊かさを誇り、アメリカを上回る時代もありました。<br><br>
+  この30年間で、アメリカの一人当たりGDPは約2.9万ドルから約8.5万ドルへと約3倍に成長しました。一方、日本は約4.4万ドルから約3.2万ドルへと後退しています。<br><br>
+  もし日本が当時と同じ勢いで成長を続けていたなら、同じ順位にいるあなたの年収は約<b>${Math.round(eqPhantom).toLocaleString()}万円</b>だったかもしれません。<br><br>
+  つまり、この線は固定されたものではありません。<br><br>
+  社会が変われば、線も動きます。<br><br>
+  そして、その線を動かしてきたのも、動かせなかったのも、私たち自身です。<br><br><br>
+  これからの私たちには、二つの挑戦があります。<br><br>
+  一つは、自分自身が今ある線の上を右へ進むこと。<br><br>
+  学び、働き、挑戦し、自分の人生をより豊かにしていくことです。<br><br>
+  もう一つは、社会全体の線そのものを上へ押し上げること。<br><br>
+  次の世代が、より恵まれた社会で挑戦できる土台を育てていくことです。<br><br>
+  この二つは、どちらか一方を選ぶものではありません。<br><br>
+  自分の人生を豊かにすることと、社会を豊かにすることは、本来、両立できる挑戦です。<br><br>
+  次にこの「国ガチャ」を引くのは、私たちではありません。<br><br>
+  私たちの子どもたち、そして、その先の世代です。<br><br>
+  だからこそ、自分の人生だけでなく、未来の社会という土台にも目を向けたい。<br><br>
+  一人ひとりの挑戦が積み重なれば、この線は、もう一度動かすことができます。`;
+}
+
+function renderConceptDiagram(){
+  const W=520, H=240, PL=50, PR=24, PT=22, PB=42;
+  const pw=W-PL-PR, ph=H-PT-PB;
+
+  // 指数的に右肩上がり（実際の所得分布の形に近い）
+  function curveY(t){ return PT+ph - (Math.exp(t*2.8)-1)/(Math.exp(2.8)-1)*ph*0.88; }
+  // 持ち上げ後は全体を均等に上に（クランプなし）
+  function curveY2(t){ return curveY(t)-58; }
+
+  const N=80;
+  let path1='', path2='';
+  for(let i=0;i<=N;i++){
+    const t=i/N;
+    const x=(PL+t*pw).toFixed(1), y1=curveY(t).toFixed(1), y2=curveY2(t).toFixed(1);
+    path1 += (i===0?'M':'L')+x+','+y1+' ';
+    path2 += (i===0?'M':'L')+x+','+y2+' ';
+  }
+
+  // カーブ間の塗りつぶしパス
+  const reversedPath2 = Array.from({length:N+1},(_,i)=>{
+    const t=1-i/N; return (PL+t*pw).toFixed(1)+','+(curveY2(t)).toFixed(1);
+  }).join(' L');
+  const fillPath = path1 + 'L' + reversedPath2 + ' Z';
+
+  // あなたの位置
+  const myT=0.62, myX=PL+myT*pw, myY=curveY(myT);
+  // 右矢印先端
+  const rightT=myT+0.16, rightX=PL+rightT*pw, rightY=curveY(rightT);
+
+  // 上向き矢印を等間隔で10本（マーカーを使わず直接描画）
+  const arrowCount=10;
+  let arrowsSvg='';
+  for(let i=0;i<arrowCount;i++){
+    const t = 0.05 + (0.90/(arrowCount-1))*i;
+    const x = PL+t*pw;
+    const y1 = curveY(t) - 4;   // 下（元のカーブのすぐ上）
+    const y2 = curveY2(t) + 6;  // 上（持ち上げたカーブのすぐ下）
+    const ax = x, ah = 6, aw = 5; // 矢印頭の位置・サイズ
+    // 軸線
+    arrowsSvg += `<line x1="${x.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x.toFixed(1)}" y2="${(y2+ah).toFixed(1)}" stroke="#ffd97a" stroke-width="1.8" opacity="0.85"/>`;
+    // 上向き三角（y2が小さい=上なので、先端はy2）
+    arrowsSvg += `<polygon points="${(ax-aw).toFixed(1)},${(y2+ah).toFixed(1)} ${(ax+aw).toFixed(1)},${(y2+ah).toFixed(1)} ${ax.toFixed(1)},${y2.toFixed(1)}" fill="#ffd97a" opacity="0.85"/>`;
+  }
+
+  const svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:${W}px;display:block;margin:0 auto;background:#0c0f14;border-radius:10px;border:1px solid var(--border);padding:4px;">
+    <defs></defs>
+
+    <!-- カーブ間の薄い塗り -->
+    <path d="${fillPath}" fill="#3ddc97" opacity="0.07"/>
+
+    <!-- 上向き矢印群（先に描いて線の下に） -->
+    ${arrowsSvg}
+
+    <!-- 元のカーブ（薄） -->
+    <path d="${path1}" fill="none" stroke="#3ddc97" stroke-width="2.5" opacity="0.35"/>
+    <!-- 持ち上げたカーブ -->
+    <path d="${path2}" fill="none" stroke="#3ddc97" stroke-width="2.8"/>
+
+    <!-- 国の生産性ラベル（元のカーブ） -->
+    <text x="${(PL+pw*0.52).toFixed(1)}" y="${(curveY(0.52)+16).toFixed(1)}"
+          fill="#3ddc97" font-size="16" opacity="0.5" text-anchor="middle">現在の日本</text>
+    <!-- 持ち上げたカーブのラベル -->
+    <text x="${(PL+pw*0.45).toFixed(1)}" y="${(curveY2(0.45)-10).toFixed(1)}"
+          fill="#ffd97a" font-size="16" font-weight="700" text-anchor="middle">↑ 国の生産性を上げる</text>
+
+    <!-- 右に動く矢印（直接描画） -->
+    <line x1="${(myX+6).toFixed(1)}" y1="${myY.toFixed(1)}" x2="${(rightX-8).toFixed(1)}" y2="${rightY.toFixed(1)}"
+          stroke="#ff5a5f" stroke-width="2.5"/>
+    <polygon points="${(rightX-8).toFixed(1)},${(rightY-5).toFixed(1)} ${rightX.toFixed(1)},${rightY.toFixed(1)} ${(rightX-8).toFixed(1)},${(rightY+5).toFixed(1)}" fill="#ff5a5f"/>
+    <text x="${((myX+rightX)/2).toFixed(1)}" y="${(Math.max(myY,rightY)+18).toFixed(1)}"
+          fill="#ff5a5f" font-size="16" text-anchor="middle">→ 個人が順位を上げる</text>
+
+    <!-- あなたの星 -->
+    <text x="${myX.toFixed(1)}" y="${(myY+9).toFixed(1)}" text-anchor="middle" font-size="36">⭐</text>
+
+    <!-- 軸ラベル -->
+    <line x1="${PL}" y1="${PT}" x2="${PL}" y2="${H-PB}" stroke="#3a4250" stroke-width="1"/>
+    <line x1="${PL}" y1="${H-PB}" x2="${W-PR}" y2="${H-PB}" stroke="#3a4250" stroke-width="1"/>
+    <text x="${PL-6}" y="${PT+4}" fill="#9aa4b2" font-size="16" text-anchor="end">↑</text>
+    <text x="${PL-6}" y="${PT+15}" fill="#9aa4b2" font-size="16" text-anchor="end">年収</text>
+    <text x="${W-PR}" y="${H-PB+16}" fill="#9aa4b2" font-size="16" text-anchor="end">国内での所得順位 →</text>
+    <text x="${W/2}" y="${H-4}" fill="#9aa4b2" font-size="16" text-anchor="middle">（個人が国内で何位か：右ほど上位）</text>
+  </svg>`;
+
+  document.getElementById('conceptDiagram').innerHTML = svg;
+}
+
+function render(){
+  const income = Math.max(1, parseFloat(document.getElementById('income').value)||0);
+  const selected = selectedCountries();
+  renderBaseline(income);
+  renderPosChart(income, selected);
+  renderEquiv(income, selected);
+  renderInsight(income, selected);
+  renderConceptDiagram();
+  renderChart(income, selected);
+  renderResults(income, selected);
+}
+
+render();
+</script>
+<div style="max-width:920px; margin:0 auto 40px;">
+  <a href="https://kuniakimat.github.io/sons/" target="_blank" style="text-decoration:none; display:block;">
+    <div style="background:linear-gradient(135deg,#0d0b09 0%,#111009 60%,#0d0f12 100%);
+                border:1px solid #3a3220; border-radius:16px; overflow:hidden;
+                transition:border-color 0.25s;"
+         onmouseover="this.style.borderColor='#c9b86c'" onmouseout="this.style.borderColor='#3a3220'">
+      <!-- テキスト部 -->
+      <div style="padding:22px 24px 18px;">
+        <p style="font-size:13px; color:#9aa4b2; line-height:1.75; margin:0 0 14px;">
+          このページでは、生まれた国という「土台」がいかに人生を規定するかを見てきました。<br>
+          国に限らず、地球・文明・組織・家族など、私たちはさまざまな階層の上に立っています。<br>
+          次のアプリでは、それを可視化する実験をしてみましょう。
+        </p>
+        <div style="text-align:right;">
+          <span style="font-size:12px; color:#5a4e2a; letter-spacing:0.1em;">NEXT APP →</span>
+        </div>
+      </div>
+      <!-- ロゴ帯 -->
+      <div style="padding:20px 28px 22px; border-top:1px solid #1e1a10; text-align:center;">
+        <div style="font-family:Georgia,'Times New Roman',serif; letter-spacing:0.18em;
+                    font-size:clamp(16px,4.5vw,28px); font-weight:400; line-height:1.25;">
+          <div style="color:#b8a55a;">SUCCESS ON</div>
+          <div style="color:#d4c47a;">SUCCESSION</div>
+        </div>
+        <div style="font-size:13px; color:#d4c47a; font-weight:600; letter-spacing:0.05em; margin-top:10px;">人生の基盤診断</div>
+      </div>
+    </div>
+  </a>
+</div>
+
+</body>
+</html>

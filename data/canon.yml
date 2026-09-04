@@ -1,0 +1,144 @@
+# canon.yml — 概念 ID ↔ 正典の対応表
+#
+# 記事本文に概念語が現れたとき、初出に自動でリンクを張るための辞書。
+# canonical には「その概念を説明している正典」の ID を1つだけ書く。
+#
+# aliases に表記ゆれを登録しておくと、どの書き方でも拾われる。
+
+広福観:
+  canonical: note-ndd5e08cfedab
+  aliases: [広福, 広い幸福観]
+  apps: [app-happiness]
+  status: A
+
+幸福25相:
+  canonical: note-nb3176e1d4cd5
+  aliases: [25相, 幸福の25相, 人生地図]
+  apps: [app-happiness]
+  status: A
+  detail: 空間相5（理・共・他・合・自）× 時間相5（瞬・進・頂・回・久）
+
+幸福タイプ:
+  canonical: app-happiness
+  aliases: []
+  status: B
+
+幸福の重心:
+  canonical: app-happiness
+  aliases: [空間の重心, 時間の重心]
+  status: B
+
+SONS:
+  canonical: app-sons
+  aliases: [S ON S, Success on Succession, Your Tower of Life]
+  apps: [app-sons, story-pyramid-of-life]
+  status: A
+  detail: 基盤層は 地球・自然／文明・時代／国・社会／組織・環境／家族・共同体／自分の力／固有恩源
+
+恩源:
+  canonical: app-sons
+  aliases: [おんげん]
+  apps: [app-sons, story-sons-fable, story-kinomi]
+  status: A
+
+恩源継承:
+  canonical: story-sons-fable
+  aliases: []
+  status: A
+
+知恩:
+  canonical: app-sons
+  aliases: []
+  status: B
+
+人生基盤:
+  canonical: app-sons
+  aliases: []
+  status: B
+
+多元中合:
+  canonical: app-chugo
+  aliases: [中合]
+  status: A
+  detail: 人称・時間・物心・得失・異同・境界・深度・循環・動機・生成・行動・結合・恩源・明暗
+
+関係相:
+  canonical: note-nb6fc6c6f08bf
+  aliases: [自他理合]
+  status: A
+
+圧熱:
+  canonical: note-nb6fc6c6f08bf
+  aliases: [圧と熱, 知性の熱力学]
+  status: A
+
+時間相:
+  canonical: note-nfe1aefc199df
+  aliases: []
+  status: A
+
+滅切:
+  canonical: note-nfe1aefc199df
+  aliases: [滅性, 切性, 滅と切]
+  status: A
+
+時空マトリクス:
+  canonical: note-n4f07f44dab6f
+  aliases: []
+  status: B
+
+成立屋:
+  canonical: note-nbea3b8b0edf7
+  aliases: [成立, Δ成立, 成立工学]
+  status: A
+
+負幸:
+  canonical: note-nebf2db8a95e6
+  aliases: [正負差]
+  status: B
+
+社会基盤と個人努力:
+  canonical: app-country
+  aliases: []
+  apps: [app-country, app-onehour]
+  status: B
+
+# ------------------------------------------------------------
+# 正典がまだ無い概念（Link Map の「未登録・今後追加」より）
+# canonical が空のものは、リンクを張らずに素通りする
+# ------------------------------------------------------------
+
+四ツ:
+  canonical:
+  aliases: []
+  status: 未設定
+
+四幻想:
+  canonical:
+  aliases: []
+  status: 未設定
+
+四覚:
+  canonical:
+  aliases: []
+  status: 未設定
+
+情熱力学:
+  canonical:
+  aliases: []
+  status: 未設定
+
+スポイルプラットフォーム:
+  canonical:
+  aliases: []
+  status: 未設定
+
+Engagement Quad:
+  canonical:
+  aliases: []
+  status: 未設定
+
+Net Plus Share:
+  canonical:
+  aliases: []
+  status: 未設定

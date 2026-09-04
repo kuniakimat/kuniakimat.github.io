@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="ja" style="background:#0e0e0a;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pyramid of Life — なぜ私は社会のしくみを問い始めたのか</title>
+<style>
+* { box-sizing: border-box; }
+:root { color-scheme: dark; }
+html { background: #0e0e0a; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+  background: #0e0e0a;
+  color: #d8d4c5;
+  line-height: 1.85;
+  font-size: 16px;
+  min-height: 100vh;
+}
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 64px 32px 96px;
+  background: #0e0e0a;
+}
+header.intro {
+  margin-bottom: 96px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid #2a2a22;
+  text-align: center;
+}
+header.intro .title-en {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  color: #6dc358;
+  margin: 0 0 18px;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+header.intro h1 {
+  font-size: 26px;
+  font-weight: 500;
+  margin: 0 0 10px;
+  letter-spacing: 0.04em;
+  color: #f0ecdd;
+  line-height: 1.5;
+}
+header.intro .subtitle-jp {
+  font-family: Georgia, "Yu Mincho", "Hiragino Mincho ProN", serif;
+  font-size: 16px;
+  color: #9ed681;
+  margin: 0 0 18px;
+  letter-spacing: 0.12em;
+  font-weight: 400;
+}
+header.intro .lead {
+  font-size: 14px;
+  color: #8a8676;
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+.proto-note {
+  margin: 56px 0 0;
+  padding: 24px 26px;
+  background: #1a1a14;
+  border: 1px solid #2a2a22;
+  border-left: 3px solid #d4a554;
+  border-radius: 4px;
+  text-align: left;
+}
+.proto-note .proto-label {
+  display: block;
+  font-family: Georgia, serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: #d4a554;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.proto-note p {
+  margin: 0;
+  font-size: 14px;
+  color: #a8a394;
+  line-height: 1.8;
+}
+.chapter {
+  margin-bottom: 96px;
+}
+.chapter h2 {
+  font-size: 22px;
+  font-weight: 500;
+  margin: 0 0 36px;
+  padding-left: 18px;
+  border-left: 2px solid #5cb84a;
+  letter-spacing: 0.04em;
+  color: #f0ecdd;
+}
+.chapter p {
+  margin: 0 0 1.4em;
+}
+.coda {
+  margin: 40px 0 0;
+  padding: 22px 0 0;
+  border-top: 1px solid #2a2a22;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15px;
+  color: #a8a394;
+  line-height: 1.9;
+  font-style: italic;
+  text-align: center;
+}
+.coda .stamp {
+  display: block;
+  margin-top: 14px;
+  font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+  font-style: normal;
+  font-size: 12px;
+  color: #6dc358;
+  letter-spacing: 0.18em;
+}
+.afterword {
+  margin-top: 120px;
+  padding-top: 64px;
+  border-top: 2px solid #5cb84a;
+}
+.afterword h2 {
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0 0 16px;
+  color: #f0ecdd;
+  letter-spacing: 0.03em;
+}
+.afterword .afterword-lead {
+  font-size: 14px;
+  color: #8a8676;
+  margin: 0 0 48px;
+  letter-spacing: 0.05em;
+}
+.afterword h3 {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 56px 0 20px;
+  color: #f0ecdd;
+  letter-spacing: 0.03em;
+}
+.afterword p {
+  margin: 0 0 1.3em;
+  color: #c8c4b5;
+}
+.afterword strong {
+  color: #f0ecdd;
+  font-weight: 500;
+}
+.afterword .em-green { color: #9ed681; font-weight: 500; }
+.afterword .em-amber { color: #c89868; font-weight: 500; }
+.afterword .em-red { color: #c98080; font-weight: 500; }
+.terms-table {
+  margin: 24px 0 32px;
+  background: #14140f;
+  border: 1px solid #2a2a22;
+  border-radius: 4px;
+  padding: 20px 24px;
+}
+.terms-table dl { margin: 0; }
+.terms-table dt {
+  font-weight: 500;
+  color: #9ed681;
+  margin-top: 12px;
+  font-size: 14.5px;
+}
+.terms-table dt:first-child { margin-top: 0; }
+.terms-table dd {
+  margin: 4px 0 0 0;
+  padding-left: 0;
+  color: #c8c4b5;
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+.app-callout {
+  margin: 56px 0 0;
+  padding: 32px 28px;
+  background: #1a1a14;
+  border: 1px solid #2a2a22;
+  border-radius: 4px;
+  text-align: center;
+}
+.app-callout .app-label {
+  font-family: Georgia, serif;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: #6dc358;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+}
+.app-callout h3 {
+  margin: 0 0 14px;
+  font-size: 19px;
+  color: #f0ecdd;
+}
+.app-callout p {
+  margin: 0 0 20px;
+  font-size: 14.5px;
+  color: #a8a394;
+  line-height: 1.75;
+}
+.app-callout .app-link {
+  display: inline-block;
+  padding: 10px 22px;
+  background: #5cb84a;
+  color: #0e0e0a;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 3px;
+  letter-spacing: 0.05em;
+}
+.fable-bridge {
+  margin: 64px 0 0;
+  padding-top: 40px;
+  border-top: 1px solid #2a2a22;
+}
+.fable-bridge .bridge-label {
+  font-family: Georgia, serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: #c89868;
+  text-transform: uppercase;
+  margin: 0 0 16px;
+}
+.fable-bridge p {
+  color: #c8c4b5;
+  margin: 0 0 18px;
+}
+.fable-bridge a.fable-link {
+  color: #d4a878;
+  text-decoration: none;
+  border-bottom: 1px solid #6a5a4a;
+  padding-bottom: 2px;
+  font-size: 15px;
+}
+.fable-bridge a.fable-link span {
+  display: block;
+  color: #8a8676;
+  font-size: 13px;
+  border: none;
+  margin-top: 4px;
+}
+footer.outro {
+  margin-top: 96px;
+  padding-top: 48px;
+  border-top: 1px solid #2a2a22;
+  font-size: 13px;
+  color: #6a6657;
+  text-align: center;
+}
+footer.outro .signature {
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: 0.18em;
+  color: #6dc358;
+  font-size: 11px;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 8px;
+}
+@media (max-width: 600px) {
+  .container { padding: 40px 20px 64px; }
+  header.intro h1 { font-size: 21px; }
+  .chapter h2 { font-size: 19px; }
+  .afterword h2 { font-size: 20px; }
+  body { font-size: 15px; }
+}
+
+
+.pyramid { margin: 40px auto 0; padding: 0; background: #14140f; border: 1px solid #2a2a22; border-radius: 4px; overflow: hidden; }
+.pyramid svg { display: block; width: 100%; height: auto; max-width: 720px; margin: 0 auto; }
+
+.scene { margin: 40px 0; display: flex; justify-content: center; }
+.scene svg { display: block; width: 100%; max-width: 320px; height: auto; }
+</style>
+</head>
+<body style="background:#0e0e0a;color:#d8d4c5;margin:0;min-height:100vh;">
+<div class="container" style="background:#0e0e0a;">
+
+<header class="intro">
+<p class="title-en">Pyramid of Life</p>
+<h1>なぜ私は社会のしくみを問い始めたのか</h1>
+<p class="subtitle-jp">— 恩源のピラミッド —</p>
+<p class="lead">フクダヒロシ、五十歳の振り返り</p>
+
+<div class="proto-note">
+<span class="proto-label">prototype — v0.3</span>
+<p>フレームワークを物語形式で導入するフォーマットの実験。文面は仮置きのプロトタイプ。</p>
+</div>
+</header>
+
+<section class="chapter">
+<h2>第一章　始まりの母</h2>
+<p>誰にとっても、最初の他者は母である。フクダヒロシにとってもそうだった。</p>
+<p>母は、ヒロシのすべてを肯定してくれる人だった。乳幼児のヒロシは、母なしには生きられなかった。母にもらったスヌーピーのぬいぐるみを抱いて、母の帰りを待つ写真が、いまも残っている。坂の上の墓地の隣にあった古い木造屋で、母が五右衛門風呂を沸かしている姿を、ヒロシは思い出す。</p>
+<p>三人の子の子育て、時代の荒波、闘病。母には苦労が絶えなかったはずだ。それでも母は、毎日を一生懸命に、そして楽しんで生きていた。柔らかいけれど芯の強い、その姿が、ヒロシの土台になった。</p>
+<p>実家を離れて何十年経った今でも、ヒロシは自分の中に母の気配を見つける。真面目さ、創意工夫、目の前のものを面白がる姿勢。それは血ではなく、母の毎日の振る舞いを通して、知らぬ間に受け取ってきたものだった。</p>
+<p>親子は、強い親が弱い子を守るというだけの構造ではなかった。親もまた一人の人間として、苦労を抱えながら毎日を生きていた。子はその姿を見て、価値観を受け取っていく。返しきれぬ恩は、次世代に送っていくしかない。</p>
+
+<div class="scene">
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<radialGradient id="warmGlow1" cx="0.5" cy="0.5" r="0.5">
+<stop offset="0%" stop-color="#e8b870" stop-opacity="0.5"/>
+<stop offset="100%" stop-color="#d4a554" stop-opacity="0"/>
+</radialGradient>
+</defs>
+<!-- 暖かい光のオーラ -->
+<circle cx="160" cy="105" r="95" fill="url(#warmGlow1)"/>
+<!-- 家屋のシルエット（控えめ） -->
+<path d="M 100 145 L 100 95 L 160 65 L 220 95 L 220 145 Z" fill="none" stroke="#5a5040" stroke-width="0.8" opacity="0.6"/>
+<!-- 窓 -->
+<rect x="142" y="100" width="36" height="40" fill="#e8b870" opacity="0.85"/>
+<!-- 窓の十字桟 -->
+<line x1="160" y1="100" x2="160" y2="140" stroke="#3a2a18" stroke-width="0.8" opacity="0.7"/>
+<line x1="142" y1="120" x2="178" y2="120" stroke="#3a2a18" stroke-width="0.8" opacity="0.7"/>
+<!-- 屋根のシルエット -->
+<path d="M 95 95 L 160 60 L 225 95" fill="none" stroke="#5a5040" stroke-width="0.8" opacity="0.6"/>
+<!-- 煙突から立ち上る湯気 -->
+<rect x="190" y="78" width="6" height="18" fill="#3a2a18" opacity="0.5"/>
+<path d="M 193 76 Q 188 66 195 56 Q 200 50 196 42" stroke="#a8a394" stroke-width="0.6" fill="none" opacity="0.45"/>
+<path d="M 193 76 Q 198 68 192 60 Q 188 54 193 48" stroke="#a8a394" stroke-width="0.6" fill="none" opacity="0.4"/>
+</svg>
+</div>
+
+<div class="coda">
+<p>思春期に芽吹いたものが、最初の蔦になることを、当時のヒロシは知らない。</p>
+<span class="stamp">家層、点火</span>
+</div></section>
+
+<section class="chapter">
+<h2>第二章　学校教育</h2>
+<p>フクダヒロシは、小学校から大学まで、一貫して公立学校で育った。</p>
+<p>学校という場の枠の大きさは、ヒロシも理解していた。長い時間が投じられ、誰もが労力をかける。重要であるはずだ、と思っていた。</p>
+<p>しかし中学・高校のヒロシが嫌っていたものは、はっきりしていた。意味のない暗記。実用を想定しない理数科。一つの尺度で偏差値を競うだけの進路選択。<strong>目的のない能力強化、目的のない競争</strong>。意味への思考停止を求められるような鍛錬。高校までの勉強は、ヒロシにとって偏差値攻略ゲームでしかなかった。</p>
+<p>枠の大きさは知っていても、その中で自分が益を得ているという実感は来なかった。重要そうな場であることと、自分にとって価値のある場であることは、別だった。</p>
+<p>大学に入って、よく生きるための教養課程の授業に出るようになって、ヒロシは初めて、知的好奇心を刺激された。それまで学校で感じてきたことは、思い込みではなかった。教育という営みは、本来こちらの方向にあるはずだ、とヒロシは確信した。</p>
+<p>教育は強ければよいというものではない。どんな人間を育てるかを見誤っていれば、有害でさえある。教育観は国家レベルで間違いうる、危ういものだ。ヒロシは強い危機感を持っていた。</p>
+<p>学校への違和感は、その後の仕事での力の発揮の仕方でも裏付けられた。後年、大人になって取り組むことになる国際比較の中でも、日本の最大の課題として、はっきり浮かび上がってくる。</p>
+
+<div class="scene">
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+<!-- 整列した縦線（規律・整列） -->
+<g stroke="#5a5547" stroke-width="0.8" opacity="0.55">
+<line x1="60" y1="60" x2="60" y2="160"/>
+<line x1="90" y1="60" x2="90" y2="160"/>
+<line x1="120" y1="60" x2="120" y2="160"/>
+<line x1="150" y1="60" x2="150" y2="160"/>
+<line x1="180" y1="60" x2="180" y2="160"/>
+<line x1="210" y1="60" x2="210" y2="160"/>
+<line x1="240" y1="60" x2="240" y2="160"/>
+<line x1="260" y1="60" x2="260" y2="160"/>
+</g>
+<!-- 上のバー（押さえつけ） -->
+<line x1="55" y1="60" x2="265" y2="60" stroke="#5a5547" stroke-width="1.2" opacity="0.7"/>
+<!-- 下のバー -->
+<line x1="55" y1="160" x2="265" y2="160" stroke="#5a5547" stroke-width="1.2" opacity="0.7"/>
+<!-- 陰の赤いラインが斜めに走る -->
+<line x1="55" y1="60" x2="265" y2="160" stroke="#c98080" stroke-width="0.8" opacity="0.5"/>
+<line x1="265" y1="60" x2="55" y2="160" stroke="#c98080" stroke-width="0.8" opacity="0.5"/>
+</svg>
+</div>
+
+<div class="coda">
+<p>枠は大きい、しかし恩は来ない。<br>恩を運んでこなかった層にも、確かに、何かが起きていた。</p>
+<span class="stamp">組層に陰</span>
+</div></section>
+
+<section class="chapter">
+<h2>第三章　自分の頭で考える</h2>
+<p>十代後半のヒロシは、自分の力で生きていく道を探していた。</p>
+<p>レール教育の不毛を感じながらも、ヒロシは怠けたかったわけではない。むしろ逆だった。最大限の努力を投じるかどうかで、能力も結果もまったく変わってしまうことを、身体で知っていた。だから濃い毎日を過ごそうとしていた。</p>
+<p>ただ、その努力をどこに投じるかが問題だった。学校の用意したレールに沿って走り続けることが、本当に意味のある努力なのか。ヒロシはそれを疑っていた。</p>
+<p>大学二年で、ヒロシは休学を決意し、ある芸術家のもとに住み込みで弟子入りした。芸術家は学歴を持たず、独力で表現の道を切り拓き、世界に名を知られるところまで上り詰めた人だった。レール教育を信じていないヒロシが、その人に惹かれたのは自然だった。</p>
+<p>芸術家から学んだことは、技術ではなかった。生き方だった。</p>
+<p>レールでのお勉強より、リアリティある経験から自分の頭で考えや。芸術家のその姿勢は、ヒロシの中に深く入った。学校教育が削ぎ落としてきたものを、ヒロシは芸術家のもとで取り戻していった。</p>
+<p>濃い毎日を生きること。自分の頭で考えること。それが自分の生き方の核になった。</p>
+
+<div class="scene">
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+<!-- 地平線 -->
+<line x1="40" y1="160" x2="280" y2="160" stroke="#3a3530" stroke-width="0.5" opacity="0.5"/>
+<!-- 整列したレールのような構造（左側） -->
+<g stroke="#5a5547" stroke-width="0.6" opacity="0.4">
+<line x1="60" y1="160" x2="60" y2="100"/>
+<line x1="80" y1="160" x2="80" y2="105"/>
+<line x1="100" y1="160" x2="100" y2="110"/>
+<line x1="120" y1="160" x2="120" y2="115"/>
+</g>
+<!-- レールの外で独立して立つ若木 -->
+<!-- 幹（しっかり太め） -->
+<line x1="200" y1="160" x2="200" y2="105" stroke="#3a2a18" stroke-width="2.5" stroke-linecap="round"/>
+<!-- 葉冠 -->
+<circle cx="200" cy="92" r="14" fill="#4a8830"/>
+<circle cx="187" cy="95" r="10" fill="#4a8830"/>
+<circle cx="213" cy="95" r="10" fill="#4a8830"/>
+<circle cx="200" cy="80" r="10" fill="#4a8830"/>
+<!-- 一筋の光（自分で考える光） -->
+<circle cx="200" cy="50" r="3" fill="#f4c576"/>
+<line x1="200" y1="55" x2="200" y2="78" stroke="#d4a554" stroke-width="0.4" opacity="0.5" stroke-dasharray="2 2"/>
+</svg>
+</div>
+
+<div class="coda">
+<p>レールの外で価値を作る人がいる、と知った日から、<br>自分の足元の意味は、自分で作るものになった。</p>
+<span class="stamp">我層、自己投資の点火</span>
+</div></section>
+
+<section class="chapter">
+<h2>第四章　19歳のバックパック</h2>
+<p>休学した一年で、ヒロシはもう一つのことをした。</p>
+<p>世界三十カ国のバックパッカー旅行だった。途上国を中心に世界を放浪して、ヒロシは驚愕した。日本で育ち、暮らすことが、他国と比べて、あまりにもイージーで、あまりにも快適だった。それまでヒロシは、日本の暮らしやすさ、インフラ、教育水準、経済優位を、まったく認識できていなかった。</p>
+<p>自分のそれまでの優位の出所を、計算し直すことになった。ヒロシの標準規格での優位性は、日本のインフラの上のものだった。九割は日本に生まれたから到達したもので、残りの一割を努力差分で勝ち抜いた程度の誤差でしかない。そう思い知った。</p>
+<p>自分で確立してきた「自分の頭で考えて価値を作る」という姿勢は、それ自体は正しい。ただし、その自分の頭が考える土台は、自分のものではなかった。日本というインフラが、用意してくれていた。</p>
+<p>そして、人間は、自分が受けてきた恩の源——恩源——がない世界を経験しない限り、その恩を自覚することが難しい。ヒロシはそのことを、自分の体で知った。</p>
+<p>この気づきが、後年まで続くヒロシの知恩感覚の源流になった。</p>
+
+<div class="scene">
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<radialGradient id="dawn4" cx="0.5" cy="1" r="0.7">
+<stop offset="0%" stop-color="#d4a554" stop-opacity="0.4"/>
+<stop offset="100%" stop-color="#d4a554" stop-opacity="0"/>
+</radialGradient>
+</defs>
+<!-- 地平線の暁光 -->
+<rect x="0" y="120" width="320" height="50" fill="url(#dawn4)"/>
+<!-- 遠景の大地・山影 -->
+<path d="M 0 150 L 50 140 L 110 148 L 180 138 L 240 145 L 320 140 L 320 165 L 0 165 Z" fill="#1a1814" opacity="0.85"/>
+<!-- 地平線 -->
+<line x1="0" y1="160" x2="320" y2="160" stroke="#3a3530" stroke-width="0.5"/>
+<!-- 後ろ姿の旅人 -->
+<g transform="translate(150, 140)">
+<!-- バックパック -->
+<rect x="-7" y="-15" width="14" height="18" rx="3" fill="#5a4030" stroke="#3a2818" stroke-width="0.5"/>
+<!-- 頭 -->
+<circle cx="0" cy="-22" r="4" fill="#d8d4c5"/>
+<!-- 胴体（バックパックに半分隠れる） -->
+<path d="M -4 -18 L -4 -2 L 4 -2 L 4 -18" fill="#a8a394" opacity="0.85"/>
+<!-- 足 -->
+<line x1="-2" y1="-2" x2="-3" y2="6" stroke="#5a5040" stroke-width="2"/>
+<line x1="2" y1="-2" x2="3" y2="6" stroke="#5a5040" stroke-width="2"/>
+</g>
+<!-- 小さな点（遠くの希望／ゴール） -->
+<circle cx="270" cy="115" r="2" fill="#f4c576" opacity="0.85"/>
+</svg>
+</div>
+
+<div class="coda">
+<p>恩源がない世界を経験して初めて、ある世界が見える。<br>これは特定の層の話ではなく、すべての層に効いていく道具だった。</p>
+<span class="stamp">国層、点火 ／ 第一の知恩経路</span>
+</div>
+
+<div class="pyramid">
+<svg viewBox="0 0 720 540" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="720" height="540" fill="#0e0e0a"/>
+<circle cx="360" cy="180" r="45" fill="#d4c590" opacity="0.18"/>
+<circle cx="360" cy="180" r="22.5" fill="#d4c590" opacity="0.108"/>
+<line x1="0" y1="490" x2="720" y2="490" stroke="#1a1814" stroke-width="0.5"/>
+<rect x="0" y="490" width="720" height="50" fill="#0a0a08"/>
+<rect x="338" y="200" width="44" height="40" fill="#2a2520" stroke="#1a1815" stroke-width="0.5"/>
+  <polygon points="338,200 382,200 374,194 346,194" fill="#3a3530" stroke="#1a1815" stroke-width="0.4"/>
+  <line x1="355.0" y1="197" x2="355.0" y2="181.6" stroke="#2a1f10" stroke-width="2" stroke-linecap="round"/><circle cx="355.0" cy="177.1" r="9" fill="#4a8830"/><circle cx="349.15" cy="175.75" r="7.0200000000000005" fill="#4a8830"/><circle cx="360.85" cy="175.75" r="7.0200000000000005" fill="#4a8830"/><circle cx="355.0" cy="170.79999999999998" r="6.3" fill="#4a8830"/>
+  <line x1="365.0" y1="197" x2="365.0" y2="181.6" stroke="#2a1f10" stroke-width="2" stroke-linecap="round"/><circle cx="365.0" cy="177.1" r="9" fill="#4a8830"/><circle cx="359.15" cy="175.75" r="7.0200000000000005" fill="#4a8830"/><circle cx="370.85" cy="175.75" r="7.0200000000000005" fill="#4a8830"/><circle cx="365.0" cy="170.79999999999998" r="6.3" fill="#4a8830"/>
+<rect x="318" y="240" width="84" height="40" fill="#2a2520" stroke="#1a1815" stroke-width="0.5"/>
+  <polygon points="318,240 402,240 394,234 326,234" fill="#3a3530" stroke="#1a1815" stroke-width="0.4"/>
+  <line x1="340.0" y1="237" x2="340.0" y2="221.6" stroke="#2a1f10" stroke-width="2" stroke-linecap="round"/><circle cx="340.0" cy="217.1" r="9" fill="#4a8830"/><circle cx="334.15" cy="215.75" r="7.0200000000000005" fill="#4a8830"/><circle cx="345.85" cy="215.75" r="7.0200000000000005" fill="#4a8830"/><circle cx="340.0" cy="210.79999999999998" r="6.3" fill="#4a8830"/>
+  <line x1="360.0" y1="237" x2="360.0" y2="221.6" stroke="#2a1f10" stroke-width="2" stroke-linecap="round"/><circle cx="360.0" cy="217.1" r="9" fill="#4a8830"/><circle cx="354.15" cy="215.75" r="7.0200000000000005" fill="#4a8830"/><circle cx="365.85" cy="215.75" r="7.0200000000000005" fill="#4a8830"/><circle cx="360.0" cy="210.79999999999998" r="6.3" fill="#4a8830"/>
+  <line x1="380.0" y1="237" x2="380.0" y2="221.6" stroke="#2a1f10" stroke-width="2" stroke-linecap="round"/><circle cx="380.0" cy="217.1" r="9" fill="#4a8830"/><circle cx="374.15" cy="215.75" r="7.0200000000000005" fill="#4a8830"/><circle cx="385.85" cy="215.75" r="7.0200000000000005" fill="#4a8830"/><circle cx="380.0" cy="210.79999999999998" r="6.3" fill="#4a8830"/>
+<rect x="298" y="280" width="124" height="40" fill="#2a2520" stroke="#1a1815" stroke-width="0.5"/>
+  <polygon points="298,280 422,280 414,274 306,274" fill="#3a3530" stroke="#1a1815" stroke-width="0.4"/>
+<rect x="278" y="320" width="164" height="40" fill="#2a2520" stroke="#1a1815" stroke-width="0.5"/>
+  <polygon points="278,320 442,320 434,314 286,314" fill="#3a3530" stroke="#1a1815" stroke-width="0.4"/>
+  <ellipse cx="302.4" cy="317" rx="6" ry="2.5" fill="#7a5028" opacity="0.85"/>
+  <ellipse cx="305.4" cy="319" rx="4" ry="1.8" fill="#5a3818" opacity="0.7"/>
+  <ellipse cx="331.2" cy="317" rx="6" ry="2.5" fill="#7a5028" opacity="0.85"/>
+  <ellipse cx="334.2" cy="319" rx="4" ry="1.8" fill="#5a3818" opacity="0.7"/>
+  <ellipse cx="360.0" cy="317" rx="6" ry="2.5" fill="#7a5028" opacity="0.85"/>
+  <ellipse cx="363.0" cy="319" rx="4" ry="1.8" fill="#5a3818" opacity="0.7"/>
+  <ellipse cx="388.8" cy="317" rx="6" ry="2.5" fill="#7a5028" opacity="0.85"/>
+  <ellipse cx="391.8" cy="319" rx="4" ry="1.8" fill="#5a3818" opacity="0.7"/>
+  <ellipse cx="417.6" cy="317" rx="6" ry="2.5" fill="#7a5028" opacity="0.85"/>
+  <ellipse cx="420.6" cy="319" rx="4" ry="1.8" fill="#5a3818" opacity="0.7"/>
+<rect x="258" y="360" width="204" height="40" fill="#2a2520" stroke="#1a1815" stroke-width="0.5"/>
+  <polygon points="258,360 462,360 454,354 266,354" fill="#3a3530" stroke="#1a1815" stroke-width="0.4"/>
+  <line x1="288.0" y1="357" x2="288.0" y2="337.2" stroke="#2a1f10" stroke-width="2.5" stroke-linecap="round"/><circle cx="288.0" cy="331.7" r="11" fill="#4a8830"/><circle cx="280.85" cy="330.05" r="8.58" fill="#4a8830"/><circle cx="295.15" cy="330.05" r="8.58" fill="#4a8830"/><circle cx="288.0" cy="324.0" r="7.699999999999999" fill="#4a8830"/>
+  <line x1="324.0" y1="357" x2="324.0" y2="337.2" stroke="#2a1f10" stroke-width="2.5" stroke-linecap="round"/><circle cx="324.0" cy="331.7" r="11" fill="#4a8830"/><circle cx="316.85" cy="330.05" r="8.58" fill="#4a8830"/><circle cx="331.15" cy="330.05" r="8.58" fill="#4a8830"/><circle cx="324.0" cy="324.0" r="7.699999999999999" fill="#4a8830"/>
+  <line x1="360.0" y1="357" x2="360.0" y2="337.2" stroke="#2a1f10" stroke-width="2.5" stroke-linecap="round"/><circle cx="360.0" cy="331.7" r="11" fill="#4a8830"/><circle cx="352.85" cy="330.05" r="8.58" fill="#4a8830"/><circle cx="367.15" cy="330.05" r="8.58" fill="#4a8830"/><circle cx="360.0" cy="324.0" r="7.699999999999999" fill="#4a8830"/>
+  <line x1="396.0" y1="357" x2="396.0" y2="337.2" stroke="#2a1f10" stroke-width="2.5" stroke-linecap="round"/><circle cx="396.0" cy="331.7" r="11" fill="#4a8830"/><circle cx="388.85" cy="330.05" r="8.58" fill="#4a8830"/><circle cx="403.15" cy="330.05" r="8.58" fill="#4a8830"/><circle cx="396.0" cy="324.0" r="7.699999999999999" fill="#4a8830"/>
+  <line x1="432.0" y1="357" x2="432.0" y2="337.2" stroke="#2a1f10" stroke-width="2.5" stroke-linecap="round"/><circle cx="432.0" cy="331.7" r="11" fill="#4a8830"/><circle cx="424.85" cy="330.05" r="8.58" fill="#4a8830"/><circle cx="439.15" cy="330.05" r="8.58" fill="#4a8830"/><circle cx="432.0" cy="324.0" r="7.699999999999999" fill="#4a8830"/>
+<rect x="238" y="400" width="244" height="40" fill="#2a2520" stroke="#1a1815" stroke-width="0.5"/>
+  <polygon points="238,400 482,400 474,394 246,394" fill="#3a3530" stroke="#1a1815" stroke-width="0.4"/>
+<rect x="218" y="440" width="284" height="40" fill="#2a2520" stroke="#1a1815" stroke-width="0.5"/>
+  <polygon points="218,440 502,440 494,434 226,434" fill="#3a3530" stroke="#1a1815" stroke-width="0.4"/>
+<g transform="translate(360, 200)">
+  <circle cx="0" cy="-22" r="6" fill="#f0ecdd"/>
+  <path d="M -6 -16 Q -6 -18 -3 -18 L 3 -18 Q 6 -18 6 -16 L 6 -2 Q 6 0 4 0 L 1.5 0 L 1.5 8 Q 1.5 9 0.7 9 L -0.7 9 Q -1.5 9 -1.5 8 L -1.5 0 L -4 0 Q -6 0 -6 -2 Z" fill="#f0ecdd"/>
+</g>
+<text x="555" y="232" fill="#e8e3d4" font-size="17" opacity="0.9">我</text>
+<text x="555" y="272" fill="#e8e3d4" font-size="17" opacity="0.9">家</text>
+<text x="555" y="312" fill="#5a5547" font-size="17" opacity="0.6">村</text>
+<text x="555" y="352" fill="#c98080" font-size="17" opacity="0.85">組</text>
+<text x="555" y="392" fill="#e8e3d4" font-size="17" opacity="0.9">国</text>
+<text x="555" y="432" fill="#5a5547" font-size="17" opacity="0.6">世</text>
+<text x="555" y="472" fill="#5a5547" font-size="17" opacity="0.6">森</text>
+<text x="40" y="50" fill="#e8e3d4" font-size="20" font-weight="500">第四章末　Pyramid of Life</text>
+<text x="40" y="82" fill="#a8a394" font-size="17">国層に木が育つ。第一の知恩経路。</text>
+</svg>
+</div></section>
+
+<section class="chapter">
+<h2>第五章　組織を率いて恩を知る</h2>
+<p>二十代のヒロシは、自分の集中力、習熟力、独創性で、相対パフォーマンス優位を築くゲームのなかにいた。十代後半に身につけた「濃い毎日」と「自分の頭で考える」が、ビジネスの場では結果として出ていた。マシーン性能を、ヒロシは誇りにしていた。</p>
+<p>三十代になり、組織を率いる立場になって、視界は変わった。</p>
+<p>個人がいくら走れても、組織が回らなければ、何一つ持続しない。マネジメントというのは、見えないところで誰かが日々判断と調整を続けている営みだった。それを引き受ける側に回って初めて、ヒロシはその大変さを知った。組織は自然に存在しているのではない。誰かが日々、その輪郭を保ち続けているから、明日も在る。</p>
+<p>新興大企業という、急速に立ち上がり、急速に大きくなった組織の内側で、ヒロシはその脆さと、それでも維持しようとする人間たちの存在を、組織長として日々見ることになった。</p>
+<p>組織を去っていく人間の中に、受け取った恩を残さず、外にだけ批判を残していく者がいた。ヒロシはそれを恩知らずだと感じ、強い憤りを覚えた。</p>
+<p>そして気づいた。</p>
+<p>二十代でパフォーマンス天狗だった自分こそが、恩知らずだったのだと。当時の上司、当時のマネジメント、当時の組織。彼らがどれだけ自分を支えていたか、自分の発揮を可能にしていたか、当時の自分はまったく見えていなかった。マシーン性能だと思っていたものの大半は、土台の上での発揮だった。</p>
+<p>世界を歩いたときに国というスケールで気づいた構造が、組織というスケールで再び現れた。土台があるから、その上で発揮できる。それは国でも、組織でも、同じだった。</p>
+<p>ただし、組織のスケールでの気づきには、もう一つの経路があった。「恩源がない世界を経験する」のではなく、「自分が支える側に回る」という経路。恩を知るのは、その不在を経験することの他に、自分が支える側に回ったときなのだ。親の恩、子知らず、というやつだ。</p>
+<p>同時に、関わり方の多様性も知った。すべての人が同じ熱で組織に関わるわけではない。深く関わる人、浅く関わる人、通り過ぎていく人。組織はそうした多様な関わり方の総体として、辛うじて成立し続けている。</p>
+
+<div class="scene">
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+<!-- 井桁状の組み木：複数の梁が互いに支え合う -->
+<g stroke="#7a7563" stroke-width="2" fill="none" opacity="0.7">
+<!-- 横の梁（3本） -->
+<line x1="80" y1="80" x2="240" y2="80"/>
+<line x1="60" y1="110" x2="260" y2="110"/>
+<line x1="80" y1="140" x2="240" y2="140"/>
+<!-- 縦の梁（3本） -->
+<line x1="100" y1="60" x2="100" y2="160"/>
+<line x1="160" y1="50" x2="160" y2="170"/>
+<line x1="220" y1="60" x2="220" y2="160"/>
+</g>
+<!-- 交差点に小さな光（人の存在） -->
+<g fill="#d4a554" opacity="0.85">
+<circle cx="100" cy="80" r="2.5"/>
+<circle cx="160" cy="80" r="2.5"/>
+<circle cx="220" cy="80" r="2.5"/>
+<circle cx="100" cy="110" r="2.5"/>
+<circle cx="160" cy="110" r="3"/>
+<circle cx="220" cy="110" r="2.5"/>
+<circle cx="100" cy="140" r="2.5"/>
+<circle cx="160" cy="140" r="2.5"/>
+<circle cx="220" cy="140" r="2.5"/>
+</g>
+<!-- 中心の交点を強調（自分の位置） -->
+<circle cx="160" cy="110" r="6" fill="none" stroke="#5cb84a" stroke-width="1" opacity="0.6"/>
+</svg>
+</div>
+
+<div class="coda">
+<p>支える側に回って初めて、支えられていた自分が見える。<br>親の恩、子知らず。</p>
+<span class="stamp">我層・組層、知恩の遅れた成熟 ／ 第二の知恩経路</span>
+</div></section>
+
+<section class="chapter">
+<h2>第六章　経営を持続させる重み</h2>
+<p>組織を率いる側に回って初めて、ヒロシは組織が誰かの手で日々保たれていることを知った。その経験は、ヒロシにもう一つのことを教えていた。組織の存在は当然ではない、ということだ。</p>
+<p>これを身をもって知ったのは、家業を通してでもあった。</p>
+<p>ヒロシは、経済優位の恩恵を受けてきた方だった。円が強かった日本で、中規模の会社経営をする家で育ち、比較的高給な職業に就いて、お金で苦労した記憶がほとんどない。だから感謝も薄かった。</p>
+<p>二十代で、その業界全体が時代の波に飲まれた。家業もその直撃を受けた。父は、しんがりまで会社の責任を引き受け、関係者への筋を通して経営を畳んだ。生活水準は激変したが、父が長年の経営を通して築いてきた人間としての信頼や、社会への深い洞察は、何ひとつ損なわれなかった。父はそれを資本に、第二のフェーズを楽しむように生きはじめた。その姿は、ヒロシを鼓舞した。</p>
+<p>経営という営みは、華やかでもあるが、必勝の営みではない。時代の波が一つの業界を消すことがある。それでも、最後まで責任を引き受け切る人がいる。組織の輪郭を、退き際まで保とうとする人がいる。経営の本質は、成立させ続けることだけではなく、終わらせ方にも宿るのだとヒロシは知った。</p>
+<p>会社のスケールで起きたことは、国のスケールでも起きうる。ヒロシは、そう思うようになった。</p>
+
+<div class="scene">
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+<!-- 建物のシルエット -->
+<!-- 静かに佇む建物。鍵を閉めた後の風景、奥には新しい道 -->
+<rect x="100" y="80" width="120" height="80" fill="none" stroke="#7a7563" stroke-width="0.8" opacity="0.55"/>
+<polygon points="100,80 160,55 220,80" fill="none" stroke="#7a7563" stroke-width="0.8" opacity="0.5"/>
+<!-- 戸を閉じた様子（一本の縦線で象徴的に） -->
+<line x1="160" y1="80" x2="160" y2="160" stroke="#7a7563" stroke-width="0.5" opacity="0.45"/>
+<!-- 地平線 -->
+<line x1="40" y1="160" x2="280" y2="160" stroke="#3a3530" stroke-width="0.5" opacity="0.5"/>
+<!-- 奥に続く道（建物の横から伸びる、新しい歩み） -->
+<path d="M 220 160 Q 245 145 270 130" stroke="#9ed681" stroke-width="0.8" fill="none" opacity="0.55" stroke-dasharray="3 2"/>
+<!-- 道の先の小さな光（次のフェーズの灯り） -->
+<circle cx="272" cy="128" r="2" fill="#9ed681" opacity="0.85"/>
+</svg>
+</div>
+
+<div class="coda">
+<p>終わらせ方のなかにも、品格は宿る。<br>そして、終わったあとに、もう一度始まる人の姿がある。</p>
+<span class="stamp">組層、点火（葉に翳り）</span>
+</div></section>
+
+<section class="chapter">
+<h2>第七章　便利さに吸われるもの</h2>
+<p>ヒロシは、テクノロジーの利便性、人生や思考への影響を、強く感じる世代だった。インターネットとAIがなければ、人生はまったく違ったものになっていた。より創造的で深い時間を過ごすイネイブラーとして、テクノロジーから決定的な影響を受けた。</p>
+<p>同時に、その使われ方に違和感を抱くようになった。スポイルテックという言葉でしか表現できない、何かが起きていた。</p>
+<p>本来の技術進化は、価値そのものを大きくする方向に進むはずだった。けれども現代の技術は、労力を減らす方向にばかり進化した。コスパ、タイパ。価値を労力で割った効率ばかりが上がっていく。分子の価値は固定されたまま、分母の労力だけが縮んでいく。結果として、何も大きくなっていない。</p>
+<p>もう一つの作用が、より静かに進行していた。擬似関係への、関係エネルギーの流出。アニメ、ゲーム、AI会話、推し活。現実の関係構築を回避させながら、人間のパッションをバーチャルに引き寄せ、マネタイズする。本物の関係には責任が伴うが、擬似関係は熱だけを抽出する。圧なき熱だけの関係。燃焼しているように見えて、何も生まない。</p>
+<p>三つ目は、スナック化と行動誘因。体験は短く、軽く、即時報酬型になっていく。アフォーダンスとアベイラビリティが、人の意志を溶かす。選択しているように見えて、誘導されている。</p>
+<p>これらは別々の現象ではなかった。技術が、人間の関係エネルギーと意志と時間を、現実層から引き剥がしてバーチャル層に閉じ込め、マネタイズする。それがスポイルエコノミーだった。</p>
+<p>技術進化の速度に伴って、活用ルールの整備が必要になる。自動車の運転免許や速度制限のように。個人の規律、社会のルール、産業の方向。三つで同時に動かさなければ、流出は止まらない。</p>
+
+<div class="scene">
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+<!-- 地面 -->
+<line x1="40" y1="170" x2="280" y2="170" stroke="#3a3530" stroke-width="0.5" opacity="0.5"/>
+<!-- 太い幹 -->
+<line x1="160" y1="170" x2="160" y2="100" stroke="#3a2a18" stroke-width="3.5" stroke-linecap="round"/>
+<!-- 左の枝（緑、健全） -->
+<line x1="160" y1="120" x2="120" y2="90" stroke="#3a2a18" stroke-width="2" stroke-linecap="round"/>
+<line x1="120" y1="90" x2="100" y2="80" stroke="#3a2a18" stroke-width="1.5" stroke-linecap="round"/>
+<!-- 緑の葉（左） -->
+<circle cx="100" cy="78" r="11" fill="#4a8830"/>
+<circle cx="92" cy="83" r="8" fill="#4a8830"/>
+<circle cx="108" cy="83" r="8" fill="#4a8830"/>
+<circle cx="100" cy="70" r="8" fill="#4a8830"/>
+<!-- 右の枝（茶、枯れ気味） -->
+<line x1="160" y1="115" x2="200" y2="85" stroke="#3a2a18" stroke-width="2" stroke-linecap="round"/>
+<line x1="200" y1="85" x2="220" y2="75" stroke="#3a2a18" stroke-width="1.5" stroke-linecap="round"/>
+<!-- 茶の葉（右） -->
+<circle cx="220" cy="73" r="10" fill="#8a6028"/>
+<circle cx="212" cy="78" r="7" fill="#8a6028"/>
+<circle cx="228" cy="78" r="7" fill="#8a6028"/>
+<circle cx="220" cy="66" r="7" fill="#8a6028"/>
+<!-- 上に伸びる枝（中間） -->
+<line x1="160" y1="100" x2="160" y2="80" stroke="#3a2a18" stroke-width="1.5" stroke-linecap="round"/>
+<!-- 上の混在の葉 -->
+<circle cx="160" cy="68" r="9" fill="#4a8830"/>
+<circle cx="155" cy="62" r="6" fill="#8a6028" opacity="0.85"/>
+<circle cx="167" cy="65" r="5" fill="#4a8830"/>
+<!-- 落ち葉（茶、地面） -->
+<g fill="#7a5028" opacity="0.6">
+<ellipse cx="200" cy="167" rx="3" ry="1.5"/>
+<ellipse cx="215" cy="170" rx="3" ry="1.5"/>
+<ellipse cx="232" cy="168" rx="2.5" ry="1.2"/>
+</g>
+</svg>
+</div>
+
+<div class="coda">
+<p>同じ技術が、人を解き放ちもすれば、奪いもする。<br>葉の色は、ひとつの枝の中で混じり始めた。</p>
+<span class="stamp">世層、点火（緑と茶の混在）</span>
+</div></section>
+
+<section class="chapter">
+<h2>第八章　次世代に残す社会</h2>
+<p>五十歳のヒロシは、社会と個人の関係のあり方に、強い関心と危機感を持っている。</p>
+<p>これまで層ごとに芽吹かせてきた認識は、五十歳になる頃には、互いに繋がりはじめていた。家族の支え、自分の頭で考えることの土台、日本という国の前提、組織を維持する労力、家業の脆さ、テクノロジーが人間に及ぼす作用、学校教育の方向性。これらは別々の話ではなく、一つの問いの異なる面だった。</p>
+<p>社会のしくみが本当によく回っているとき、それを動かしている人たちへの感謝はもっとも薄くなる。よく機能している仕組みほど、誰にも見られないまま摩耗していく。十九歳の世界放浪で、ヒロシはこの構造を自分の身体で知った。それ以来、家のスケールでも、組織のスケールでも、世代のスケールでも、同じ構造に何度も出会ってきた。これは普遍的な認識の構造だった。</p>
+<p>そしていま、その構造を社会のスケールで取り戻したい、と思うようになった。</p>
+<p>母から受け取った「返しきれぬ恩を、次世代に送っていく」という基本姿勢は、五十歳のヒロシの中で、より具体的な形を持つようになっていた。</p>
+<p>次世代のソース——彼らがこれから受け取るはずの恩の源——を、健全な形に回復して渡していくこと。それがヒロシが後半生を使おうとしている仕事だった。社会再生、と言ってもいい。</p>
+<p>その社会再生の中で、いくつかの領域が特に重要だと、ヒロシは考えている。</p>
+<p>その筆頭が、教育だった。陰のままだった層に、初めて意志が向いた。十九歳のヒロシが抱えた違和感は、後年取り組んだ国際比較の中で、日本の最大の課題として再び浮かび上がっていた。次世代のソースを健全に渡すという仕事の中で、教育を立て直すことは中核に位置していた。</p>
+<p>もう一つは、スポイルテックへの対抗だった。技術が人間の関係エネルギーと意志と時間を引き剥がし続ける限り、次世代に渡すソースは痩せ続ける。これを止めることもまた、社会再生の重要な部分だった。</p>
+<p>ヒロシはこれを、一人で動かせるとは思っていなかった。社会のしくみは、社会の中で動かしている人たちが連動しなければ変わらない。だから、社会の各領域のリーダーたちが連動して取り組めるようにする集まりを、ヒロシは始めた。</p>
+
+<div class="scene">
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<radialGradient id="seedGlow8" cx="0.5" cy="0.5" r="0.5">
+<stop offset="0%" stop-color="#9ed681" stop-opacity="0.5"/>
+<stop offset="100%" stop-color="#5cb84a" stop-opacity="0"/>
+</radialGradient>
+</defs>
+<!-- 二つの手のシルエット：渡す手（左）、受け取る手（右） -->
+<!-- 左の手（差し出す） -->
+<g fill="#a8a394" opacity="0.85">
+<path d="M 70 110 Q 75 90 100 100 L 130 110 Q 135 113 132 117 L 100 122 Q 78 124 70 118 Z"/>
+<!-- 指 -->
+<path d="M 100 100 L 108 92 Q 112 90 113 94 L 110 102" fill="#a8a394"/>
+<path d="M 110 102 L 118 94 Q 122 92 123 96 L 120 104" fill="#a8a394"/>
+<path d="M 120 104 L 128 96 Q 132 94 133 98 L 130 106" fill="#a8a394"/>
+</g>
+<!-- 右の手（受け取る） -->
+<g fill="#d8d4c5" opacity="0.9">
+<path d="M 250 110 Q 245 90 220 100 L 190 110 Q 185 113 188 117 L 220 122 Q 242 124 250 118 Z"/>
+<!-- 指 -->
+<path d="M 220 100 L 212 92 Q 208 90 207 94 L 210 102" fill="#d8d4c5"/>
+<path d="M 210 102 L 202 94 Q 198 92 197 96 L 200 104" fill="#d8d4c5"/>
+<path d="M 200 104 L 192 96 Q 188 94 187 98 L 190 106" fill="#d8d4c5"/>
+</g>
+<!-- 中央の光（受け渡されるもの＝次世代のソース） -->
+<circle cx="160" cy="108" r="35" fill="url(#seedGlow8)"/>
+<circle cx="160" cy="108" r="14" fill="#5cb84a" opacity="0.4"/>
+<circle cx="160" cy="108" r="6" fill="#9ed681"/>
+<!-- 種子から芽が出ているような小さな新緑 -->
+<line x1="160" y1="100" x2="160" y2="92" stroke="#5cb84a" stroke-width="1" opacity="0.85"/>
+<circle cx="160" cy="90" r="2" fill="#9ed681"/>
+</svg>
+</div>
+
+<div class="coda">
+<p>別々の発見だと思っていたものが、ひとつの構造の異なる面だった。<br>陰のままだった層に、初めて意志が向く。<br>受け取った恩を、次世代に送る。<br>母の章で芽吹いたものが、社会の章で実を結ぶ。</p>
+<span class="stamp">層が繋がる ／ メタ点火 ／ 物語の円環</span>
+</div>
+
+<div class="pyramid">
+<svg viewBox="0 0 720 540" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="720" height="540" fill="#0e0e0a"/>
+<circle cx="360" cy="180" r="70" fill="#d4c590" opacity="0.4"/>
+<circle cx="360" cy="180" r="35.0" fill="#d4c590" opacity="0.24"/>
+<line x1="0" y1="490" x2="720" y2="490" stroke="#1a1814" stroke-width="0.5"/>
+<rect x="0" y="490" width="720" height="50" fill="#0a0a08"/>
+<rect x="338" y="200" width="44" height="40" fill="#2a2520" stroke="#1a1815" stroke-width="0.5"/>
+  <polygon points="338,200 382,200 374,194 346,194" fill="#3a3530" stroke="#1a1815" stroke-width="0.4"/>
+  <line x1="355.0" y1="197" x2="355.0" y2="181.6" stroke="#2a1f10" stroke-width="2" stroke-linecap="round"/><circle cx="355.0" cy="177.1" r="9" fill="#4a8830"/><circle cx="349.15" cy="175.75" r="7.0200000000000005" fill="#4a8830"/><circle cx="360.85" cy="175.75" r="7.0200000000000005" fill="#4a8830"/><circle cx="355.0" cy="170.79999999999998" r="6.3" fill="#4a8830"/>
+  <line x1="365.0" y1="197" x2="365.0" y2="181.6" stroke="#2a1f10" stroke-width="2" stroke-linecap="round"/><circle cx="365.0" cy="177.1" r="9" fill="#4a8830"/><circle cx="359.15" cy="175.75" r="7.0200000000000005" fill="#4a8830"/><circle cx="370.85" cy="175.75" r="7.0200000000000005" fill="#4a8830"/><circle cx="365.0" cy="170.79999999999998" r="6.3" fill="#4a8830"/>
+<rect x="318" y="240" width="84" height="40" fill="#2a2520" stroke="#1a1815" stroke-width="0.5"/>
+  <polygon points="318,240 402,240 394,234 326,234" fill="#3a3530" stroke="#1a1815" stroke-width="0.4"/>
+  <line x1="340.0" y1="237" x2="340.0" y2="221.6" stroke="#2a1f10" stroke-width="2" stroke-linecap="round"/><circle cx="340.0" cy="217.1" r="9" fill="#4a8830"/><circle cx="334.15" cy="215.75" r="7.0200000000000005" fill="#4a8830"/><circle cx="345.85" cy="215.75" r="7.0200000000000005" fill="#4a8830"/><circle cx="340.0" cy="210.79999999999998" r="6.3" fill="#4a8830"/>
+  <line x1="360.0" y1="237" x2="360.0" y2="221.6" stroke="#2a1f10" stroke-width="2" stroke-linecap="round"/><circle cx="360.0" cy="217.1" r="9" fill="#4a8830"/><circle cx="354.15" cy="215.75" r="7.0200000000000005" fill="#4a8830"/><circle cx="365.85" cy="215.75" r="7.0200000000000005" fill="#4a8830"/><circle cx="360.0" cy="210.79999999999998" r="6.3" fill="#4a8830"/>
+  <line x1="380.0" y1="237" x2="380.0" y2="221.6" stroke="#2a1f10" stroke-width="2" stroke-linecap="round"/><circle cx="380.0" cy="217.1" r="9" fill="#4a8830"/><circle cx="374.15" cy="215.75" r="7.0200000000000005" fill="#4a8830"/><circle cx="385.85" cy="215.75" r="7.0200000000000005" fill="#4a8830"/><circle cx="380.0" cy="210.79999999999998" r="6.3" fill="#4a8830"/>
+<rect x="298" y="280" width="124" height="40" fill="#2a2520" stroke="#1a1815" stroke-width="0.5"/>
+  <polygon points="298,280 422,280 414,274 306,274" fill="#3a3530" stroke="#1a1815" stroke-width="0.4"/>
+<rect x="278" y="320" width="164" height="40" fill="#2a2520" stroke="#1a1815" stroke-width="0.5"/>
+  <polygon points="278,320 442,320 434,314 286,314" fill="#3a3530" stroke="#1a1815" stroke-width="0.4"/>
+  <line x1="307.5" y1="317" x2="307.5" y2="297.2" stroke="#2a1f10" stroke-width="2.5" stroke-linecap="round"/><circle cx="307.5" cy="291.7" r="11" fill="#4a8830"/><circle cx="300.35" cy="290.05" r="8.58" fill="#4a8830"/><circle cx="314.65" cy="290.05" r="8.58" fill="#4a8830"/><circle cx="307.5" cy="284.0" r="7.699999999999999" fill="#4a8830"/>
+  <line x1="342.5" y1="317" x2="342.5" y2="297.2" stroke="#3a2818" stroke-width="2.5" stroke-linecap="round"/><circle cx="342.5" cy="291.7" r="11" fill="#8a6028"/><circle cx="335.35" cy="290.05" r="8.58" fill="#8a6028"/><circle cx="349.65" cy="290.05" r="8.58" fill="#8a6028"/><circle cx="342.5" cy="284.0" r="7.699999999999999" fill="#8a6028"/>
+  <line x1="377.5" y1="317" x2="377.5" y2="297.2" stroke="#2a1f10" stroke-width="2.5" stroke-linecap="round"/><circle cx="377.5" cy="291.7" r="11" fill="#4a8830"/><circle cx="370.35" cy="290.05" r="8.58" fill="#4a8830"/><circle cx="384.65" cy="290.05" r="8.58" fill="#4a8830"/><circle cx="377.5" cy="284.0" r="7.699999999999999" fill="#4a8830"/>
+  <line x1="412.5" y1="317" x2="412.5" y2="297.2" stroke="#3a2818" stroke-width="2.5" stroke-linecap="round"/><circle cx="412.5" cy="291.7" r="11" fill="#8a6028"/><circle cx="405.35" cy="290.05" r="8.58" fill="#8a6028"/><circle cx="419.65" cy="290.05" r="8.58" fill="#8a6028"/><circle cx="412.5" cy="284.0" r="7.699999999999999" fill="#8a6028"/>
+<rect x="258" y="360" width="204" height="40" fill="#2a2520" stroke="#1a1815" stroke-width="0.5"/>
+  <polygon points="258,360 462,360 454,354 266,354" fill="#3a3530" stroke="#1a1815" stroke-width="0.4"/>
+  <line x1="288.0" y1="357" x2="288.0" y2="337.2" stroke="#2a1f10" stroke-width="2.5" stroke-linecap="round"/><circle cx="288.0" cy="331.7" r="11" fill="#7a7028"/><circle cx="280.85" cy="330.05" r="8.58" fill="#7a7028"/><circle cx="295.15" cy="330.05" r="8.58" fill="#7a7028"/><circle cx="288.0" cy="324.0" r="7.699999999999999" fill="#7a7028"/>
+  <line x1="324.0" y1="357" x2="324.0" y2="337.2" stroke="#2a1f10" stroke-width="2.5" stroke-linecap="round"/><circle cx="324.0" cy="331.7" r="11" fill="#4a8830"/><circle cx="316.85" cy="330.05" r="8.58" fill="#4a8830"/><circle cx="331.15" cy="330.05" r="8.58" fill="#4a8830"/><circle cx="324.0" cy="324.0" r="7.699999999999999" fill="#4a8830"/>
+  <line x1="360.0" y1="357" x2="360.0" y2="337.2" stroke="#2a1f10" stroke-width="2.5" stroke-linecap="round"/><circle cx="360.0" cy="331.7" r="11" fill="#4a8830"/><circle cx="352.85" cy="330.05" r="8.58" fill="#4a8830"/><circle cx="367.15" cy="330.05" r="8.58" fill="#4a8830"/><circle cx="360.0" cy="324.0" r="7.699999999999999" fill="#4a8830"/>
+  <line x1="396.0" y1="357" x2="396.0" y2="337.2" stroke="#2a1f10" stroke-width="2.5" stroke-linecap="round"/><circle cx="396.0" cy="331.7" r="11" fill="#7a7028"/><circle cx="388.85" cy="330.05" r="8.58" fill="#7a7028"/><circle cx="403.15" cy="330.05" r="8.58" fill="#7a7028"/><circle cx="396.0" cy="324.0" r="7.699999999999999" fill="#7a7028"/>
+  <line x1="432.0" y1="357" x2="432.0" y2="337.2" stroke="#2a1f10" stroke-width="2.5" stroke-linecap="round"/><circle cx="432.0" cy="331.7" r="11" fill="#4a8830"/><circle cx="424.85" cy="330.05" r="8.58" fill="#4a8830"/><circle cx="439.15" cy="330.05" r="8.58" fill="#4a8830"/><circle cx="432.0" cy="324.0" r="7.699999999999999" fill="#4a8830"/>
+<rect x="238" y="400" width="244" height="40" fill="#2a2520" stroke="#1a1815" stroke-width="0.5"/>
+  <polygon points="238,400 482,400 474,394 246,394" fill="#3a3530" stroke="#1a1815" stroke-width="0.4"/>
+  <line x1="272.0" y1="397" x2="272.0" y2="377.2" stroke="#2a1f10" stroke-width="2.5" stroke-linecap="round"/><circle cx="272.0" cy="371.7" r="11" fill="#4a8830"/><circle cx="264.85" cy="370.05" r="8.58" fill="#4a8830"/><circle cx="279.15" cy="370.05" r="8.58" fill="#4a8830"/><circle cx="272.0" cy="364.0" r="7.699999999999999" fill="#4a8830"/>
+  <line x1="316.0" y1="397" x2="316.0" y2="377.2" stroke="#3a2818" stroke-width="2.5" stroke-linecap="round"/><circle cx="316.0" cy="371.7" r="11" fill="#8a6028"/><circle cx="308.85" cy="370.05" r="8.58" fill="#8a6028"/><circle cx="323.15" cy="370.05" r="8.58" fill="#8a6028"/><circle cx="316.0" cy="364.0" r="7.699999999999999" fill="#8a6028"/>
+  <line x1="360.0" y1="397" x2="360.0" y2="377.2" stroke="#2a1f10" stroke-width="2.5" stroke-linecap="round"/><circle cx="360.0" cy="371.7" r="11" fill="#4a8830"/><circle cx="352.85" cy="370.05" r="8.58" fill="#4a8830"/><circle cx="367.15" cy="370.05" r="8.58" fill="#4a8830"/><circle cx="360.0" cy="364.0" r="7.699999999999999" fill="#4a8830"/>
+  <line x1="404.0" y1="397" x2="404.0" y2="377.2" stroke="#3a2818" stroke-width="2.5" stroke-linecap="round"/><circle cx="404.0" cy="371.7" r="11" fill="#8a6028"/><circle cx="396.85" cy="370.05" r="8.58" fill="#8a6028"/><circle cx="411.15" cy="370.05" r="8.58" fill="#8a6028"/><circle cx="404.0" cy="364.0" r="7.699999999999999" fill="#8a6028"/>
+  <line x1="448.0" y1="397" x2="448.0" y2="377.2" stroke="#2a1f10" stroke-width="2.5" stroke-linecap="round"/><circle cx="448.0" cy="371.7" r="11" fill="#4a8830"/><circle cx="440.85" cy="370.05" r="8.58" fill="#4a8830"/><circle cx="455.15" cy="370.05" r="8.58" fill="#4a8830"/><circle cx="448.0" cy="364.0" r="7.699999999999999" fill="#4a8830"/>
+<rect x="218" y="440" width="284" height="40" fill="#2a2520" stroke="#1a1815" stroke-width="0.5"/>
+  <polygon points="218,440 502,440 494,434 226,434" fill="#3a3530" stroke="#1a1815" stroke-width="0.4"/>
+<path d="M 305 320 Q 308 300 314 285" stroke="#7ac963" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-dasharray="4 3" opacity="0.9"/>
+<path d="M 415 320 Q 412 300 406 285" stroke="#7ac963" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-dasharray="4 3" opacity="0.9"/>
+<g transform="translate(360, 200)">
+  <circle cx="0" cy="-22" r="6" fill="#f0ecdd"/>
+  <path d="M -6 -16 Q -6 -18 -3 -18 L 3 -18 Q 6 -18 6 -16 L 6 -2 Q 6 0 4 0 L 1.5 0 L 1.5 8 Q 1.5 9 0.7 9 L -0.7 9 Q -1.5 9 -1.5 8 L -1.5 0 L -4 0 Q -6 0 -6 -2 Z" fill="#f0ecdd"/>
+</g>
+<text x="555" y="232" fill="#e8e3d4" font-size="17" opacity="0.9">我</text>
+<text x="555" y="272" fill="#e8e3d4" font-size="17" opacity="0.9">家</text>
+<text x="555" y="312" fill="#5a5547" font-size="17" opacity="0.6">村</text>
+<text x="555" y="352" fill="#e8e3d4" font-size="17" opacity="0.9">組</text>
+<text x="555" y="392" fill="#e8e3d4" font-size="17" opacity="0.9">国</text>
+<text x="555" y="432" fill="#e8e3d4" font-size="17" opacity="0.9">世</text>
+<text x="555" y="472" fill="#5a5547" font-size="17" opacity="0.6">森</text>
+<text x="40" y="50" fill="#e8e3d4" font-size="20" font-weight="500">第八章末　Pyramid of Life</text>
+<text x="40" y="82" fill="#a8a394" font-size="17">層が繋がる。学校層に意志の蔦。月光が頂上を照らす。</text>
+</svg>
+</div></section>
+
+<section class="afterword">
+<h2>エピローグ</h2>
+<p class="afterword-lead">これはヒロシという一人の人間の、認識の物語でした。<br>五十歳のヒロシが、ここまでの人生を振り返ったものです。</p>
+
+<p>このエピローグでは、物語の中で起きていたことを、構造として整理しておきます。読み終わった人が、自分の人生にこの構造を当てはめてみるための地図として。</p>
+
+<h3>恩難照役</h3>
+<p>この物語を貫いていた一つの原理を、一語で表すなら、<strong>恩難照役（おんなんしょうやく）</strong>です。</p>
+<p>恩を知り、難を知る。<br>受けてきたありがたさを知り、その恩源が揺らいでいると知る。<br>その二つが重なったとき、自分の役が照らされる。<br>人はそこで初めて、何を引き受けるべきかを知る。</p>
+<p>この原理は、ミッションや志を、外から作り出すものとは見ません。すでに自分の足元にあるものとして見ます。ミケランジェロが「彫刻はすでに石の中にある、私はただ余分な部分を取り除くだけだ」と言ったように、人の役もまた、すでにその人の足元にある。それを覆っているもの——無関心、忘恩、鈍感、自己中心——が剥がれ落ちたとき、役が現れる。</p>
+<p>ミッションは、作るものではなく、発見するもの。志は、可能性ではなく、必然性として立ち上がるもの。これがSONSの世界観です。</p>
+
+<p>SONSは <strong>Success on Succession</strong> の頭字語です。継承されてはじめて、成功は意味を持つ。受け取らずにいま在る人は、一人もいない。一代で築いた成功も、次に渡されなければ、消えていく。</p>
+<p>ちなみに、on は「恩」とも読めますし、sons は英語で「息子たち」を意味します。私たちは皆、何かを受け取った者です。受け取った者は、いずれ渡す側に回る。</p>
+
+<h3>ピラミッドと層</h3>
+<p>人は皆、ひとつのピラミッドの頂上に立っています。ピラミッドは七つの層からできている。最も高く狭い段（頂上）に自分自身（<strong>我</strong>）。下に向かって、家族（<strong>家</strong>）、地域共同体（<strong>村</strong>）、組織（<strong>組</strong>）、国家（<strong>国</strong>）、人類社会（<strong>世</strong>）、生命圏（<strong>森</strong>）。下に行くほど大きく、深い層が広がっています。</p>
+<p>このピラミッドは本人が気づこうが気づくまいが、確かに存在しています（<strong>現実のピラミッド</strong>）。一方、本人の認識の中に育つもうひとつのピラミッドがあります（<strong>認識のピラミッド</strong>）。緑の樹木が段を覆っていくように、認識が育っていく。物語の各章で起きていたのは、この認識のピラミッドの成長でした。</p>
+
+<h3>三つの動き</h3>
+<p>恩難照役は、三つの動きでできています。</p>
+
+<div class="terms-table">
+<dl>
+<dt>受けてきたありがたさを、知る。</dt>
+<dt>その恩源が揺らいでいると、知る。</dt>
+<dt>そのとき、自分の役が照らされる。</dt>
+</dl>
+<p style="margin-top: 16px; color: #8a8676; font-size: 13px;">（知恩 → 知難 → 照役）</p>
+</div>
+
+<p>学校という層には、揺らぎだけが見え、ありがたさが来なかった。だから役は照らされず、陰だけが残った。国という層には、恩源がない世界を歩くことで、ありがたさと揺らぎが同時に立ち上がり、役が照らされた。組織という層には、支える側に回ることで、別の経路から同じことが起きた。不在経験と、支える側への移行——これが、役を照らす二つの主要な経路です。</p>
+
+<div class="fable-bridge">
+<p class="bridge-label">SONS</p>
+<p>ここまで、私の五十年を貫いていた構造を見てきました。同じ構造を、ヒロシも家族も国も登場させずに、もっとも純粋なかたちに煮詰めた短い寓話があります。森の奥に棲む、亀爺さんの話です。</p>
+<p><a href="https://kuniakimat.github.io/sons_fable" class="fable-link" target="_blank" rel="noopener">寓話 — ある森での継承物語</a></p>
+</div>
+
+<h3>あなたのピラミッド</h3>
+<p>頂上にあなたが立っている。足元には七つの段が広がっている。あなたの認識の緑は、いまどの段まで広がっていますか。色はどうですか。</p>
+<p>未点火の層はありますか。陰のさしている層はありますか。</p>
+<p>これは答えるための問いではありません。立ち止まって自分の足元を見るための問いです。</p>
+
+<div class="app-callout">
+<p class="app-label">your pyramid diagnostic</p>
+<h3>あなたの幸せの源を可視化する</h3>
+<p>各層について、いまの自分の状態を診断するアプリを用意しています。自分のピラミッドがどう育っているか、どの層が陰になっているかを見ることができます。</p>
+<a href="https://kuniakimat.github.io/sons/" class="app-link" target="_blank" rel="noopener">診断アプリへ</a>
+</div>
+
+</section>
+
+<footer class="outro">
+<p class="signature">Pyramid of Life</p>
+<p>S ON S フレーム導入小説</p>
+</footer>
+
+</div>
+</body>
+</html>

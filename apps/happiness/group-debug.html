@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>幸福の地図 — グループ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&family=Shippori+Mincho:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0d0d0d;color:#e8e8e8;font-family:'Noto Sans JP',sans-serif;min-height:100vh}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 40px}
+
+/* Header */
+.hd{display:flex;align-items:center;gap:10px;padding:16px 0 14px;border-bottom:1px solid #222}
+.hd-title{font-family:'Shippori Mincho',serif;font-size:18px;font-weight:700;color:#e8e8e8}
+.pulse{width:7px;height:7px;border-radius:50%;background:#5a5;flex-shrink:0;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(80,160,80,.4)}70%{opacity:.7;box-shadow:0 0 0 6px rgba(80,160,80,0)}}
+.timer{font-size:11px;color:#555;letter-spacing:.05em}
+.refresh-btn{margin-left:auto;background:transparent;border:1px solid #333;color:#aaa;padding:5px 14px;font-size:11px;letter-spacing:.08em;cursor:pointer;font-family:'Noto Sans JP',sans-serif}
+.refresh-btn:hover{border-color:#777;color:#ddd}
+
+/* Legend */
+.legend{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #1a1a1a}
+.legend-label{font-size:10px;color:#555;letter-spacing:.1em}
+.legend-cells{display:flex;gap:3px;align-items:center}
+.lc{width:14px;height:14px;border-radius:2px}
+.legend-arrow{font-size:10px;color:#444;margin:0 2px}
+.legend-text{font-size:10px;color:#666}
+
+/* Grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;padding:14px 0}
+.pcard{background:#141414;border:1px solid #222;border-radius:4px;padding:11px 12px;cursor:pointer;transition:border-color .15s}
+.pcard:hover{border-color:#555}
+.pcard.sel{border:1px solid #888;background:#1a1a1a}
+.pcard.fresh{border-color:#3a6a3a}
+.pname{font-size:13px;font-weight:500;color:#e8e8e8;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ptype{font-size:10px;color:#666;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pcore{font-size:10px;color:#555;margin-top:6px}
+.new-tag{display:inline-block;font-size:9px;padding:1px 5px;background:#1a3a1a;color:#5a5;border:1px solid #3a6a3a;letter-spacing:.05em;margin-left:4px}
+
+/* Detail panel */
+.panel{background:#141414;border:1px solid #222;padding:16px;margin:4px 0 16px;animation:fadein .15s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.panel-inner{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.panel-info{flex:1;min-width:160px}
+.panel-name{font-size:20px;font-weight:700;font-family:'Shippori Mincho',serif;color:#e8e8e8;margin-bottom:6px}
+.type-badge{display:inline-block;font-size:11px;padding:2px 10px;background:#1e1e1e;border:1px solid #333;color:#bbb;letter-spacing:.05em;margin-bottom:12px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;margin-bottom:14px}
+.fl{font-size:10px;color:#555;margin-bottom:2px;letter-spacing:.05em}
+.fv{font-size:14px;font-weight:500;color:#ccc}
+.open-btn{display:inline-flex;align-items:center;gap:6px;background:#ddd;color:#111;border:none;padding:9px 18px;font-size:12px;letter-spacing:.08em;cursor:pointer;font-family:'Noto Sans JP',sans-serif;font-weight:500;text-decoration:none}
+.open-btn:hover{background:#fff}
+
+/* Big map */
+.big-map{display:grid;grid-template-columns:repeat(5,32px);gap:3px;flex-shrink:0}
+.bcell{width:32px;height:32px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:12px;font-family:'Shippori Mincho',serif;font-weight:700}
+
+/* Status */
+.status{padding:12px 0;text-align:center;color:#444;font-size:13px}
+.err{color:#844}
+
+/* Stats bar */
+.stats-bar{display:flex;gap:16px;padding:10px 0 12px;border-bottom:1px solid #1a1a1a;flex-wrap:wrap}
+.sitem{font-size:11px;color:#555}
+.sitem span{color:#aaa;font-weight:500;margin-left:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hd">
+  <div class="pulse"></div>
+  <div class="hd-title">幸福の地図 — グループ</div>
+  <div class="timer" id="timer">更新中...</div>
+  <button class="refresh-btn" onclick="fetchData()">今すぐ更新</button>
+</div>
+
+<div class="legend">
+  <span class="legend-label">凡例</span>
+  <div class="legend-cells">
+    <div class="lc" style="background:#1a1a1a"></div>
+    <div class="lc" style="background:#2c2c2c"></div>
+    <div class="lc" style="background:#555"></div>
+    <div class="lc" style="background:#999"></div>
+    <div class="lc" style="background:#e0e0e0"></div>
+  </div>
+  <span class="legend-arrow">←</span>
+  <span class="legend-text">感度低い</span>
+  <span class="legend-arrow" style="margin-left:6px">　</span>
+  <span class="legend-text">感度高い</span>
+  <span class="legend-arrow">→</span>
+</div>
+
+<div class="stats-bar" id="stats-bar"></div>
+<div id="status" class="status">読み込み中...</div>
+<div class="grid" id="grid"></div>
+<div id="panel"></div>
+
+</div>
+
+<script>
+const GAS_READ='https://script.google.com/macros/s/AKfycby7GTKyuFmAh427pm8_As7oJ2tTzjY6XNbG72MHpxkcF--PNatX27WwxRu8xtqTfAHx/exec';
+const KL=['自','他','共','理','合'];
+const JL=['瞬','進','頂','回','久'];
+const KANJI=[['快','得','誇','保','足'],['触','与','結','恩','慈'],['祭','開','栄','役','和'],['戯','学','顕','整','悟'],['溶','創','恍','巡','愛']];
+
+let people=[], selected=null, prevCount=0, countdown=30;
+
+function cellBg(s){
+  if(s<=1)return'#1a1a1a';
+  if(s===2)return'#2c2c2c';
+  if(s===3)return'#555';
+  if(s===4)return'#999';
+  return'#e0e0e0';
+}
+function cellFg(s){return s>=4?'#111':s>=3?'#bbb':'transparent';}
+
+function miniMap(sc,size){
+  const v=sc.split('-').map(Number);
+  let h=`<div style="display:grid;grid-template-columns:repeat(5,${size}px);gap:${size<16?1.5:3}px">`;
+  for(let ki=4;ki>=0;ki--)for(let ji=0;ji<5;ji++){
+    const s=v[ki*5+ji]||0;
+    h+=`<div style="width:${size}px;height:${size}px;border-radius:2px;background:${cellBg(s)}"></div>`;
+  }
+  return h+'</div>';
+}
+
+function bigMap(sc){
+  const v=sc.split('-').map(Number);
+  let h='<div class="big-map">';
+  for(let ki=4;ki>=0;ki--)for(let ji=0;ji<5;ji++){
+    const s=v[ki*5+ji]||0;
+    h+=`<div class="bcell" style="background:${cellBg(s)};color:${cellFg(s)}">${s>=3?KANJI[ki][ji]:''}</div>`;
+  }
+  return h+'</div>';
+}
+
+function parseRows(rows){
+  return rows.filter(r=>r[8]&&String(r[8]).includes('-')).map(r=>({
+    date:r[0]?String(r[0]):'',
+    name:r[1]||'匿名',
+    typeNum:parseInt(r[2])||0,
+    typeName:r[3]||'不明',
+    lit:parseInt(r[4])||0,
+    coreCell:r[5]||'—',
+    domK:r[6]||'—',
+    domJ:r[7]||'—',
+    scores:String(r[8])
+  }));
+}
+
+function fetchData(){
+  document.getElementById('timer').textContent='更新中...';
+  const cb='cb'+Date.now();
+  window[cb]=function(rows){
+    delete window[cb];
+    const el=document.getElementById('_gs');if(el)el.remove();
+    people=parseRows(rows).reverse();
+    prevCount=people.length;
+    renderAll(false);
+    countdown=30;
+    document.getElementById('status').style.display='none';
+    document.getElementById('timer').textContent='更新しました';
+    setTimeout(()=>{document.getElementById('timer').textContent='30秒後に自動更新';},1500);
+  };
+  const s=document.createElement('script');
+  s.id='_gs';
+  s.onerror=function(){
+    document.getElementById('status').innerHTML='データ取得エラー（GAS確認）';
+    document.getElementById('status').className='status err';
+    document.getElementById('status').style.display='block';
+    countdown=30;
+  };
+  s.src=GAS_READ+'?n=30&callback='+cb;
+  document.head.appendChild(s);
+  // debug
+  document.getElementById('timer').textContent='スクリプト読み込み中... URL: '+s.src.slice(0,60)+'...';
+  setTimeout(()=>{
+    if(window[cb]){
+      document.getElementById('timer').textContent='タイムアウト：コールバック未呼出';
+      document.getElementById('status').textContent='GASは到達できたがデータを返していません。GASエディタでログを確認してください。';
+      document.getElementById('status').className='status err';
+      document.getElementById('status').style.display='block';
+    }
+  }, 8000);
+}
+
+
+function renderAll(flash){
+  if(!people.length){
+    document.getElementById('status').textContent='まだ誰も受けていません';
+    document.getElementById('status').style.display='block';
+    return;
+  }
+  document.getElementById('status').style.display='none';
+
+  const typeCount={};
+  people.forEach(p=>{typeCount[p.typeName]=(typeCount[p.typeName]||0)+1;});
+  const top=Object.entries(typeCount).sort((a,b)=>b[1]-a[1])[0];
+  const avgLit=(people.reduce((s,p)=>s+p.lit,0)/people.length).toFixed(1);
+  document.getElementById('stats-bar').innerHTML=
+    `<div class="sitem">参加者<span>${people.length}人</span></div>`+
+    `<div class="sitem">最多タイプ<span>${top?top[0]:''}</span></div>`+
+    `<div class="sitem">平均点灯セル<span>${avgLit}</span></div>`;
+
+  document.getElementById('grid').innerHTML=people.map((d,i)=>`
+    <div class="pcard${selected===i?' sel':''}" onclick="sel(${i})">
+      <div class="pname">${d.name}</div>
+      <div class="ptype">${d.typeName}</div>
+      ${miniMap(d.scores,12)}
+      <div class="pcore">${d.coreCell}</div>
+    </div>
+  `).join('');
+
+  if(selected!==null&&selected<people.length)renderPanel(people[selected]);
+}
+
+function renderPanel(p){
+  const url='https://kuniakimat.github.io/happiness/?s='+p.scores.replace(/-/g,',');
+  document.getElementById('panel').innerHTML=`
+    <div class="panel">
+      <div class="panel-inner">
+        ${bigMap(p.scores)}
+        <div class="panel-info">
+          <div class="panel-name">${p.name}</div>
+          <div class="type-badge">${p.typeName}</div>
+          <div class="fields">
+            <div><div class="fl">コアセル</div><div class="fv">${p.coreCell}</div></div>
+            <div><div class="fl">点灯セル</div><div class="fv">${p.lit} / 25</div></div>
+            <div><div class="fl">空間相</div><div class="fv">${p.domK}</div></div>
+            <div><div class="fl">時間相</div><div class="fv">${p.domJ}</div></div>
+          </div>
+          <a class="open-btn" href="${url}" target="_blank">結果ページを開く →</a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function sel(i){
+  selected=(selected===i)?null:i;
+  document.querySelectorAll('.pcard').forEach((c,idx)=>c.classList.toggle('sel',idx===selected));
+  if(selected!==null)renderPanel(people[selected]);
+  else document.getElementById('panel').innerHTML='';
+}
+
+function loadPaste(){
+  const raw=document.getElementById('paste-input');
+  if(!raw)return;
+  const text=raw.value.trim();
+  if(!text)return;
+  // Tab-separated from spreadsheet copy
+  const parsed=text.split('\n').filter(l=>l.includes('\t')).map(line=>{
+    const c=line.split('\t');
+    return{date:c[0]||'',name:c[1]||'匿名',typeNum:parseInt(c[2])||0,typeName:c[3]||'不明',
+      lit:parseInt(c[4])||0,coreCell:c[5]||'—',domK:c[6]||'—',domJ:c[7]||'—',scores:c[8]||''};
+  }).filter(r=>r.scores&&r.scores.includes('-')).reverse();
+  if(!parsed.length){alert('スコアデータが見つかりません');return;}
+  people=parsed;
+  prevCount=parsed.length;
+  document.getElementById('status').style.display='none';
+  renderAll(false);
+}
+
+setInterval(()=>{
+  countdown--;
+  if(countdown<=0){fetchData();}
+  else if(countdown<30)document.getElementById('timer').textContent=countdown+'秒後に自動更新';
+},1000);
+
+fetchData();
+</script>
+</body>
+</html>

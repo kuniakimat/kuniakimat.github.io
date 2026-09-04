@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ja" style="color-scheme:dark;background:#07080c">
+<head>
+  <meta charset="UTF-8">
+  <meta name="color-scheme" content="dark">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>多元中合</title>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;600;700&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --serif:'Shippori Mincho B1',serif;
+      --sans:'Zen Kaku Gothic New',sans-serif;
+      --bg:#07080c;
+      --l0-bg:#141820; --l1-bg:#172038; --l2-bg:#223054; --l3-bg:#2e4470;
+      --on-center:#1e6080;
+      --acc:rgba(130,175,255,.85);
+      --line:rgba(255,255,255,.07);
+    }
+    html,body{min-height:100%;background:#07080c!important;color:rgba(255,255,255,.85);
+      font-family:var(--sans);font-weight:300}
+
+    /* ── NAV ── */
+    .nav{
+      position:sticky;top:0;z-index:200;
+      background:#07080c;
+      border-bottom:1px solid var(--line);
+      display:flex;align-items:stretch;
+    }
+    .nav-title{
+      font-family:var(--serif);font-size:14px;font-weight:600;
+      letter-spacing:.14em;color:rgba(255,255,255,.88);
+      padding:0 20px;display:flex;align-items:center;
+      border-right:1px solid var(--line);white-space:nowrap;
+    }
+    .tabs{display:flex;flex:1}
+    .tab{
+      flex:1;padding:14px 8px;text-align:center;cursor:pointer;
+      font-size:12px;letter-spacing:.08em;
+      color:rgba(255,255,255,.38);
+      border-bottom:2px solid transparent;
+      transition:color .15s,border-color .15s;
+    }
+    .tab.active{color:rgba(130,175,255,.95);border-bottom-color:rgba(130,175,255,.6)}
+    .tab:hover:not(.active){color:rgba(255,255,255,.65)}
+
+    /* ── PAGES ── */
+    .page{display:none;min-height:calc(100vh - 50px)}
+    .page.active{display:block}
+    .page-inner{max-width:680px;margin:0 auto;padding:32px 20px 80px}
+
+    /* ── SHAPED CELLS ── */
+    .cell-shape-left,
+    .cell-shape-center,
+    .cell-shape-right {
+      flex: 1 !important;
+      padding: 0 !important;
+      transition: background .9s cubic-bezier(.4,0,.2,1),
+                  box-shadow .9s cubic-bezier(.4,0,.2,1),
+                  color .7s ease;
+    }
+    .cell-shape-left,
+    .cell-shape-center,
+    .cell-shape-right {
+      flex: 1 !important;
+      padding: 0 !important;
+      transition: background .9s cubic-bezier(.4,0,.2,1),
+                  box-shadow .9s cubic-bezier(.4,0,.2,1),
+                  color .7s ease;
+    }
+    .cell-shape-left {
+      clip-path: polygon(0% 50%, 90% 0%, 90% 100%);
+      height: 84px !important;
+    }
+    .cell-shape-right {
+      clip-path: polygon(100% 50%, 10% 0%, 10% 100%);
+      height: 84px !important;
+    }
+    .cell-shape-center {
+      height: 52px !important;
+      border-radius: 3px;
+    }
+    .diag-cells, .axis-f-cells, .jp-cells {
+      align-items: center !important;
+      gap: 1px !important;
+    }
+    .cell-shape-left  .cell-kanji { transform: translateX(10%); }
+    .cell-shape-right .cell-kanji { transform: translateX(-10%); }
+    .cell-shape-left  .cell-desc  { transform: translateX(10%); font-size: 9px !important; }
+    .cell-shape-right .cell-desc  { transform: translateX(-10%); font-size: 9px !important; }
+    .cell-shape-center .cell-desc { font-size: 9px !important; }
+    .cell-shape-center .cell-kanji { font-size: 17px !important; }
+    .cell-shape-left .pt-badge,
+    .cell-shape-center .pt-badge,
+    .cell-shape-right .pt-badge { display: none; }
+
+    /* ── 両統合: neon gold dissolve ── */
+    .row-togou .cell-shape-left,
+    .row-togou .cell-shape-center,
+    .row-togou .cell-shape-right {
+      background: rgba(240, 200, 40, 0.82) !important;
+      box-shadow:
+        0 0 14px rgba(240,200,0,0.55),
+        0 0 36px rgba(220,175,0,0.28),
+        0 0 70px rgba(200,150,0,0.12),
+        0 0 120px rgba(180,130,0,0.06) !important;
+    }
+    .row-togou .cell-shape-left .cell-kanji,
+    .row-togou .cell-shape-center .cell-kanji,
+    .row-togou .cell-shape-right .cell-kanji { color: #140e00 !important; }
+    .row-togou .cell-shape-left .cell-desc,
+    .row-togou .cell-shape-center .cell-desc,
+    .row-togou .cell-shape-right .cell-desc { color: rgba(20,14,0,0.55) !important; }
+
+    /* ── SHARED: CELL ── */
+    .cell{
+      border-radius:7px;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:5px;position:relative;user-select:none;
+    }
+    .cell-kanji{font-family:var(--serif);line-height:1}
+    .cell-desc{font-size:10px;text-align:center;line-height:1.4;color:rgba(255,255,255,.72)}
+    .pt-badge{position:absolute;top:5px;right:6px;font-size:9px;color:rgba(255,255,255,.55)}
+    .lv0{background:var(--l0-bg)}
+    .lv1{background:var(--l1-bg);box-shadow:0 0 12px rgba(130,175,255,.07)}
+    .lv2{background:var(--l2-bg);box-shadow:0 0 20px rgba(130,175,255,.14)}
+    .lv3{background:var(--l3-bg);box-shadow:0 0 28px rgba(130,175,255,.26),0 0 56px rgba(130,175,255,.1)}
+
+    /* ══════════════════════════════
+       PAGE 1 — フレーム
+    ══════════════════════════════ */
+    .frame-hero{text-align:center;padding:32px 0 40px}
+    .frame-hero h2{font-family:var(--serif);font-size:28px;font-weight:600;
+      letter-spacing:.14em;color:rgba(255,255,255,.92);margin-bottom:10px}
+    .frame-hero p{font-size:13px;line-height:2.0;color:rgba(255,255,255,.58);max-width:480px;margin:0 auto}
+
+    .triangle-wrap{display:flex;justify-content:center;margin:36px 0 48px}
+    .triangle-svg{width:min(360px,90vw)}
+
+    .axis-card-f{
+      padding:22px;
+      background:#0e1018;
+      border:1px solid var(--line);
+      border-radius:12px;
+    }
+    .axis-card-f.sub{opacity:.75}
+    .axis-f-header{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+    .axis-f-name{font-family:var(--serif);font-size:16px;font-weight:600;color:rgba(255,255,255,.88)}
+    .axis-f-q{font-size:13px;line-height:1.8;color:rgba(255,255,255,.60);margin-bottom:14px}
+    .axis-f-cells{display:flex;gap:5px;margin-bottom:14px}
+    .axis-f-cells .cell{flex:1}
+    .axis-f-cells .cell-kanji{font-size:20px}
+    .axis-f-desc{font-size:12px;line-height:1.9;color:rgba(255,255,255,.52)}
+    .sub-tag{font-size:9px;letter-spacing:.12em;padding:2px 8px;border-radius:8px;
+      background:rgba(255,255,255,.06);color:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.1)}
+
+    .sec-head{
+      font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+      color:rgba(130,175,255,.70);
+      padding:28px 0 14px;
+      border-top:1px solid var(--line);margin-top:8px;
+    }
+    .sec-head:first-child{border-top:none;padding-top:0}
+
+    /* ══════════════════════════════
+       PAGE 2 — 日本の診断
+    ══════════════════════════════ */
+    .jp-intro{
+      margin-bottom:28px;padding:18px 20px;
+      border-left:2px solid rgba(255,160,80,.35);
+      background:rgba(255,160,80,.04);border-radius:0 8px 8px 0;
+    }
+    .jp-intro p{font-size:13px;line-height:2.0;color:rgba(255,255,255,.65)}
+
+    .jp-cards{display:flex;flex-direction:column;gap:16px}
+    .jp-card{padding:20px;background:#0e1018;border:1px solid var(--line);border-radius:12px}
+    .jp-card.sub{opacity:.75}
+    .jp-card-name{font-family:var(--serif);font-size:14px;color:rgba(255,255,255,.82);
+      margin-bottom:10px;letter-spacing:.06em}
+    .jp-cells{display:flex;gap:4px;margin-bottom:12px}
+    .jp-cells .cell{flex:1}
+    .jp-cells .cell-kanji{font-size:18px}
+    .jp-body{font-size:12px;line-height:1.9;color:rgba(255,255,255,.52);margin-bottom:10px}
+    .symptom{
+      display:inline-block;padding:3px 12px;
+      background:rgba(255,80,80,.05);border:1px solid rgba(255,80,80,.15);
+      border-radius:16px;font-size:11px;color:rgba(255,130,130,.70);
+    }
+
+    /* ══════════════════════════════
+       PAGE 3 — あなたの診断
+    ══════════════════════════════ */
+    .diag-score-bar{
+      position:sticky;top:50px;z-index:100;
+      background:#07080c;border-bottom:1px solid var(--line);
+      padding:12px 20px;display:flex;align-items:center;justify-content:space-between;
+    }
+    .diag-score-bar h3{font-family:var(--serif);font-size:13px;color:rgba(255,255,255,.65)}
+    .score-block{display:flex;align-items:baseline;gap:6px}
+    .score-num{font-family:var(--serif);font-size:30px;font-weight:700;color:rgba(255,255,255,.92)}
+    .score-max{font-size:12px;color:rgba(255,255,255,.45)}
+
+    .prog-wrap{height:2px;background:rgba(255,255,255,.07)}
+    .prog-bar{height:100%;background:linear-gradient(90deg,rgba(80,160,255,.6),rgba(130,255,200,.5));transition:width .3s}
+
+    .intro-frame{
+      margin-bottom:24px;padding:20px 22px;
+      border-left:2px solid rgba(130,175,255,.28);
+      background:#0e1218;border-radius:0 8px 8px 0;
+    }
+    .intro-lead{font-family:var(--serif);font-size:16px;font-weight:600;
+      color:rgba(255,255,255,.88);margin-bottom:10px}
+    .intro-frame p{font-size:13px;line-height:2.0;color:rgba(255,255,255,.65);margin-bottom:8px}
+    .intro-ideal{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:14px}
+    .ideal-item{font-size:11px;padding:3px 11px;border:1px solid rgba(255,255,255,.18);
+      border-radius:14px;color:rgba(255,255,255,.65)}
+    .ideal-item.best{border-color:rgba(80,200,255,.45);color:rgba(80,200,255,.95);background:rgba(80,200,255,.07)}
+    .ideal-item.dim{color:rgba(255,255,255,.40);border-color:rgba(255,255,255,.12)}
+    .ideal-arrow{color:rgba(255,255,255,.38);font-size:11px}
+
+    .diag-cat{font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+      color:rgba(130,175,255,.75);padding:24px 0 8px;
+      border-top:1px solid var(--line);margin-top:4px}
+    .diag-cat:first-of-type{border-top:none;padding-top:4px}
+
+    .diag-card{margin-bottom:8px;padding:14px 0 0}
+    .diag-card.sub{opacity:.82}
+    .diag-meta{font-size:10px;letter-spacing:.1em;color:rgba(255,255,255,.50);margin-bottom:6px}
+    .diag-q{font-family:var(--serif);font-size:14px;line-height:1.7;
+      color:rgba(255,255,255,.80);margin-bottom:10px}
+    .diag-cells{display:flex;gap:5px}
+    .diag-cells .cell{
+      flex:1;cursor:pointer;
+      background:var(--l0-bg);color:rgba(255,255,255,.82);
+      transition:background .18s,box-shadow .22s,transform .1s;
+    }
+    .diag-cells .cell-kanji{font-size:20px}
+    .diag-cells .cell:active{transform:scale(.97)}
+    .diag-cells .cell.on.lv-outer{background:#383c48;box-shadow:0 0 18px rgba(200,205,220,.18),0 0 40px rgba(180,185,200,.07)}
+    .diag-cells .cell.on.lv-center{background:#2a3040;box-shadow:0 0 16px rgba(160,180,220,.22)}
+    .diag-cells .cell.bridge-locked{border:1.5px dashed rgba(255,255,255,.28);cursor:default}
+
+    .result-section{
+      margin-top:36px;padding:22px 20px;
+      background:#0e1018;border:1px solid var(--line);border-radius:12px;
+    }
+    .result-title{font-family:var(--serif);font-size:13px;
+      color:rgba(255,255,255,.72);letter-spacing:.08em;margin-bottom:16px}
+    .result-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+    .result-name{font-size:11px;color:rgba(255,255,255,.65);width:52px;flex-shrink:0}
+    .result-bar-wrap{flex:1;height:4px;background:rgba(255,255,255,.10);border-radius:2px;overflow:hidden}
+    .result-bar-fill{height:100%;border-radius:2px;
+      background:linear-gradient(90deg,rgba(80,160,255,.7),rgba(130,255,200,.6));transition:width .35s}
+    .pat-badge{font-size:10px;padding:2px 9px;border-radius:9px;flex-shrink:0;
+      border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.62)}
+    .pat-gou  {background:rgba(80,200,255,.12);border-color:rgba(80,200,255,.5);color:rgba(80,200,255,.95)}
+    .pat-ryoku{background:rgba(255,200,80,.10);border-color:rgba(255,200,80,.4);color:rgba(255,220,100,.90)}
+    .pat-tan  {color:rgba(255,255,255,.62);border-color:rgba(255,255,255,.18)}
+    .result-pts{font-size:11px;color:rgba(255,255,255,.60);width:16px;text-align:right;flex-shrink:0}
+    .reset-btn{
+      margin-top:20px;display:inline-block;padding:7px 18px;
+      border:1px solid rgba(255,255,255,.22);border-radius:18px;
+      font-size:11px;letter-spacing:.1em;color:rgba(255,255,255,.60);cursor:pointer;
+    }
+    .reset-btn:hover{border-color:rgba(255,255,255,.45);color:rgba(255,255,255,.90)}
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-title">多元中合</div>
+  <div class="tabs">
+    <div class="tab active" data-page="frame">フレーム紹介</div>
+    <div class="tab" data-page="japan">日本の診断</div>
+    <div class="tab" data-page="diag">あなたの診断</div>
+  </div>
+</nav>
+
+<!-- PAGE 1 -->
+<div class="page active" id="page-frame">
+<div class="page-inner">
+
+  <div class="frame-hero">
+    <h2>多元中合</h2>
+    <p>人は何かに偏る。<br>問題は偏りではなく、両極のあいだの往還が失われることだ。</p>
+  </div>
+
+  <div class="triangle-wrap">
+    <svg class="triangle-svg" viewBox="0 0 360 310" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="glowCenter" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(80,200,255,.25)"/>
+          <stop offset="100%" stop-color="rgba(80,200,255,0)"/>
+        </radialGradient>
+        <filter id="blur"><feGaussianBlur stdDeviation="10"/></filter>
+      </defs>
+      <ellipse cx="180" cy="190" rx="55" ry="38" fill="url(#glowCenter)" filter="url(#blur)" opacity=".6"/>
+      <line x1="180" y1="72" x2="60" y2="240" stroke="rgba(130,175,255,.22)" stroke-width="1.5" stroke-dasharray="5,4"/>
+      <line x1="180" y1="72" x2="300" y2="240" stroke="rgba(130,175,255,.22)" stroke-width="1.5" stroke-dasharray="5,4"/>
+      <line x1="60" y1="240" x2="300" y2="240" stroke="rgba(130,175,255,.16)" stroke-width="1.5"/>
+      <polygon points="28,240 92,208 92,272" fill="#172038" stroke="rgba(130,175,255,.3)" stroke-width="1.5"/>
+      <text x="68" y="245" text-anchor="middle" font-size="15" fill="rgba(255,255,255,.88)" font-family="serif">近</text>
+      <text x="60" y="290" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.40)" font-family="sans-serif">近い極</text>
+      <polygon points="332,240 268,208 268,272" fill="#223054" stroke="rgba(130,175,255,.40)" stroke-width="1.5"/>
+      <text x="292" y="245" text-anchor="middle" font-size="15" fill="rgba(255,255,255,.92)" font-family="serif">遠</text>
+      <text x="300" y="290" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.50)" font-family="sans-serif">遠い極</text>
+      <rect x="144" y="46" width="72" height="38" rx="3" fill="#1e6080" stroke="rgba(80,200,255,.55)" stroke-width="1.5"
+        style="filter:drop-shadow(0 0 12px rgba(80,200,255,.35))"/>
+      <text x="180" y="71" text-anchor="middle" font-size="16" fill="rgba(255,255,255,.98)" font-family="serif">中</text>
+      <text x="180" y="34" text-anchor="middle" font-size="10" fill="rgba(80,200,255,.65)" font-family="sans-serif">橋・往還</text>
+    </svg>
+  </div>
+
+  <div style="text-align:center;margin:-12px 0 36px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+    <span style="font-size:11px;padding:3px 11px;border:1px solid rgba(255,255,255,.12);border-radius:14px;color:rgba(255,255,255,.40)">無極</span>
+    <span style="font-size:11px;color:rgba(255,255,255,.30)">→</span>
+    <span style="font-size:11px;padding:3px 11px;border:1px solid rgba(255,255,255,.18);border-radius:14px;color:rgba(255,255,255,.65)">片極</span>
+    <span style="font-size:11px;color:rgba(255,255,255,.30)">→</span>
+    <span style="font-size:11px;padding:3px 11px;border:1px solid rgba(255,255,255,.22);border-radius:14px;color:rgba(255,255,255,.80)">両極</span>
+    <span style="font-size:11px;color:rgba(255,255,255,.30)">→</span>
+    <span style="font-size:11px;padding:3px 11px;border:1px solid rgba(80,200,255,.45);border-radius:14px;color:rgba(80,200,255,.95);background:rgba(80,200,255,.07)">両統合</span>
+  </div>
+
+  <div style="margin-bottom:28px;padding:0 2px">
+    <p style="font-family:var(--serif);font-size:13px;line-height:2.0;color:rgba(255,255,255,.58)">この思想は13の次元で構成される。各次元に近い極と遠い極があり、中がその橋になる。軸の本体は両極で定義され、中（橋）は両極が成立したときにはじめて現れる状態だ。あなたがどの次元のどこに感度を持つか——それがこの診断の問いだ。</p>
+  </div>
+
+  <div id="frame-axes-list"></div>
+
+  <div style="margin-top:60px;padding-top:36px;border-top:1px solid rgba(255,255,255,.07)">
+    <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:24px">思想的背景</div>
+    <p style="font-size:13px;line-height:2.2;color:rgba(255,255,255,.55);font-family:var(--serif)">多元中合と呼んでいるものは、特別に新しい発想ではない。対立するもののあいだに関係が生まれ、そこに運動が生じるという構造は、弁証法や陰陽をはじめ、古くから繰り返し語られてきた。現代においても、トレードオフや両利きの経営といった概念に、その痕跡を見ることができる。</p>
+    <p style="font-size:13px;line-height:2.2;color:rgba(255,255,255,.50);font-family:var(--serif);margin-top:14px">バランスが配分の問題であるのに対し、中合は両極のあいだに往還を成立させる構造を指す。中間を取ることでも、均等に配分することでもない。</p>
+    <p style="font-size:13px;line-height:2.2;color:rgba(255,255,255,.50);font-family:var(--serif);margin-top:14px">人や組織の結果を分けているものは、能力そのものよりも、どのような世界観や前提のもとで判断しているかであることが多い。同じ能力を持っていても、選ぶ行動も、築く関係も、大きく異なる。その差はスキルではなく、見ている次元にある。</p>
+    <p style="font-size:13px;line-height:2.2;color:rgba(255,255,255,.45);font-family:var(--serif);margin-top:14px">この試みは、それらの次元を列挙し、自分の現在地と可能性を相対化するための道具として位置付けている。完成された体系ではなく、問いの地図である。</p>
+  </div>
+
+</div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page-japan">
+<div class="page-inner">
+  <div class="jp-intro">
+    <p>これは日本の話であると同時に、あなたの中にもある構造です。</p>
+    <p style="margin-top:8px">各軸で日本社会の偏りを見る。明るいセルほど強く偏っている。</p>
+  </div>
+  <div style="margin-bottom:24px;padding:12px 16px;border:1px solid rgba(255,255,255,.10);border-radius:8px;background:rgba(255,255,255,.03)">
+    <p style="font-size:11px;line-height:1.9;color:rgba(255,255,255,.38)">
+      <span style="color:rgba(255,255,255,.55);letter-spacing:.06em">注記</span>　この診断は、Hofstede の文化次元調査・Gallup のエンゲージメント調査・Edelman Trust Barometer・World Values Survey など複数の国際調査を参照した見立てをもとに構成しています。各国の傾向を一般化したものであり、個人差・地域差・時代変化を捨象しています。討議・思考の出発点としてお使いください。
+    </p>
+  </div>
+  <div class="jp-cards" id="japan-cards"></div>
+</div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page-diag">
+  <div class="diag-score-bar">
+    <h3>あなたの診断</h3>
+    <div class="score-block">
+      <span style="font-size:10px;letter-spacing:.12em;color:rgba(130,175,255,.80);margin-right:8px">合計</span>
+      <span class="score-num" id="scoreNum">0</span>
+      <span class="score-max" id="scoreMax">/ 0</span>
+    </div>
+  </div>
+  <div class="prog-wrap"><div class="prog-bar" id="progBar" style="width:0%"></div></div>
+
+  <div class="page-inner">
+    <div class="intro-frame">
+      <div class="intro-lead">あなたはどの次元で、動いているか。</div>
+      <p>各軸には近い極と遠い極がある。感度を持つ極を選んでほしい。複数でも、全部でもかまわない。</p>
+      <p>両極を選ぶと橋（中）に触れられる。三つが揃うとき、往還が生まれている。</p>
+      <div class="intro-ideal">
+        <span class="ideal-item dim">無極</span><span class="ideal-arrow">→</span>
+        <span class="ideal-item">片極</span><span class="ideal-arrow">→</span>
+        <span class="ideal-item">両極</span><span class="ideal-arrow">→</span>
+        <span class="ideal-item best">両統合</span>
+      </div>
+    </div>
+    <div id="diag-body"></div>
+    <div class="result-section">
+      <div class="result-title">軸別パターン</div>
+      <div id="result-rows"></div>
+      <div class="reset-btn" id="resetBtn">リセット</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════
+   DATA — 13軸確定版
+   軸の本体 = 両極（L/R）で定義
+   中（bridge）= 両極成立時に現れる往還状態
+════════════════════════════════════════ */
+const CATS = [
+
+  /* ── 存在相 ── */
+  { label:'存在相 — どこにいるか', sub:false, axes:[
+    {
+      id:'ninshō', name:'人称',
+      q:'自分の感覚から動くか、原理・構造に従うか——誰の視点で世界を捉えるか',
+      cells:['自','関','理'],
+      descs:['自己・直観','つながり','原理・構造'],
+      lv:[1,0,3], jpLv:[1,0,3],
+      meaning:'自分の感覚から動くか、原理に従うか。<br><br>どちらかに閉じると、判断は片側に歪む。<br><br>両側がつながると、世界は立体になる。',
+      jpDesc:'「理」（空気・規範への適応）が強く、「自」（個の直観・感覚）が薄い。人称の回路が詰まった状態——圧熱低下と相連結不全。',
+      symptom:'関係の蒸発。人はいるが、人称が違う。'
+    },
+    {
+      id:'jisō', name:'時相',
+      q:'刹那を生きるか、久しく続けるか——どの時間スケールで捉えるか',
+      cells:['瞬','進','久'],
+      descs:['刹那・瞬間','前進・変化','永続・循環'],
+      lv:[2,0,3], jpLv:[2,0,3],
+      meaning:'瞬間か、永続か。<br><br>刹那に閉じれば断続し、持続に閉じれば停滞する。<br><br>往還が生まれたとき、時間は前に進む。',
+      jpDesc:'「久」（伝統・維持・循環の再現）が強く、「瞬」（変革・非連続な前進）が弱い。変化の切実さが生まれにくい構造。',
+      symptom:'変化が遅い。成長より現状維持。'
+    },
+    {
+      id:'butsushin', name:'物心',
+      q:'機能として捉えるか、意味として感じるか——あなたにとって豊かさはどこにあるか',
+      cells:['物','身','心'],
+      descs:['機能・品質','体験・統合','感情・意味'],
+      lv:[3,0,3], jpLv:[3,0,3],
+      meaning:'物か、心か。<br><br>機能だけでは満たされず、感情だけでは続かない。<br><br>体験は、その結び目にある。',
+      jpDesc:'「物」（製品品質）と「心」（虚構・擬似関係）が両極に強く、「身」（統合された体験）が弱い。物は良いが感情が乗らない構造。',
+      symptom:'物は良いが感情が乗らない。心はあるが現実に接続しない。'
+    },
+  ]},
+
+  /* ── 評価・認識相 ── */
+  { label:'評価・認識相 — どう測り、どう掴むか', sub:false, axes:[
+    {
+      id:'tokushitsu', name:'得失',
+      q:'価値を取りに行くか、損失を避けるか——判断の方向はどちらを向いているか',
+      cells:['負','総','正'],
+      descs:['損失を避ける','全体を見渡す','価値を生む'],
+      lv:[3,1,0], jpLv:[3,1,0],
+      meaning:'負を避けるか、正を取りに行くか。<br><br>守りに閉じれば縮み、攻めに偏れば崩れる。<br><br>振れ幅の全体を持つとき、判断は生きる。',
+      jpDesc:'「負」（リスク回避・減点管理）が極めて強く、「正」（価値創出・挑戦）がほぼ不在。擬似的な「総」は実態は負の最小化に過ぎない。',
+      symptom:'攻めない社会。縮小均衡。ネガティブ最適化。'
+    },
+    {
+      id:'idō', name:'異同',
+      q:'違いに着目するか、共通に着目するか——固有と普遍のあいだ',
+      cells:['特','系','遍'],
+      descs:['固有・独自','体系・構造化','普遍・標準'],
+      lv:[0,1,3], jpLv:[0,1,3],
+      meaning:'固有か、普遍か。<br><br>独自に閉じれば伝わらず、標準に閉じれば埋もれる。<br><br>両側がつながると、独自でありながら届く。',
+      jpDesc:'「遍」（標準・前例・正解）偏重で、「特」（固有の価値・独自性）が弱い。体系化も弱く、固有を普遍につなぐ思考が乏しい。',
+      symptom:'正解を探すが、価値を生まない。イノベーションの欠如。'
+    },
+    {
+      id:'shindo', name:'深度',
+      q:'情景として感じるか、本質として掴むか——知覚の深さを問う',
+      cells:['景','記','決'],
+      descs:['情景・空気','象徴・物語','本質・法則'],
+      lv:[3,1,0], jpLv:[3,1,0],
+      meaning:'情景か、構造か。<br><br>感じるだけでは共有されず、構造だけでは現実を離れる。<br><br>往復の中で、意味が立ち上がる。',
+      jpDesc:'「景」（文脈・空気・情景）が非常に強く、「決」（抽象構造・言語化・原理化）が弱い。感じるが、構造化できない。',
+      symptom:'美しいが言語化できない。感じるが、伝えられない。'
+    },
+    {
+      id:'kyōkai', name:'境界',
+      q:'否定で世界を切り取るか、肯定で世界を抱くか——どこまでを価値として認めるか',
+      cells:['否','分','肯'],
+      descs:['否定・批判','分別・識別','全体を肯定'],
+      lv:[2,3,0], jpLv:[2,3,0],
+      meaning:'否定するか、肯定するか。<br><br>否定に閉じると世界は裁かれ、肯定に閉じると現実が見えなくなる。<br><br>往還の中で、分別が生きる。',
+      jpDesc:'「分」（善悪判定・正義）が強く、「肯」（世界全体を肯定する感覚）が弱い。炎上文化はここに現れる。',
+      symptom:'正義はあるが、楽しさがない。祝福が届かない。'
+    },
+  ]},
+
+  /* ── 駆動相 ── */
+  { label:'駆動相 — 何が動かすか', sub:false, axes:[
+    {
+      id:'junkan', name:'循環',
+      q:'受け取るばかりか、与えるばかりか——エネルギーは循環しているか',
+      cells:['得','還','与'],
+      descs:['受け取る・獲得','循環させる','与える・貢献'],
+      lv:[3,0,1], jpLv:[3,0,1],
+      meaning:'得るか、与えるか。<br><br>受け取るだけでは枯れ、与えるだけでは続かない。<br><br>往還が成立したとき、エネルギーは循環する。',
+      jpDesc:'「得」（消費志向）が強く、仕事が「与」ではなく負担として体験される。「還」が成立せず、価値が循環しない。',
+      symptom:'エネルギーが流れない。得るが、還らない。'
+    },
+    {
+      id:'dōki', name:'動機',
+      q:'規範に従うか、目的に従うか——あなたの行為は何が動かしているか',
+      cells:['律','役','的'],
+      descs:['規律に従う','意味ある役割','目的を追う'],
+      lv:[3,1,0], jpLv:[3,1,0],
+      meaning:'規律に従うか、目的を追うか。<br><br>プロセスに閉じると意味が消え、目的に閉じると空回る。<br><br>両側がつながると、役割は生きる。',
+      jpDesc:'「律」（規範的役割・指示待ち）が強く、「的」（内発的Why・志）が弱い。役割はあるが意味が空洞化している。エンゲージメント世界最下位の構造的原因。',
+      symptom:'役割はあるが、意味がない。やらされ仕事。熱意5%。'
+    },
+    {
+      id:'seisei', name:'生成',
+      q:'必然から動くか、可能性から動くか——主体はその間にある',
+      cells:['必','主','能'],
+      descs:['客観的な必然','自分がやる','あり得ること'],
+      lv:[3,0,1], jpLv:[3,0,1],
+      meaning:'必然か、可能性か。<br><br>義務に閉じれば重くなり、可能性に閉じれば進まない。<br><br>主体があるとき、現実の中で前に進める。',
+      jpDesc:'「必」（義務・制約・そうせざるを得ない）が強く、「主」（自分が主体である感覚）が弱い。「能」は潜在的には高いが、主体なしに発現しない。',
+      symptom:'義務で動く。可能性があっても自分事にならない。'
+    },
+  ]},
+
+  /* ── 候補相 ── */
+  { label:'候補相 — 検討中', sub:true, axes:[
+    {
+      id:'kōdō', name:'行動',
+      q:'刈り取るか、踏み出すか——成立させる力はあるか',
+      cells:['収','立','拓'],
+      descs:['回収・最適化','成立させる','探索・開拓'],
+      lv:[3,2,0], jpLv:[3,2,0],
+      meaning:'探索か、回収か。<br><br>刈り取るだけでは縮小し、探索だけでは成立しない。<br><br>往還の中で、開拓は社会になる。',
+      jpDesc:'「収」が極めて強く、「拓」がほぼない。アメリカは「拓」過剰で「立」が危うくなりつつある対照例。',
+      symptom:'イノベーションの欠如。改善は得意だが、ジャンプがない。'
+    },
+    {
+      id:'ketsugō', name:'結合',
+      q:'局所に閉じるか、全体とつながるか——接続と共創はあるか',
+      cells:['局','結','全'],
+      descs:['個・局所的','協働・共創','全体・組織'],
+      lv:[2,0,1], jpLv:[2,0,1],
+      meaning:'局所か、全体か。<br><br>個に閉じると孤立し、全体に溶けると自己が消える。<br><br>結合は、分断が解けたところに生まれる。',
+      jpDesc:'個が強まり（専門特化・オタク）、全が弱体化。「結」が弱いため個の強まりが孤立型個人主義になる。',
+      symptom:'孤立した高精度ユニットの集合。専門は高いが、つながらない。'
+    },
+    {
+      id:'ongen', name:'恩源',
+      q:'業（自分の因果）に縛られるか、天（大きな流れ）に委ねるか——その間に、願いはあるか',
+      cells:['業','願','天'],
+      descs:['自責・背負い','志・希求','恩寵・受容'],
+      lv:[3,1,0], jpLv:[3,1,0],
+      meaning:'業（因果）に縛られるか、天（流れ）に委ねるか。<br><br>自責に閉じると重くなり、委ねるだけでは意志が消える。<br><br>願いは、その間にしか生まれない。',
+      jpDesc:'「業」（自己責任・義務・背負い）が過剰で、「天」（恩寵・受容）が弱く、「願」（志・ビジョン）が細い。',
+      symptom:'頑張るが、意味がない。義務で生きる。'
+    },
+  ]},
+];
+
+/* flatten */
+const allAxes = CATS.flatMap(c => c.axes.map(a => ({...a, sub:c.sub})));
+
+/* ════════════════════════════════════════
+   PAGE 1 — フレーム紹介
+════════════════════════════════════════ */
+(function buildFrame(){
+  const container = document.getElementById('frame-axes-list');
+  CATS.forEach(cat => {
+    const hd = document.createElement('div');
+    hd.className = 'sec-head'; hd.textContent = cat.label;
+    container.appendChild(hd);
+    cat.axes.forEach(a => {
+      const card = document.createElement('div');
+      card.className = 'axis-card-f' + (cat.sub ? ' sub' : '');
+      const cellsHtml = a.cells.map((k,i) => `
+        <div class="cell lv1 ${['cell-shape-left','cell-shape-center','cell-shape-right'][i]}">
+          <div class="cell-kanji" style="font-size:18px">${k}</div>
+          <div class="cell-desc">${a.descs[i]}</div>
+        </div>`).join('');
+      card.innerHTML = `
+        <div class="axis-f-header">
+          <div class="axis-f-name">${a.name}軸</div>
+          ${cat.sub ? '<span class="sub-tag">候補</span>' : ''}
+        </div>
+        <div class="axis-f-q">${a.q}</div>
+        <div class="axis-f-cells">${cellsHtml}</div>
+        <div class="axis-f-desc">${a.meaning}</div>`;
+      container.appendChild(card);
+    });
+  });
+})();
+
+/* ════════════════════════════════════════
+   PAGE 2 — 日本の診断
+════════════════════════════════════════ */
+(function buildJapan(){
+  const container = document.getElementById('japan-cards');
+  allAxes.forEach(a => {
+    const card = document.createElement('div');
+    card.className = 'jp-card' + (a.sub ? ' sub' : '');
+    const cellsHtml = a.cells.map((k,i) => `
+      <div class="cell lv${a.jpLv[i]} ${['cell-shape-left','cell-shape-center','cell-shape-right'][i]}">
+        <div class="cell-kanji" style="font-size:17px">${k}</div>
+        <div class="cell-desc">${a.descs[i]}</div>
+      </div>`).join('');
+    card.innerHTML = `
+      <div class="jp-card-name">${a.name}次元</div>
+      <div class="jp-cells">${cellsHtml}</div>
+      <div class="jp-body">${a.jpDesc}</div>
+      <span class="symptom">→ ${a.symptom}</span>`;
+    container.appendChild(card);
+  });
+})();
+
+/* ════════════════════════════════════════
+   PAGE 3 — あなたの診断
+════════════════════════════════════════ */
+const state = {};
+let maxScore = 0;
+allAxes.forEach(a => { state[a.id] = [false,false,false]; maxScore += 7; });
+document.getElementById('scoreMax').textContent = `/ ${maxScore}`;
+
+const SHAPES = ['cell-shape-left','cell-shape-center','cell-shape-right'];
+
+function calcPattern(L,C,R){
+  const both = L && R;
+  if(both && C) return {score:7, label:'両統合', cls:'pat-gou'};
+  if(both)      return {score:4, label:'両極',   cls:'pat-ryoku'};
+  if(R)         return {score:2, label:'片極（遠）', cls:'pat-tan'};
+  if(L)         return {score:1, label:'片極（近）', cls:'pat-tan'};
+  return          {score:0, label:'無極', cls:''};
+}
+
+(function buildDiag(){
+  const body = document.getElementById('diag-body');
+  const resultRows = document.getElementById('result-rows');
+  CATS.forEach(cat => {
+    const hd = document.createElement('div');
+    hd.className = 'diag-cat'; hd.textContent = cat.label;
+    body.appendChild(hd);
+    cat.axes.forEach(a => {
+      const card = document.createElement('div');
+      card.className = 'diag-card' + (cat.sub ? ' sub' : '');
+      card.innerHTML = `<div class="diag-meta">${a.name}次元</div><div class="diag-q">${a.q}</div>`;
+      const row = document.createElement('div');
+      row.className = 'diag-cells';
+      a.cells.forEach((k,i) => {
+        const cell = document.createElement('div');
+        cell.className = 'cell ' + SHAPES[i] + (i===1 ? ' bridge-locked' : '');
+        cell.innerHTML = `<div class="pt-badge">${['◀','●','▶'][i]}</div>
+          <div class="cell-kanji" style="font-size:20px">${k}</div>
+          <div class="cell-desc">${a.descs[i]}</div>`;
+        if(i===1) cell.style.cursor='default';
+        cell.addEventListener('click', () => {
+          if(i===1 && !(state[a.id][0] && state[a.id][2])) return;
+          state[a.id][i] = !state[a.id][i];
+          if(i!==1 && !state[a.id][i]) state[a.id][1]=false;
+          refreshCells(row, a.id);
+          updateScore();
+        });
+        row.appendChild(cell);
+      });
+      card.appendChild(row);
+      body.appendChild(card);
+      /* result row */
+      const rr = document.createElement('div');
+      rr.className = 'result-row';
+      rr.innerHTML = `<div class="result-name">${a.name}</div>
+        <div class="result-bar-wrap"><div class="result-bar-fill" id="bar-${a.id}" style="width:0%"></div></div>
+        <div class="pat-badge" id="pat-${a.id}">—</div>
+        <div class="result-pts" id="pts-${a.id}">0</div>`;
+      resultRows.appendChild(rr);
+    });
+  });
+})();
+
+function refreshCells(row, id){
+  const cells = row.querySelectorAll('.cell');
+  const [L,C,R] = state[id];
+  const both = L && R;
+  const togou = L && C && R;
+  row.classList.toggle('row-togou', togou);
+  cells.forEach((cell,i) => {
+    cell.classList.toggle('on', state[id][i]);
+    if(i===0||i===2) cell.classList.toggle('lv-outer', state[id][i] && !togou);
+    if(i===1){
+      cell.classList.toggle('lv-center', state[id][i] && !togou);
+      cell.classList.toggle('bridge-locked', !both);
+      cell.style.cursor = both ? 'pointer' : 'default';
+    }
+  });
+}
+
+function updateScore(){
+  let total = 0;
+  allAxes.forEach(a => {
+    const p = calcPattern(...state[a.id]);
+    total += p.score;
+    const barEl = document.getElementById(`bar-${a.id}`);
+    const patEl = document.getElementById(`pat-${a.id}`);
+    const ptsEl = document.getElementById(`pts-${a.id}`);
+    if(barEl) barEl.style.width = (p.score/7*100)+'%';
+    if(patEl){ patEl.textContent=p.label; patEl.className='pat-badge '+p.cls; }
+    if(ptsEl) ptsEl.textContent = p.score;
+  });
+  document.getElementById('scoreNum').textContent = total;
+  document.getElementById('progBar').style.width = (total/maxScore*100)+'%';
+}
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  allAxes.forEach(a => { state[a.id]=[false,false,false]; });
+  document.querySelectorAll('.diag-cells').forEach(r => r.classList.remove('row-togou'));
+  document.querySelectorAll('.diag-cells .cell').forEach(c => {
+    c.classList.remove('on','lv-outer','lv-center');
+    if(c.classList.contains('cell-shape-center')){
+      c.classList.add('bridge-locked'); c.style.cursor='default';
+    }
+  });
+  updateScore();
+});
+
+/* ════════════════════════════════════════
+   TAB SWITCHING
+════════════════════════════════════════ */
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('page-'+tab.dataset.page).classList.add('active');
+    window.scrollTo(0,0);
+  });
+});
+
+/* ════════════════════════════════════════
+   ROUNDED TRIANGLE CLIP-PATHS
+   Computes path() from live element size
+════════════════════════════════════════ */
+function roundedPolygonPath(pts, r) {
+  const n = pts.length;
+  const cmds = [];
+  for (let i = 0; i < n; i++) {
+    const prev = pts[(i - 1 + n) % n];
+    const curr = pts[i];
+    const next = pts[(i + 1) % n];
+    const dIn  = [curr[0]-prev[0], curr[1]-prev[1]];
+    const dOut = [next[0]-curr[0], next[1]-curr[1]];
+    const lenIn  = Math.hypot(dIn[0], dIn[1]);
+    const lenOut = Math.hypot(dOut[0], dOut[1]);
+    const rr = Math.min(r, lenIn/2, lenOut/2);
+    const p1 = [curr[0]-dIn[0]/lenIn*rr,  curr[1]-dIn[1]/lenIn*rr];
+    const p2 = [curr[0]+dOut[0]/lenOut*rr, curr[1]+dOut[1]/lenOut*rr];
+    cmds.push(i===0 ? `M${p1[0].toFixed(2)} ${p1[1].toFixed(2)}`
+                    : `L${p1[0].toFixed(2)} ${p1[1].toFixed(2)}`);
+    cmds.push(`Q${curr[0].toFixed(2)} ${curr[1].toFixed(2)} ${p2[0].toFixed(2)} ${p2[1].toFixed(2)}`);
+  }
+  return cmds.join(' ') + ' Z';
+}
+
+function applyRoundedTriangles() {
+  const R = 11;
+  document.querySelectorAll('.cell-shape-left').forEach(el => {
+    const w = el.offsetWidth, h = el.offsetHeight;
+    if (!w || !h) return;
+    el.style.clipPath = `path('${roundedPolygonPath([[0,h/2],[w*.9,0],[w*.9,h]], R)}')`;
+  });
+  document.querySelectorAll('.cell-shape-right').forEach(el => {
+    const w = el.offsetWidth, h = el.offsetHeight;
+    if (!w || !h) return;
+    el.style.clipPath = `path('${roundedPolygonPath([[w,h/2],[w*.1,0],[w*.1,h]], R)}')`;
+  });
+}
+
+// Run on load, resize, and tab switch
+setTimeout(applyRoundedTriangles, 50);
+window.addEventListener('resize', applyRoundedTriangles);
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => setTimeout(applyRoundedTriangles, 30));
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+# registry.yml — 全コンテンツの台帳
+#
+# ここが相互リンクの唯一の正解。本文には URL を書かず、ID を書く。
+# URL が変わったときに直すのは、このファイルの1行だけ。
+#
+# ID の接頭辞
+#   app-    アプリ（診断・シミュレーター・物語アプリ）
+#   art-    記事・論考
+#   fw-     概念マスター（Framework）
+#   story-  寓話・絵本
+#   rep-    レポート
+#
+# 出典: Matsumura_GitHub_App_Map_v0.1（2026-08-24 取得）
+
+# ============================================================
+# アプリ（apps/ に集約後の URL を記載）
+# ============================================================
+
+app-happiness:
+  title: 幸福の地図
+  kind: app
+  url: /apps/happiness/
+  legacy_url: https://kuniakimat.github.io/happiness/
+  repo: kuniakimat/happiness
+  concepts: [広福観, 幸福25相, 幸福タイプ, 幸福の重心]
+  summary: 25問・約3分の診断。空間相5×時間相5の25セルを幸福地形として可視化する
+  version: 2026.04.16
+  status: public
+
+app-happiness-map:
+  title: 幸福の地図（関連面・旧版）
+  kind: app
+  url: /apps/happiness-map/
+  legacy_url: https://kuniakimat.github.io/-happiness-map/
+  repo: kuniakimat/-happiness-map
+  concepts: [広福観, 幸福25相]
+  summary: 診断、N=4,000レポート、物語、ワークショップを含む関連面
+  related: [app-happiness, rep-happiness-4000]
+  status: public
+  note: happiness との正式なマスター関係は未確認
+
+app-sons:
+  title: S ON S / Your Tower of Life
+  kind: app
+  url: /apps/sons/
+  legacy_url: https://kuniakimat.github.io/sons/
+  repo: kuniakimat/sons
+  concepts: [SONS, 恩源, 知恩, 人生基盤]
+  summary: 12問2段階の診断。幸福を支える基盤の大きさと、その侵食・危機を可視化する
+  related: [story-sons-fable, story-pyramid-of-life]
+  status: public
+
+app-chugo:
+  title: 多元中合
+  kind: app
+  url: /apps/chugo/
+  legacy_url: https://kuniakimat.github.io/chugo/
+  repo: kuniakimat/chugo
+  concepts: [多元中合]
+  summary: 思索の目次・問いの地図。両極間に往還を成立させる「中」を扱う軸の一覧
+  status: public
+  note: 本文中の「13の次元」と「2026年7月に追加した14番目の軸（明暗）」の版整合を要確認
+
+app-country:
+  title: あの国だったら富裕層？
+  kind: app
+  url: /apps/country/
+  legacy_url: https://kuniakimat.github.io/country/
+  repo: kuniakimat/country
+  concepts: [社会基盤と個人努力, 恩源]
+  summary: 国内所得順位を固定し、生まれた国だけを変えた場合の概算年収を比較する
+  related: [app-onehour]
+  status: public
+  note: 公的統計をもとにした概算プロトタイプ。記事へ転用する前に出典と版を確認する
+
+app-onehour:
+  title: 日本人の1時間
+  kind: app
+  url: /apps/onehour/
+  legacy_url: https://kuniakimat.github.io/onehour/
+  repo: kuniakimat/onehour
+  concepts: [社会基盤と個人努力]
+  summary: 1996年と2024年の最低賃金を、海外都市での食事購買力に翻訳したデータ物語
+  related: [app-country]
+  status: public
+  note: 価格・為替は再検証が必要
+
+app-index:
+  title: 思想と実践のハブ
+  kind: app
+  url: /apps/index/
+  legacy_url: https://kuniakimat.github.io/index/
+  repo: kuniakimat/index
+  summary: 診断・ツール、論考・レポート、メディア・対談を束ねる公開ナビゲーション
+  status: public
+
+app-character:
+  title: 石を拾う人
+  kind: app
+  url: /apps/character/
+  legacy_url: https://kuniakimat.github.io/character/
+  repo: kuniakimat/character
+  summary: ChatGPT が数百時間の対話から書いた人物理解の記録
+  status: public
+  note: 本人原文ではないため、Voice の教師には使わない。理解テストの素材として扱う
+
+# ============================================================
+# 物語・寓話
+# ============================================================
+
+story-sons-fable:
+  title: ウッキーと亀爺さん
+  kind: story
+  url: /apps/sons_fable/
+  legacy_url: https://kuniakimat.github.io/sons_fable/
+  repo: kuniakimat/sons_fable
+  concepts: [恩源, 恩源継承, 知恩]
+  summary: 恩源を「森を保つ亀爺さん」、受益者を「サル」として描く全十話の寓話
+  related: [app-sons, story-kinomi]
+  status: public
+
+story-kinomi:
+  title: 木の実をひとつ
+  kind: story
+  url: /apps/kinomi/
+  legacy_url: https://kuniakimat.github.io/kinomi/
+  repo: kuniakimat/kinomi
+  concepts: [恩源, 恩源継承]
+  summary: タップして読む短い導入面
+  related: [story-sons-fable]
+  status: public
+
+story-pyramid-of-life:
+  title: Pyramid of Life
+  kind: story
+  url: /apps/sons_story/
+  legacy_url: https://kuniakimat.github.io/sons_story/
+  repo: kuniakimat/sons_story
+  concepts: [SONS, 恩源, 人生基盤]
+  summary: 恩源のピラミッドを一人の50年の人生として導入する私小説形式の実験
+  related: [app-sons]
+  status: public
+  note: 公開面自身が「仮置きのプロトタイプ」と明記。自伝原文として引用しない
+
+# ============================================================
+# レポート（逆輸入後に本文を content/reports/ へ）
+# ============================================================
+
+rep-happiness-4000:
+  title: 広福観レポート（N=4,000）
+  kind: report
+  url: /apps/happiness-map/report/
+  concepts: [広福観, 幸福25相]
+  status: public
+  note: マスターデータの所在が未確認。記事転用前に出典と算式を確認する
+
+# ============================================================
+# 未使用・予約
+# ============================================================
+
+# kuniakimat/hub         空リポ。用途未定
+# kuniakimat/mindchecker 空リポ。用途未定

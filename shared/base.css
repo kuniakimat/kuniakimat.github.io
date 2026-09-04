@@ -1,0 +1,110 @@
+/* base.css — 全ページ共通。ここを直せば全アプリ・全記事に反映される */
+
+:root{
+  color-scheme: dark light;
+  --bg:#12161A;
+  --surface:#1A2026;
+  --text:#E8EBE9;       /* #12161A に対して 13.5:1 */
+  --text-2:#B4BDC3;     /* 7.4:1 */
+  --text-3:#8B959D;     /* 4.6:1 — AA 下限を確保 */
+  --rule:#2B343B;
+  --accent:#7FB6D4;     /* 6.9:1 */
+  --accent-2:#B0C084;
+  --measure:42rem;
+}
+@media (prefers-color-scheme: light){
+  :root{
+    --bg:#F6F6F2;
+    --surface:#FFFFFF;
+    --text:#171F26;
+    --text-2:#3C4954;
+    --text-3:#5F6B75;   /* #F6F6F2 に対して 4.9:1 */
+    --rule:#DDDED7;
+    --accent:#1F5673;
+    --accent-2:#4E5C2A;
+  }
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Hiragino Sans","Noto Sans JP",system-ui,-apple-system,sans-serif;
+  font-size:16px;
+  line-height:1.9;
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings:"palt" 1;
+}
+
+/* body の背景指定だけに頼らず、全内容を包む .page が背景を持つ */
+.page{
+  background:var(--bg);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+main{
+  flex:1;
+  width:100%;
+  max-width:var(--measure);
+  margin:0 auto;
+  padding:2rem 1.35rem 4rem;
+}
+
+.site-header,.site-footer{
+  max-width:var(--measure);
+  margin:0 auto;
+  padding:1.25rem 1.35rem;
+  width:100%;
+  font-size:.9rem;
+}
+.site-header{border-bottom:1px solid var(--rule);}
+.site-footer{border-top:1px solid var(--rule);color:var(--text-3);}
+.site-header a,.site-footer a{color:var(--text-2);text-decoration:none;}
+.site-header a:hover,.site-footer a:hover{color:var(--accent);}
+
+a{color:var(--accent);text-underline-offset:.2em;}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+h1{font-size:clamp(1.5rem,5vw,2.1rem);line-height:1.45;margin:.2rem 0 1.2rem;text-wrap:balance;font-weight:700;}
+h2{font-size:1.2rem;line-height:1.6;margin:2.6rem 0 .8rem;font-weight:700;}
+h3{font-size:1.03rem;margin:2rem 0 .6rem;font-weight:700;}
+p{margin:0 0 1.3rem;}
+blockquote{margin:1.5rem 0;padding:.2rem 0 .2rem 1.1rem;border-left:2px solid var(--accent);color:var(--text-2);}
+img{max-width:100%;height:auto;}
+pre,table{overflow-x:auto;}
+pre{background:var(--surface);border:1px solid var(--rule);border-radius:3px;padding:1rem;font-size:.85rem;}
+code{font-family:ui-monospace,"SFMono-Regular",monospace;font-size:.88em;}
+hr{border:0;border-top:1px solid var(--rule);margin:2.5rem 0;}
+
+.meta{
+  display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;
+  font-size:.78rem;color:var(--text-3);letter-spacing:.06em;margin-bottom:.6rem;
+}
+.meta .kind{color:var(--accent);}
+.badge-preview{
+  color:var(--accent-2);border:1px solid var(--accent-2);
+  padding:.05rem .45rem;border-radius:2px;font-size:.7rem;letter-spacing:.08em;
+}
+
+a.concept{
+  color:var(--text);
+  text-decoration:none;
+  border-bottom:1px dotted var(--accent);
+}
+a.concept:hover{color:var(--accent);}
+
+.related{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--rule);}
+.related h2{font-size:.8rem;letter-spacing:.14em;color:var(--text-3);margin:0 0 .8rem;font-weight:500;}
+.related ul,.index-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.55rem;}
+.related li,.index-list li{font-size:.95rem;}
+.ext{font-size:.7rem;color:var(--text-3);letter-spacing:.06em;}
+
+.site-title{margin-bottom:2rem;}
+.index-sec{margin-bottom:2.5rem;}
+.index-sec h2{font-size:.8rem;letter-spacing:.14em;color:var(--text-3);font-weight:500;margin:0 0 .9rem;}
+.detail{color:var(--text-2);font-size:.92rem;}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}

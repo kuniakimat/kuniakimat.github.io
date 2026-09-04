@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>松村有晃 — 思想と実践のハブ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0e0e0c;
+    --surface: #161612;
+    --border: rgba(200, 185, 150, 0.12);
+    --border-hover: rgba(200, 185, 150, 0.3);
+    --gold: #c8a96e;
+    --gold-light: #e2c999;
+    --cream: #ede8de;
+    --muted: rgba(237, 232, 222, 0.45);
+    --tag-bg: rgba(200, 169, 110, 0.1);
+    --tag-text: #c8a96e;
+  }
+
+  html { background: var(--bg); color: var(--cream); font-family: 'Noto Serif JP', Georgia, serif; }
+
+  body {
+    min-height: 100vh;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* Header */
+  header {
+    padding: 72px 0 56px;
+    border-bottom: 0.5px solid var(--border);
+    margin-bottom: 64px;
+  }
+
+  .en-name {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    margin-bottom: 24px;
+  }
+
+  .tagline {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .bio-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 28px;
+  }
+
+  .chip {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    background: var(--tag-bg);
+    border: 0.5px solid rgba(200, 169, 110, 0.25);
+    padding: 4px 12px;
+    border-radius: 2px;
+  }
+
+  /* Sections */
+  section {
+    margin-bottom: 64px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+
+  .section-num {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+  }
+
+  h2 {
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+
+  .rule {
+    flex: 1;
+    height: 0.5px;
+    background: var(--border);
+  }
+
+  /* Cards grid */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+
+  .card {
+    display: block;
+    text-decoration: none;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 3px;
+    padding: 20px 22px;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 2px;
+    height: 100%;
+    background: var(--gold);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .card:hover {
+    border-color: var(--border-hover);
+    background: #1c1c17;
+  }
+
+  .card:hover::before {
+    opacity: 1;
+  }
+
+  .card-label {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--cream);
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+
+  .card-desc {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .card-arrow {
+    position: absolute;
+    bottom: 18px; right: 18px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--border-hover);
+    transition: color 0.2s, transform 0.2s;
+  }
+
+  .card:hover .card-arrow {
+    color: var(--gold);
+    transform: translate(2px, -2px);
+  }
+
+  /* Wide card (for articles with sub-links) */
+  .card-wide {
+    grid-column: 1 / -1;
+  }
+
+  .sub-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 0.5px solid var(--border);
+  }
+
+  .sub-link {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--gold-light);
+    text-decoration: none;
+    padding: 4px 12px;
+    border: 0.5px solid rgba(200, 185, 150, 0.2);
+    border-radius: 2px;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .sub-link:hover {
+    background: var(--tag-bg);
+    border-color: var(--gold);
+  }
+
+  /* Note section with article list */
+  .note-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  @media (max-width: 560px) {
+    .cards, .note-grid { grid-template-columns: 1fr; }
+    .card-wide { grid-column: 1; }
+  }
+
+  /* Footer */
+  footer {
+    padding-top: 40px;
+    border-top: 0.5px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-name {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 20px;
+  }
+
+  .footer-links a {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .footer-links a:hover { color: var(--gold-light); }
+
+  .todo {
+    opacity: 0.4;
+    cursor: default;
+    pointer-events: none;
+  }
+  .todo .card-label::after { content: '  ※URL要設定'; color: #888; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="en-name">Kuniaki Matsumura</div>
+  <h1>松村有晃</h1>
+  <p class="tagline">社会戦略・幸福の地図・思想実践——<br>考え続けた記録と、それを形にしたもの。</p>
+  <div class="bio-chips">
+    <span class="chip">社会戦略家</span>
+    <span class="chip">楽天グループ 常務執行役員</span>
+    <span class="chip">Harvard AMP 2024</span>
+    <span class="chip">松村モデル</span>
+    <span class="chip">広福観</span>
+  </div>
+</header>
+
+<!-- Section 1: Tools / Diagnosis -->
+<section>
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2>診断・ツール</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="cards">
+
+    <a class="card" href="https://kuniakimat.github.io/-happiness-map/" target="_blank" rel="noopener">
+      <div class="card-label">Web App</div>
+      <div class="card-title">幸福の地図<br>広福観 診断</div>
+      <div class="card-desc">5×5マトリクスで自分の幸福タイプを診断。25問・13タイプ。</div>
+      <span class="card-arrow">→</span>
+    </a>
+
+    <a class="card" href="https://kuniakimat.github.io/-happiness-map/" target="_blank" rel="noopener">
+      <div class="card-label">Report</div>
+      <div class="card-title">広福観 調査レポート</div>
+      <div class="card-desc">N=4,000の調査データから読む日本人の幸福分布。タイプ別・年代別・収入別の構造分析。</div>
+      <span class="card-arrow">→</span>
+    </a>
+
+    <a class="card" href="https://kuniakimat.github.io/-happiness-map/happiness-story.html" target="_blank" rel="noopener">
+      <div class="card-label">Story</div>
+      <div class="card-title">広福物語</div>
+      <div class="card-desc">幸福の地図を小説形式で読む。7人の主人公と7つの幸福の型。</div>
+      <span class="card-arrow">→</span>
+    </a>
+
+    <a class="card" href="https://kuniakimat.github.io/-happiness-map/workshop.html" target="_blank" rel="noopener">
+      <div class="card-label">Gallery</div>
+      <div class="card-title">中合<br>フレームギャラリー</div>
+      <div class="card-desc">松村モデルの関係相フレームを一覧。ワークショップ素材集。</div>
+      <span class="card-arrow">→</span>
+    </a>
+
+    <a class="card" href="https://kuniakimat.github.io/sons/" target="_blank" rel="noopener">
+      <div class="card-label">Diagnosis App</div>
+      <div class="card-title">SONS<br>Your Tower of Life</div>
+      <div class="card-desc">社・国・組・村・我の6基盤層から「生の塔」を診断する。</div>
+      <span class="card-arrow">→</span>
+    </a>
+
+  </div>
+</section>
+
+<!-- Section 2: Reports / Essays -->
+<section>
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2>論考・レポート</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="cards">
+
+    <a class="card" href="https://note.com/kuniakimat/n/n959fe953573b" target="_blank" rel="noopener">
+      <div class="card-label">Note</div>
+      <div class="card-title">社会戦略レポート</div>
+      <div class="card-desc">50カ国・1,850因子の国際データから「成長と幸福」を決める因子を定量化。日本の課題と好転の鍵。</div>
+      <span class="card-arrow">→</span>
+    </a>
+
+    <a class="card" href="https://note.com/kuniakimat" target="_blank" rel="noopener">
+      <div class="card-label">Note 記事一覧</div>
+      <div class="card-title">Kuniaki Matsumura<br>note</div>
+      <div class="card-desc">社会・幸福・思想・キャリアについて継続的に書いている記事のすべて。</div>
+      <span class="card-arrow">→</span>
+    </a>
+
+  </div>
+</section>
+
+<!-- Section 3: Media / Talks -->
+<section>
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2>メディア・対談</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="cards">
+
+    <a class="card card-wide" href="https://pivotmedia.co.jp/movie/12860" target="_blank" rel="noopener">
+      <div class="card-label">PIVOT 動画</div>
+      <div class="card-title">2050年 日本好転の３つのカギ</div>
+      <div class="card-desc">60スライドの国際比較リサーチ。成長と幸福度低下の構造と、再興の戦略を説く。</div>
+      <div class="sub-links">
+        <a class="sub-link" href="https://pivotmedia.co.jp/movie/12860" target="_blank" rel="noopener">前編 — 国際データで見る日本の衰退</a>
+        <a class="sub-link" href="https://pivotmedia.co.jp/movie/12863" target="_blank" rel="noopener">後編 — 好転の３つのカギ</a>
+      </div>
+    </a>
+
+    <a class="card card-wide" href="https://www.hakuhodody-holdings.co.jp/news/topics/2025/08/5762.html" target="_blank" rel="noopener">
+      <div class="card-label">博報堂DYホールディングス 対談</div>
+      <div class="card-title">社会戦略家と考える「働き甲斐の重要性」</div>
+      <div class="card-desc">博報堂DYHD CAIO 森正弥氏との対談。幸福観・AI時代の働き甲斐・社会リーダーシップを論じる。</div>
+      <div class="sub-links">
+        <a class="sub-link" href="https://www.hakuhodody-holdings.co.jp/news/topics/2025/08/5762.html" target="_blank" rel="noopener">前編 — 幸福と働く意義</a>
+        <a class="sub-link" href="https://www.hakuhodody-holdings.co.jp/news/topics/2025/08/5764.html" target="_blank" rel="noopener">後編 — AI時代の働き甲斐</a>
+      </div>
+    </a>
+
+    <a class="card" href="https://hatarakigai.openwork.jp/posts/56316449/" target="_blank" rel="noopener">
+      <div class="card-label">OpenWork 対談</div>
+      <div class="card-title">経済成長と幸福の両立は可能か</div>
+      <div class="card-desc">OpenWork代表 大澤陽樹氏との対談。データをベースに日本の低迷と熱意再生を語る。</div>
+      <span class="card-arrow">→</span>
+    </a>
+
+  </div>
+</section>
+
+<footer>
+  <span class="footer-name">Kuniaki Matsumura — 松村有晃</span>
+  <nav class="footer-links">
+    <a href="https://note.com/kuniakimat" target="_blank" rel="noopener">note</a>
+    <a href="https://x.com/kuniakimat" target="_blank" rel="noopener">X / Twitter</a>
+  </nav>
+</footer>
+
+</body>
+</html>
