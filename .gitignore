@@ -1,7 +1,7 @@
 node_modules/
-site/
-out/
-archive/
-_trash/
+/site/
+/out/
+/archive/
+/_trash/
 .DS_Store
 data/.note-state.json
