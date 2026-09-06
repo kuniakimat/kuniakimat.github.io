@@ -19,6 +19,7 @@
 app-happiness:
   title: 幸福の地図
   kind: app
+  genre: 診断
   url: /apps/happiness/
   legacy_url: https://kuniakimat.github.io/happiness/
   repo: kuniakimat/happiness
@@ -30,6 +31,7 @@ app-happiness:
 app-happiness-map:
   title: 幸福の地図（関連面・旧版）
   kind: app
+  genre: 診断
   url: /apps/happiness-map/
   legacy_url: https://kuniakimat.github.io/-happiness-map/
   repo: kuniakimat/-happiness-map
@@ -42,6 +44,7 @@ app-happiness-map:
 app-sons:
   title: S ON S / Your Tower of Life
   kind: app
+  genre: 診断
   url: /apps/sons/
   legacy_url: https://kuniakimat.github.io/sons/
   repo: kuniakimat/sons
@@ -53,6 +56,7 @@ app-sons:
 app-chugo:
   title: 多元中合
   kind: app
+  genre: 思索の目次
   url: /apps/chugo/
   legacy_url: https://kuniakimat.github.io/chugo/
   repo: kuniakimat/chugo
@@ -64,6 +68,7 @@ app-chugo:
 app-country:
   title: あの国だったら富裕層？
   kind: app
+  genre: シミュレーター
   url: /apps/country/
   legacy_url: https://kuniakimat.github.io/country/
   repo: kuniakimat/country
@@ -76,6 +81,7 @@ app-country:
 app-onehour:
   title: 日本人の1時間
   kind: app
+  genre: シミュレーター
   url: /apps/onehour/
   legacy_url: https://kuniakimat.github.io/onehour/
   repo: kuniakimat/onehour
@@ -88,6 +94,7 @@ app-onehour:
 app-index:
   title: 思想と実践のハブ
   kind: app
+  genre: 思索の目次
   url: /apps/index/
   legacy_url: https://kuniakimat.github.io/index/
   repo: kuniakimat/index
@@ -97,6 +104,7 @@ app-index:
 app-character:
   title: 石を拾う人
   kind: app
+  genre: 自己紹介
   url: /apps/character/
   legacy_url: https://kuniakimat.github.io/character/
   repo: kuniakimat/character
@@ -111,6 +119,7 @@ app-character:
 story-sons-fable:
   title: ウッキーと亀爺さん
   kind: story
+  genre: 物語
   url: /apps/sons_fable/
   legacy_url: https://kuniakimat.github.io/sons_fable/
   repo: kuniakimat/sons_fable
@@ -122,17 +131,19 @@ story-sons-fable:
 story-kinomi:
   title: 木の実をひとつ
   kind: story
+  genre: 絵本
   url: /apps/kinomi/
   legacy_url: https://kuniakimat.github.io/kinomi/
   repo: kuniakimat/kinomi
   concepts: [恩源, 恩源継承]
-  summary: タップして読む短い導入面
+  summary: タップして読み進む絵本。受け取ったものを、次へ渡すまでの話
   related: [story-sons-fable]
   status: public
 
 story-pyramid-of-life:
   title: Pyramid of Life
   kind: story
+  genre: 物語
   url: /apps/sons_story/
   legacy_url: https://kuniakimat.github.io/sons_story/
   repo: kuniakimat/sons_story
@@ -149,6 +160,7 @@ story-pyramid-of-life:
 rep-happiness-4000:
   title: 広福観レポート（N=4,000）
   kind: report
+  genre: レポート
   url: /apps/happiness-map/report/
   concepts: [広福観, 幸福25相]
   status: public

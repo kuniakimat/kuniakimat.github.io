@@ -15,6 +15,20 @@ import { loadData, loadContent, makeResolver, docUrl, esc, write, copyDir, p } f
 const SITE = p('site');
 const SECTION_LABEL = { articles: '論考', frameworks: '概念', stories: '物語', reports: 'レポート' };
 
+// トップページに並べるジャンルと、その順番
+const GENRE_ORDER = ['診断', 'シミュレーター', '絵本', '物語', '論考', '概念', 'レポート', '自己紹介', '思索の目次'];
+const GENRE_NOTE = {
+  '診断': '問いに答えると、自分の位置が地形として出ます',
+  'シミュレーター': '数字を生活の実感に翻訳します',
+  '絵本': 'タップして読む絵本',
+  '物語': '概念を物語に翻訳したもの',
+  '論考': '書いたもの',
+  '概念': '松村モデルの各概念',
+  'レポート': '調査と分析',
+  '自己紹介': 'どういう人間が書いているか',
+  '思索の目次': '全体の地図',
+};
+
 // YAML の日付は Date に変換されるので、表示用に整える
 const fmtDate = (d) => {
   if (!d) return '';
@@ -127,7 +141,7 @@ for (const d of publish) {
   const preview = d.status === 'preview';
   const body =
     `<article class="doc">` +
-    `<div class="meta"><span class="kind">${SECTION_LABEL[d.section] || d.section}</span>` +
+    `<div class="meta"><span class="kind">${d.genre || SECTION_LABEL[d.section] || d.section}</span>` +
     (d.date ? `<time datetime="${esc(fmtDate(d.date))}">${esc(fmtDate(d.date))}</time>` : '') +
     (preview ? `<span class="badge-preview">仮公開</span>` : '') +
     `</div>` +
@@ -159,32 +173,42 @@ for (const [name, def] of Object.entries(data.canon)) {
 }
 
 // ---------- トップページ ----------
-const bySection = {};
-for (const d of publicDocs) (bySection[d.section] ||= []).push(d);
+const topItems = [];
+for (const v of Object.values(data.registry)) {
+  if (v.status === 'public' && v.url && v.genre) topItems.push({ genre: v.genre, title: v.title, url: v.url, note: v.summary });
+}
+for (const d of publicDocs) {
+  topItems.push({ genre: d.genre || SECTION_LABEL[d.section] || d.section, title: d.title, url: docUrl(d), note: d.summary, date: fmtDate(d.date) });
+}
+for (const v of Object.values(data.links)) {
+  if (v.top && v.genre && v.url) topItems.push({ genre: v.genre, title: v.title, url: v.url, note: v.role, ext: true });
+}
+
+const genreSection = (g) => {
+  const list = topItems.filter((x) => x.genre === g);
+  if (!list.length) return '';
+  list.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  return `<section class="index-sec"><h2>${esc(g)}</h2>` +
+    (GENRE_NOTE[g] ? `<p class="sec-note">${esc(GENRE_NOTE[g])}</p>` : '') +
+    `<ul class="index-list">` +
+    list.map((x) =>
+      `<li><a href="${esc(x.url)}"${x.ext ? ' rel="noopener"' : ''}>${esc(x.title)}</a>` +
+      (x.ext ? ' <span class="ext">note</span>' : '') +
+      (x.note ? `<div class="item-note">${esc(x.note)}</div>` : '') +
+      `</li>`).join('') +
+    `</ul></section>`;
+};
+
 const topBody =
   `<h1 class="site-title">思想と実践</h1>` +
-  Object.entries(bySection)
-    .map(
-      ([sec, list]) =>
-        `<section class="index-sec"><h2>${SECTION_LABEL[sec] || sec}</h2><ul class="index-list">` +
-        list
-          .sort((a, b) => fmtDate(b.date).localeCompare(fmtDate(a.date)))
-          .map((d) => `<li><a href="${docUrl(d)}">${esc(d.title)}</a></li>`)
-          .join('') +
-        `</ul></section>`
-    )
-    .join('') +
-  `<section class="index-sec"><h2>診断・ツール</h2><ul class="index-list">` +
-  Object.values(data.registry)
-    .filter((v) => v.status === 'public' && v.url)
-    .map((v) => `<li><a href="${esc(v.url)}">${esc(v.title)}</a></li>`)
-    .join('') +
-  `</ul></section>` +
-  `<section class="index-sec"><h2>archive</h2><ul class="index-list">` +
-  `<li><a href="/archive/">旧ブログ 2005–2026 — 1,273本</a></li>` +
+  `<p class="site-lead">概念を組み、診断にし、物語にし、20年ぶんの記録と一緒に置いています。</p>` +
+  GENRE_ORDER.map(genreSection).join('') +
+  `<section class="index-sec"><h2>archive</h2>` +
+  `<p class="sec-note">2005年から書き続けた記録</p>` +
+  `<ul class="index-list">` +
+  `<li><a href="/archive/">旧ブログ 2005–2026</a><div class="item-note">1,273本・724,131文字</div></li>` +
   `</ul></section>`;
 write('site/index.html', page({ title: '松村有晃 — 思想と実践', body: topBody }));
-
 // ---------- アプリと共通ファイルを配置 ----------
 // apps は 20MB 超あるので、毎回のローカルビルドでは複製しない。
 // ローカルの確認は dev サーバーが apps/ を直接配信する。CI では COPY_APPS=1 で複製する。

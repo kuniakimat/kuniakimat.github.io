@@ -17,6 +17,8 @@ note-top:
 note-n76eaa43c2620:
   title: 社会戦略と自己紹介のリンク
   url: https://note.com/kuniakimat/n/n76eaa43c2620
+  genre: 自己紹介
+  top: true
   kind: external-canon
   role: 総合ポータル。社会戦略・自己紹介・主要記事への入口
   use: 松村の活動と思想の全体像へ送りたいとき
@@ -55,6 +57,8 @@ note-nad5de7962201:
 note-nb6fc6c6f08bf:
   title: 「知性の熱力学」（による自己紹介）
   url: https://note.com/kuniakimat/n/nb6fc6c6f08bf
+  genre: 自己紹介
+  top: true
   kind: external-canon
   concepts: [関係相, 圧熱]
   role: 関係相・圧と熱・自他理合の入門
