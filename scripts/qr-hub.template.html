@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>アプリ一覧 QR</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="dark light">
+<style>
+:root{--bg:#f5f4f0;--fg:#1a1a1a;--sub:#666;--card:#fff;--bd:#dcdad3;--acc:#1a1a1a}
+@media (prefers-color-scheme:dark){:root{--bg:#141416;--fg:#f0f0f0;--sub:#a0a0a6;--card:#202024;--bd:#34343a;--acc:#f0f0f0}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;line-height:1.6}
+main{max-width:880px;margin:0 auto;padding:28px 16px 60px}
+h1{font-size:22px;margin:0 0 4px}
+.lead{color:var(--sub);font-size:13px;margin:0 0 22px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px;cursor:pointer;break-inside:avoid}
+.card h2{font-size:15px;margin:0 0 2px}
+.card p{font-size:12px;color:var(--sub);margin:0 0 10px}
+.qr{background:#fff;padding:8px;border-radius:10px;border:1px solid #e5e5e5}
+.qr svg{display:block;width:100%;height:auto;shape-rendering:crispEdges}
+.url{font-size:10.5px;color:var(--sub);margin:8px 0 0;word-break:break-all}
+#big{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}
+#big.on{display:flex}
+#big .box{background:#fff;color:#111;border-radius:20px;padding:20px;width:min(90vw,420px);text-align:center}
+#big h2{font-size:16px;margin:0 0 10px}
+#big .qr{border:1px solid #e5e5e5}
+#big .url{color:#555;font-size:12px}
+@media print{
+  body{background:#fff;color:#000}
+  :root{--card:#fff;--bd:#bbb;--sub:#444}
+  .card{border-color:#bbb}
+  .qrs-btn{display:none!important}
+  #big{display:none!important}
+  main{padding:0}
+}
+</style>
+</head>
+<body>
+<main>
+  <h1>アプリ一覧 QR</h1>
+  <p class="lead">カードをタップすると画面いっぱいのQRが開きます。会食で相手のスマホに向けて見せる用です。</p>
+  <div class="grid" id="grid"></div>
+</main>
+<div id="big"><div class="box"><h2 id="bt"></h2><div class="qr" id="bq"></div><p class="url" id="bu"></p></div></div>
+
+<script src="/shared/qr-share.js"></script>
+<script>
+/* ▼ アプリを足すときはここに1行追加 */
+var APPS = /*APPS_JSON*/[];
+/* ▲ */
+
+if (typeof window.__qrsLib !== 'function') { document.body.insertAdjacentHTML('afterbegin','<p style="padding:16px">QRライブラリを読み込めませんでした。ページを再読み込みしてください。</p>'); }
+function svgFor(u){
+  var q = window.__qrsLib(0,'M'); q.addData(u); q.make();
+  return q.createSvgTag({cellSize:8, margin:0, scalable:true});
+}
+function withFrom(u){ var x = new URL(u, 'https://kuniakimat.com'); x.searchParams.set('from','qr'); return x.toString(); }
+function short(u){ return u.replace(/^https?:\/\//,''); }
+
+var grid = document.getElementById('grid');
+APPS.forEach(function(a){
+  var u = withFrom(a.url);
+  var el = document.createElement('div');
+  el.className = 'card';
+  el.innerHTML = '<h2></h2><p></p><div class="qr"></div><div class="url"></div>';
+  el.querySelector('h2').textContent = a.name;
+  el.querySelector('p').textContent = a.desc;
+  el.querySelector('.qr').innerHTML = svgFor(u);
+  el.querySelector('.url').textContent = short(new URL(a.url, 'https://kuniakimat.com').toString());
+  el.onclick = function(){
+    document.getElementById('bt').textContent = a.name;
+    document.getElementById('bq').innerHTML = svgFor(u);
+    document.getElementById('bu').textContent = short(new URL(a.url, 'https://kuniakimat.com').toString());
+    document.getElementById('big').classList.add('on');
+  };
+  grid.appendChild(el);
+});
+document.getElementById('big').onclick = function(){ this.classList.remove('on'); };
+</script>
+</body>
+</html>
