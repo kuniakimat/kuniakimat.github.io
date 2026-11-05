@@ -62,6 +62,7 @@ ${body}
 </main>
 <footer class="site-footer"><a href="/archive/">archive 目次</a> ／ <a href="/">トップ</a></footer>
 </div>
+<script src="/shared/qr-share.js" defer></script>
 </body>
 </html>`;
 
