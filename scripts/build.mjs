@@ -220,8 +220,8 @@ copyDir(p('shared'), p('site/shared'));
 // apps/ の原本は触らず、公開用の複製（site/apps）にだけ <script> を足す。
 // 新しいアプリを足しても、ここで自動的にボタンが付く。
 const QR_TAG = '<script src="/shared/qr-share.js" defer></script>';
-// 右上が使われているアプリは、ボタンを置く位置をここで変える（top-right / top-left / bottom-right / bottom-left）
-const QR_POS = { chugo: 'bottom-right' };
+// 右上のボタンが他のUIと重なるアプリは、ここで位置を変える（top-left / none）。none は右上を出さず、最下部のボタンだけにする
+const QR_POS = { chugo: 'none' };
 function injectQr(dir) {
   if (!fs.existsSync(dir)) return 0;
   let n = 0;
