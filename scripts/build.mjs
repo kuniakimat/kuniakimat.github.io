@@ -129,6 +129,7 @@ ${body}
 <footer class="site-footer"><a href="/">目次へ</a></footer>
 </div>
 <script src="/shared/links.js" defer></script>
+<script src="/shared/qr-share.js" defer></script>
 </body>
 </html>`;
 }
@@ -215,6 +216,41 @@ write('site/index.html', page({ title: '松村有晃 — 思想と実践', body:
 if (process.env.COPY_APPS === '1' || process.argv.includes('--full')) copyDir(p('apps'), p('site/apps'));
 copyDir(p('shared'), p('site/shared'));
 
+// ---------- 全アプリに QR 共有ボタンを差し込む ----------
+// apps/ の原本は触らず、公開用の複製（site/apps）にだけ <script> を足す。
+// 新しいアプリを足しても、ここで自動的にボタンが付く。
+const QR_TAG = '<script src="/shared/qr-share.js" defer></script>';
+// 右上が使われているアプリは、ボタンを置く位置をここで変える（top-right / top-left / bottom-right / bottom-left）
+const QR_POS = { chugo: 'bottom-right' };
+function injectQr(dir) {
+  if (!fs.existsSync(dir)) return 0;
+  let n = 0;
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const f = dir + '/' + e.name;
+    if (e.isDirectory()) { n += injectQr(f); continue; }
+    if (!e.isFile() || !/\.html?$/i.test(e.name)) continue;
+    if (/admin|debug/i.test(e.name)) continue;
+    const t = fs.readFileSync(f, 'utf8');
+    if (t.includes('/shared/qr-share.js')) continue;
+    const i = t.toLowerCase().lastIndexOf('</body>');
+    const app = f.split('/apps/')[1].split('/')[0];
+    const tag = QR_POS[app] ? QR_TAG.replace(' defer>', ` data-pos="${QR_POS[app]}" defer>`) : QR_TAG;
+    fs.writeFileSync(f, i >= 0 ? t.slice(0, i) + tag + '\n' + t.slice(i) : t + '\n' + tag + '\n');
+    n++;
+  }
+  return n;
+}
+const qrInjected = injectQr(p('site/apps'));
+
+// ---------- QR 一覧ページ（会食で見せる用。台帳から自動生成） ----------
+{
+  const tpl = fs.readFileSync(p('scripts/qr-hub.template.html'), 'utf8');
+  const apps = Object.values(data.registry)
+    .filter((v) => v.status === 'public' && v.url && v.url.startsWith('/apps/'))
+    .map((v) => ({ name: v.title, desc: v.genre || '', url: v.url }));
+  write('site/qr/index.html', tpl.replace('/*APPS_JSON*/[]', JSON.stringify(apps)));
+}
+
 // 独自ドメインと Jekyll 無効化の指定を生成物へ持っていく
 if (fs.existsSync(p('CNAME'))) write('site/CNAME', fs.readFileSync(p('CNAME'), 'utf8'));
 write('site/.nojekyll', '');
@@ -240,6 +276,7 @@ write(
 write('site/robots.txt', `User-agent: *\nDisallow: /p/\nSitemap: https://kuniakimat.com/sitemap.xml\n`);
 
 console.log(`build: 記事 ${count}件 / 公開 ${publicDocs.length}件 / 仮公開 ${publish.length - publicDocs.length}件`);
+console.log(`       QRボタン差し込み ${qrInjected}ページ`);
 console.log(`       概念索引 ${Object.keys(data.canon).length}件 / アプリ ${nav.length}件`);
 
 // ---------- 旧ブログ archive ----------
