@@ -213,40 +213,72 @@ write('site/index.html', page({ title: '松村有晃 — 思想と実践', body:
 // ---------- アプリと共通ファイルを配置 ----------
 // apps は 20MB 超あるので、毎回のローカルビルドでは複製しない。
 // ローカルの確認は dev サーバーが apps/ を直接配信する。CI では COPY_APPS=1 で複製する。
-if (process.env.COPY_APPS === '1' || process.argv.includes('--full')) copyDir(p('apps'), p('site/apps'));
+// 公開先は /<name>/（短い住所）。apps/<name>/ が原本で、site/<name>/ に複製する。
+const APP_NAMES = fs.readdirSync(p('apps'), { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name);
+if (process.env.COPY_APPS === '1' || process.argv.includes('--full')) {
+  for (const a of APP_NAMES) copyDir(p('apps/' + a), p('site/' + a));
+}
 copyDir(p('shared'), p('site/shared'));
 
 // ---------- 全アプリに QR 共有ボタンを差し込む ----------
-// apps/ の原本は触らず、公開用の複製（site/apps）にだけ <script> を足す。
+// apps/ の原本は触らず、公開用の複製（site/<name>/）にだけ <script> を足す。
 // 新しいアプリを足しても、ここで自動的にボタンが付く。
 const QR_TAG = '<script src="/shared/qr-share.js" defer></script>';
 // 右上のボタンが他のUIと重なるアプリは、ここで位置を変える（top-left / none）。none は右上を出さず、最下部のボタンだけにする
 const QR_POS = { chugo: 'none' };
-function injectQr(dir) {
+function injectQr(dir, app) {
   if (!fs.existsSync(dir)) return 0;
   let n = 0;
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const f = dir + '/' + e.name;
-    if (e.isDirectory()) { n += injectQr(f); continue; }
+    if (e.isDirectory()) { n += injectQr(f, app); continue; }
     if (!e.isFile() || !/\.html?$/i.test(e.name)) continue;
     if (/admin|debug/i.test(e.name)) continue;
     const t = fs.readFileSync(f, 'utf8');
     if (t.includes('/shared/qr-share.js')) continue;
     const i = t.toLowerCase().lastIndexOf('</body>');
-    const app = f.split('/apps/')[1].split('/')[0];
     const tag = QR_POS[app] ? QR_TAG.replace(' defer>', ` data-pos="${QR_POS[app]}" defer>`) : QR_TAG;
     fs.writeFileSync(f, i >= 0 ? t.slice(0, i) + tag + '\n' + t.slice(i) : t + '\n' + tag + '\n');
     n++;
   }
   return n;
 }
-const qrInjected = injectQr(p('site/apps'));
+let qrInjected = 0;
+for (const a of APP_NAMES) qrInjected += injectQr(p('site/' + a), a);
+
+// ---------- 旧住所（/apps/<name>/…、/-happiness-map/…）から新住所へ飛ばす ----------
+// 旧リンクが生き続けるようにする。クエリとハッシュは引き継ぐ。
+function stub(to) {
+  return `<!doctype html><html lang="ja"><meta charset="utf-8"><meta name="robots" content="noindex">` +
+    `<link rel="canonical" href="https://kuniakimat.com${to}"><title>移動しました</title>` +
+    `<script>location.replace(${JSON.stringify(to)}+location.search+location.hash)</script>` +
+    `<noscript><meta http-equiv="refresh" content="0;url=${to}"></noscript>` +
+    `<p><a href="${to}">新しい住所へ</a></p></html>`;
+}
+let stubs = 0;
+for (const a of APP_NAMES) {
+  const src = p('apps/' + a);
+  const prefixes = ['apps/' + a].concat(a === 'happiness-map' ? ['-happiness-map'] : []);
+  (function walk(d, rel) {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      if (e.isDirectory()) { walk(d + '/' + e.name, rel + e.name + '/'); continue; }
+      if (!/\.html?$/i.test(e.name)) continue;
+      const isIndex = /^index\.html?$/i.test(e.name);
+      const to = '/' + a + '/' + rel + (isIndex ? '' : e.name);
+      for (const pre of prefixes) {
+        write('site/' + pre + '/' + rel + e.name, stub(to));
+        if (isIndex) write('site/' + pre + '/' + rel + 'index.html', stub(to));
+        stubs++;
+      }
+    }
+  })(src, '');
+}
 
 // ---------- QR 一覧ページ（会食で見せる用。台帳から自動生成） ----------
 {
   const tpl = fs.readFileSync(p('scripts/qr-hub.template.html'), 'utf8');
   const apps = Object.values(data.registry)
-    .filter((v) => v.status === 'public' && v.url && v.url.startsWith('/apps/'))
+    .filter((v) => v.status === 'public' && v.url && /^\/[^/]+\/(report\/)?$/.test(v.url) && APP_NAMES.includes(v.url.split('/')[1]))
     .map((v) => ({ name: v.title, desc: v.genre || '', url: v.url }));
   write('site/qr/index.html', tpl.replace('/*APPS_JSON*/[]', JSON.stringify(apps)));
 }
@@ -276,7 +308,7 @@ write(
 write('site/robots.txt', `User-agent: *\nDisallow: /p/\nSitemap: https://kuniakimat.com/sitemap.xml\n`);
 
 console.log(`build: 記事 ${count}件 / 公開 ${publicDocs.length}件 / 仮公開 ${publish.length - publicDocs.length}件`);
-console.log(`       QRボタン差し込み ${qrInjected}ページ`);
+console.log(`       QRボタン差し込み ${qrInjected}ページ・旧住所の転送 ${stubs}ページ`);
 console.log(`       概念索引 ${Object.keys(data.canon).length}件 / アプリ ${nav.length}件`);
 
 // ---------- 旧ブログ archive ----------
