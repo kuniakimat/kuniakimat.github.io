@@ -161,7 +161,7 @@ rep-happiness-4000:
   title: 広福観レポート（N=4,000）
   kind: report
   genre: レポート
-  url: /happiness-map/report/
+  url: /happiness-map/happiness-report.html
   concepts: [広福観, 幸福25相]
   status: public
   note: マスターデータの所在が未確認。記事転用前に出典と算式を確認する
