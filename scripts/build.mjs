@@ -226,6 +226,19 @@ copyDir(p('shared'), p('site/shared'));
 const QR_TAG = '<script src="/shared/qr-share.js" defer></script>';
 // 右上のボタンが他のUIと重なるアプリは、ここで位置を変える（top-left / none）。none は右上を出さず、最下部のボタンだけにする
 const QR_POS = { chugo: 'none' };
+// 絵本（1ページの中でめくる作り）は、全コマに出さず、表紙(#cover)と巻末(#ending)の下部だけに出す
+const QR_BOOK = ['kinomi'];
+const BOOK_SNIPPET = '<style>.qrs-foot{display:none!important}' +
+  '.qrs-book{display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(64px + env(safe-area-inset-bottom));z-index:2147482000;' +
+  'align-items:center;gap:8px;border:1px solid var(--qrs-bd);background:var(--qrs-bg);color:var(--qrs-fg);cursor:pointer;-webkit-tap-highlight-color:transparent;' +
+  'font:600 13px/1 -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;padding:11px 16px;border-radius:12px;white-space:nowrap}' +
+  '.qrs-book svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8}@media print{.qrs-book{display:none!important}}</style>' +
+  '<script>(function(){var b;function ico(){var s=document.querySelector(".qrs-foot svg");return s?s.outerHTML:""}' +
+  'function open(e){e.stopPropagation();var f=document.querySelector(".qrs-foot button");if(f)f.click()}' +
+  'function sync(){if(!b)return;var on=["cover","ending"].some(function(id){var el=document.getElementById(id);return el&&getComputedStyle(el).display!=="none"});b.style.display=on?"inline-flex":"none"}' +
+  'window.addEventListener("load",function(){b=document.createElement("button");b.type="button";b.className="qrs-book";b.innerHTML=ico()+"このページをQRで共有";' +
+  'b.addEventListener("click",open);document.body.appendChild(b);var mo=new MutationObserver(sync);' +
+  '["cover","ending"].forEach(function(id){var el=document.getElementById(id);if(el)mo.observe(el,{attributes:true,attributeFilter:["style"]})});sync()})})()</script>';
 function injectQr(dir, app) {
   if (!fs.existsSync(dir)) return 0;
   let n = 0;
@@ -237,7 +250,8 @@ function injectQr(dir, app) {
     const t = fs.readFileSync(f, 'utf8');
     if (t.includes('/shared/qr-share.js')) continue;
     const i = t.toLowerCase().lastIndexOf('</body>');
-    const tag = QR_POS[app] ? QR_TAG.replace(' defer>', ` data-pos="${QR_POS[app]}" defer>`) : QR_TAG;
+    const pos = QR_BOOK.includes(app) ? 'none' : QR_POS[app];
+    const tag = (pos ? QR_TAG.replace(' defer>', ` data-pos="${pos}" defer>`) : QR_TAG) + (QR_BOOK.includes(app) ? BOOK_SNIPPET : '');
     fs.writeFileSync(f, i >= 0 ? t.slice(0, i) + tag + '\n' + t.slice(i) : t + '\n' + tag + '\n');
     n++;
   }
